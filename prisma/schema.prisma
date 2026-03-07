@@ -1,0 +1,144 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Model {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  gender    String   // "women" or "men"
+  height    String?  // e.g., "5'9" / 175cm"
+  chest     String?
+  waist     String?
+  hips      String?
+  hair      String?  // Hair color
+  eyes      String?  // Eye color
+  location  String?
+  bio       String?
+  featured  Boolean  @default(false)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  images    ModelImage[]
+  campaigns CampaignModel[]
+}
+
+model ModelImage {
+  id        String   @id @default(cuid())
+  modelId   String
+  model     Model    @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  imageUrl  String
+  alt       String?
+  order     Int      @default(0)
+  isPrimary Boolean  @default(false)
+  createdAt DateTime @default(now())
+  
+  @@index([modelId])
+}
+
+model Campaign {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String?
+  client      String?
+  year        String?
+  coverImage  String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  models      CampaignModel[]
+  images      CampaignImage[]
+}
+
+model CampaignModel {
+  id         String   @id @default(cuid())
+  campaignId String
+  modelId    String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  model      Model    @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  
+  @@unique([campaignId, modelId])
+  @@index([campaignId])
+  @@index([modelId])
+}
+
+model CampaignImage {
+  id         String   @id @default(cuid())
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  imageUrl   String
+  alt        String?
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+  
+  @@index([campaignId])
+}
+
+model Application {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  age       String?
+  height    String?
+  city      String?
+  country   String?
+  instagram String?
+  message   String?
+  status    String   @default("pending") // pending, reviewed, accepted, rejected
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  photos    ApplicationPhoto[]
+}
+
+model ApplicationPhoto {
+  id            String   @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  imageUrl      String
+  type          String   // "headshot", "side", "fullbody"
+  createdAt     DateTime @default(now())
+  
+  @@index([applicationId])
+}
+
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String
+  createdAt DateTime @default(now())
+}
+
+model HeroSlide {
+  id        String   @id @default(cuid())
+  title     String?
+  subtitle  String?
+  imageUrl  String
+  link      String?
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model Client {
+  id        String   @id @default(cuid())
+  name      String
+  logoUrl   String
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
