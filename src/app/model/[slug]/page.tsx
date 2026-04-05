@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 export const dynamicParams = false;
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';

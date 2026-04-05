@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 import { Metadata } from 'next';
 import { ApplyForm } from '@/components/forms/ApplyForm';
 import { generateSEO, generateBreadcrumbSchema } from '@/lib/seo';

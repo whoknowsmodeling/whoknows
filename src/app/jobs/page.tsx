@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 import { Metadata } from 'next';
 import { CampaignGrid } from '@/components/models/CampaignCard';
 import { mockCampaigns } from '@/lib/data';
