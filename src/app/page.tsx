@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Suspense } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { HeroSlider } from '@/components/sections/HeroSlider';
+import { HeroVideo } from '@/components/sections/HeroVideo';
 import { ModelGrid } from '@/components/models/ModelCard';
 import { CampaignGrid } from '@/components/models/CampaignCard';
 import { mockModels, mockCampaigns, mockHeroSlides, mockClients } from '@/lib/data';
@@ -83,8 +83,11 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Hero Slider */}
-      <HeroSlider slides={heroSlides} />
+      {/* Hero Video Section */}
+      <HeroVideo 
+        slide={heroSlides[0]} 
+        videoSrc="/Hero-optimized.webm" 
+      />
 
       {/* Featured Models Section */}
       <section className="py-16 lg:py-24 bg-white" aria-labelledby="featured-models-heading">

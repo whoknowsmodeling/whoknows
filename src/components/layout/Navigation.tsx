@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
@@ -67,9 +68,13 @@ export function Navigation() {
             <Link
               href="/"
               onClick={closeMobileMenu}
-              className="relative z-10 font-serif text-xl lg:text-2xl font-bold tracking-tight text-black"
+              className="relative z-10 flex items-center"
             >
-              WhoKnows<span className="font-light">Models</span>
+              <img 
+                src="/whoknows.webp" 
+                alt="WhoKnows Models Logo" 
+                className="h-8 lg:h-10 w-auto object-contain"
+              />
             </Link>
 
             {/* Desktop Navigation */}
