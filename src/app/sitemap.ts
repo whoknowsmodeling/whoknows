@@ -5,7 +5,7 @@ import { db } from '@/lib/db';
 export const revalidate = 86400; // revalidate sitemap daily
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://whoknowsmodels.com';
+  const baseUrl = 'https://whoknows.design';
 
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [

@@ -19,7 +19,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://whoknowsmodels.com"),
+  metadataBase: new URL("https://whoknows.design"),
   title: {
     default: "WhoKnows Models | International Modelling Agency",
     template: "%s | WhoKnows Models",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     title: "WhoKnows Models | International Modelling Agency",
     description:
       "Discover exceptional models for fashion, editorial, and commercial work. International modelling agency representing the finest talent worldwide.",
-    url: "https://whoknowsmodels.com",
+    url: "https://whoknows.design",
     siteName: "WhoKnows Models",
     images: [
       {

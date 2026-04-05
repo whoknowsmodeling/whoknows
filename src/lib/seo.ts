@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://whoknowsmodels.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://whoknows.design';
 const SITE_NAME = 'WhoKnows Models';
 const DEFAULT_DESCRIPTION = 'WhoKnows Models is an international modelling agency representing the finest talent worldwide. Discover our roster of exceptional models for fashion, editorial, and commercial work.';
 const DEFAULT_KEYWORDS = ['modelling agency', 'fashion models', 'model management', 'fashion industry', 'editorial models', 'runway models', 'commercial models', 'international models', 'model booking'];
