@@ -59,32 +59,30 @@ export function HeroVideo({ slide, videoSrc }: HeroVideoProps) {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 w-full h-full">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="max-w-3xl flex flex-col items-center"
+      {/* Absolute Bottom-Left Navigation */}
+      <div className="absolute bottom-16 lg:bottom-24 left-8 lg:left-12 z-20">
+        <motion.nav 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="flex flex-col gap-1 lg:gap-2"
         >
-          {slide?.title && (
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-4 tracking-tight leading-tight drop-shadow-md">
-              {slide.title}
-            </h1>
-          )}
-          {slide?.subtitle && (
-            <p className="text-lg sm:text-xl lg:text-2xl text-white/90 mb-8 max-w-xl mx-auto drop-shadow-md pb-2">
-              {slide.subtitle}
-            </p>
-          )}
-          {slide?.link && (
-            <Link
-              href={slide.link}
-              className="inline-block px-8 py-3 bg-white text-black font-medium text-sm w-max uppercase tracking-wider hover:bg-neutral-100 transition-colors shadow-lg"
-            >
-              Discover More
-            </Link>
-          )}
-        </motion.div>
+          <Link href="/women" className="text-white text-2xl lg:text-2xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
+            Models
+          </Link>
+          <Link href="/men" className="text-white text-2xl lg:text-2xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
+            Men
+          </Link>
+          <Link href="/women" className="text-white text-2xl lg:text-2xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
+            Women
+          </Link>
+          <Link href="/contact" className="text-white text-2xl lg:text-2xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
+            Contact
+          </Link>
+          <Link href="/apply" className="text-white text-2xl lg:text-2xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
+            Become a Model
+          </Link>
+        </motion.nav>
       </div>
 
       {/* Sound Toggle Button */}

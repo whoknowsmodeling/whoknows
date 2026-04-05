@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Suspense } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { HeroVideo } from '@/components/sections/HeroVideo';
-import { ModelGrid } from '@/components/models/ModelCard';
+import { ModelCarousel } from '@/components/models/ModelCarousel';
 import { CampaignGrid } from '@/components/models/CampaignCard';
 import { mockModels, mockCampaigns, mockHeroSlides, mockClients } from '@/lib/data';
 import { db } from '@/lib/db';
@@ -110,8 +110,8 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <Suspense fallback={<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 h-96 animate-pulse bg-neutral-100 rounded" />}>
-            <ModelGrid models={featuredModels} columns={4} />
+          <Suspense fallback={<div className="grid grid-cols-1 lg:grid-cols-4 gap-4 h-96 animate-pulse bg-neutral-100 rounded" />}>
+            <ModelCarousel models={featuredModels} />
           </Suspense>
 
           <div className="mt-8 text-center sm:hidden">

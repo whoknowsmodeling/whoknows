@@ -77,24 +77,26 @@ export function Navigation() {
               />
             </Link>
 
-            {/* Desktop Navigation */}
-            <ul className="hidden lg:flex items-center gap-8">
-              {navItems.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      'text-sm font-medium tracking-wide uppercase transition-colors duration-200 hover:text-black',
-                      pathname === item.href
-                        ? 'text-black'
-                        : 'text-neutral-600'
-                    )}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {/* Desktop Navigation - Hidden on Home to emphasize Hero Nav */}
+            {pathname !== '/' && (
+              <ul className="hidden lg:flex items-center gap-8">
+                {navItems.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className={cn(
+                        'text-sm font-medium tracking-wide uppercase transition-colors duration-200 hover:text-black',
+                        pathname === item.href
+                          ? 'text-black'
+                          : 'text-neutral-600'
+                      )}
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
 
             {/* Mobile Menu Button */}
             <button

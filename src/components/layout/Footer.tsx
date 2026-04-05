@@ -110,11 +110,11 @@ export function Footer() {
               <span>+62 857-2128-8138</span>
             </a>
             <a
-              href="mailto:contact@whoknowsmodels.com"
+              href="mailto:whoknowsmodels@gmail.com"
               className="flex items-center gap-2 text-neutral-400 text-sm hover:text-white transition-colors"
             >
               <Mail className="w-4 h-4" />
-              <span>contact@whoknowsmodels.com</span>
+              <span>whoknowsmodels@gmail.com</span>
             </a>
           </div>
           <p className="text-neutral-500 text-xs">
