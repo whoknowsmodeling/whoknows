@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
+import { compare } from "bcrypt-ts";
 
 const prisma = new PrismaClient();
 
@@ -16,7 +16,7 @@ async function main() {
     return;
   }
 
-  const isValid = await bcrypt.compare(password, user.password);
+  const isValid = await compare(password, user.password);
   console.log("Is Valid:", isValid);
 }
 
