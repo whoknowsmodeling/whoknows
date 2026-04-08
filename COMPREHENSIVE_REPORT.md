@@ -1,8 +1,8 @@
 # WhoKnows Models — Comprehensive System Report
 
-> **Version:** 4.1.0 (True Edge Alignment)
-> **Date:** 2026-04-08
-> **Status:** ✅ Definitive Cloudflare Alignment — Build Confirmed
+> **Version:** 4.2.0 (Auth.js v5 Migration)
+> **Date:** 2026-04-09
+> **Status:** ✅ Auth.js v5 + Node.js Compat Strategy — Final Build
 
 ---
 
@@ -182,11 +182,11 @@ The platform has been specifically hardened for **Cloudflare Pages** deployment 
 ✅ All pages with ISR configured
 ✅ Admin Dashboard integrated
 ✅ Security Hardening applied to `/api/setup-admin`
-✅ Cloudflare Pages Deployment Guide updated to v4.1
-✅ Corrected `next.config.ts` (removed `standalone` output)
-✅ Lazy-loading Auth Handler implemented (bypasses `custom` error)
-✅ 100% Edge Runtime (`edge`) compliance across all routes
-✅ Removed `sharp` dependency for Edge compatibility
+✅ Migrated to Auth.js v5 (next-auth@beta)
+✅ Auth route uses `nodejs_compat` (no edge runtime conflict)
+✅ Proxy (middleware) uses Auth.js v5 `auth()` wrapper
+✅ Removed `standalone` output from `next.config.ts`
+✅ Build command: `npx prisma generate && npx @cloudflare/next-on-pages@1`
 ```
 
 ---

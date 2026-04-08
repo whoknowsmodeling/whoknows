@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "functions": {
+    "/admin": {},
+    "/admin/applications": {},
+    "/admin/campaigns": {},
+    "/admin/contacts": {},
+    "/admin/content": {},
+    "/admin/hero": {},
+    "/admin/login": {},
+    "/admin/logs": {},
+    "/admin/models/[gender]": {},
+    "/admin/models/[gender]/[id]/edit": {},
+    "/admin/models/[gender]/new": {},
+    "/api": {},
+    "/api/apply": {},
+    "/api/auth/[...nextauth]": {},
+    "/api/campaigns": {},
+    "/api/clients": {},
+    "/api/contact": {},
+    "/api/hero-slides": {},
+    "/api/models": {},
+    "/api/setup-admin": {}
+  }
+}

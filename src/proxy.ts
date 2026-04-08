@@ -1,24 +1,26 @@
-import { withAuth } from "next-auth/middleware";
+import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
-export const runtime = 'edge';
+export default auth((req) => {
+  const isLoggedIn = !!req.auth;
+  const isLoginRoute = req.nextUrl.pathname.startsWith("/admin/login");
 
-export default withAuth(
-  function middleware(req) {
-    // If the user is logged in, but not an admin, redirect to home
-    if (req.nextUrl.pathname.startsWith("/admin") && req.nextauth.token?.role !== "admin") {
-      return NextResponse.redirect(new URL("/", req.url));
+  if (isLoginRoute) {
+    if (isLoggedIn) {
+      return NextResponse.redirect(new URL("/admin", req.nextUrl));
     }
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => !!token,
-    },
-    pages: {
-      signIn: "/admin/login",
-    },
+    return NextResponse.next();
   }
-);
+
+  if (!isLoggedIn && req.nextUrl.pathname.startsWith("/admin")) {
+    return NextResponse.redirect(new URL("/admin/login", req.nextUrl));
+  }
+
+  // @ts-ignore
+  if (req.nextUrl.pathname.startsWith("/admin") && req.auth?.user?.role !== "admin") {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+});
 
 export const config = {
   matcher: ["/admin/:path*"],
