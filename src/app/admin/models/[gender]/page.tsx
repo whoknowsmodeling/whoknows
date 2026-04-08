@@ -6,6 +6,8 @@ import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminModelsPage({ params }: { params: { gender: string } }) {
   const gender = (await params).gender;
   
@@ -56,14 +58,22 @@ export default async function AdminModelsPage({ params }: { params: { gender: st
                     <Edit2 className="w-4 h-4" />
                   </Button>
                 </Link>
-                <Link href={`/model/${model.slug}`} target="_blank">
+                <a href={`/model/${model.slug}`} target="_blank" rel="noopener noreferrer">
                   <Button size="icon" variant="ghost" className="h-8 w-8 text-neutral-400 hover:text-white">
                     <ExternalLink className="w-4 h-4" />
                   </Button>
-                </Link>
-                <Button size="icon" variant="ghost" className="h-8 w-8 text-red-400 hover:text-red-300">
-                  <Trash2 className="w-4 h-4" />
-                </Button>
+                </a>
+                <form action={async (formData) => {
+                  'use server';
+                  const { deleteModel } = await import("@/app/admin/models/actions");
+                  if (confirm("Are you sure you want to delete this model? This action is permanent.")) {
+                    await deleteModel(model.id, gender);
+                  }
+                }}>
+                  <Button type="submit" size="icon" variant="ghost" className="h-8 w-8 text-red-400 hover:text-red-300">
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </form>
               </div>
             </CardHeader>
           </Card>

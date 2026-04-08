@@ -53,12 +53,16 @@ export function ModelCarousel({ models = [] }: ModelCarouselProps) {
 
   return (
     <div className="group relative">
-      <div className="overflow-hidden px-4 lg:px-0" ref={emblaRef}>
-        <div className="flex -ml-4 lg:-ml-6">
+      <div 
+        className="overflow-hidden px-4 lg:px-0 touch-pan-y" 
+        ref={emblaRef}
+        style={{ touchAction: 'pan-y' }}
+      >
+        <div className="flex -ml-4 lg:-ml-6 select-none">
           {models.map((model, index) => (
             <div
               key={model.id}
-              className="min-w-0 flex-[0_0_50%] pl-2 sm:flex-[0_0_33.333%] lg:flex-[0_0_20%] xl:flex-[0_0_16.666%] lg:pl-3"
+              className="min-w-0 flex-[0_0_85%] sm:flex-[0_0_33.333%] lg:flex-[0_0_20%] xl:flex-[0_0_16.666%] pl-4 lg:pl-6"
             >
               <ModelCard model={model} index={index} variant="passport" />
             </div>

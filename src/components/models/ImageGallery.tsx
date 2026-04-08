@@ -56,6 +56,7 @@ export function ImageGallery({ images, columns = 3 }: ImageGalleryProps) {
               src={image.imageUrl}
               alt={image.alt || 'Gallery image'}
               fill
+              quality={60}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover object-center transition-transform duration-500 hover:scale-105"
               loading="lazy"

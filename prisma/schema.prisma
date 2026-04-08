@@ -39,6 +39,7 @@ model ModelImage {
   model     Model    @relation(fields: [modelId], references: [id], onDelete: Cascade)
   imageUrl  String
   alt       String?
+  concept   String?
   order     Int      @default(0)
   isPrimary Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -162,4 +163,14 @@ model PageContent {
   updatedAt DateTime @updatedAt
 
   @@unique([page, section, key])
+}
+
+model AdminLog {
+  id         String   @id @default(cuid())
+  action     String   // e.g., "create", "update", "delete", "login"
+  entity     String   // e.g., "model", "campaign", "hero", "application"
+  entityId   String?
+  details    String?  @db.Text
+  adminEmail String
+  createdAt  DateTime @default(now())
 }

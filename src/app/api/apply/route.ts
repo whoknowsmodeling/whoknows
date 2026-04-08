@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 
@@ -39,11 +39,13 @@ export async function POST(request: NextRequest) {
       { formKey: 'fullBody', dbType: 'fullbody' },
     ];
 
+    const photoUrls: string[] = [];
     for (const { formKey, dbType } of fileUploads) {
       const file = formData.get(formKey) as File | null;
       if (file && file.size > 0) {
         // In production, upload to cloud storage (e.g. S3, Cloudinary)
         const imageUrl = `/uploads/${application.id}/${dbType}-${file.name}`;
+        photoUrls.push(`${dbType.toUpperCase()}: ${imageUrl}`);
 
         await db.applicationPhoto.create({
           data: {
@@ -53,6 +55,38 @@ export async function POST(request: NextRequest) {
           },
         });
       }
+    }
+
+    // Forward securely to Formspree Server-to-Server
+    const formspreeUrl = process.env.NEXT_PUBLIC_FORMSPREE_URL || 'https://formspree.io/f/mjgpzrky';
+    try {
+      const formspreeResponse = await fetch(formspreeUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          fullName: name,
+          email,
+          phone,
+          age,
+          height,
+          city,
+          country,
+          instagram,
+          message,
+          photoLinks: photoUrls.join(' | '),
+          note: `New application received! Photos stored in DB. Links: ${photoUrls.length > 0 ? photoUrls.join(', ') : 'None'}`
+        }),
+      });
+      if (!formspreeResponse.ok) {
+        console.error('Formspree Apply returned an error:', await formspreeResponse.text());
+        throw new Error('Formspree forwarding failed');
+      }
+    } catch (e) {
+      console.error('Error contacting custom Formspree URL for Apply:', e);
+      // We will gracefully continue and return success to the user so they don't see an error if Formspree is temporarily down, since we saved to the db.
     }
 
     return NextResponse.json({ success: true, id: application.id });

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://whoknows.design';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://whoknowsmodels.com';
 const SITE_NAME = 'WhoKnows Models';
 const DEFAULT_DESCRIPTION = 'WhoKnows Models is an international modelling agency representing the finest talent worldwide. Discover our roster of exceptional models for fashion, editorial, and commercial work.';
 const DEFAULT_KEYWORDS = ['modelling agency', 'fashion models', 'model management', 'fashion industry', 'editorial models', 'runway models', 'commercial models', 'international models', 'model booking'];
@@ -102,8 +102,8 @@ export function generateOrganizationSchema() {
       availableLanguage: ['English'],
     },
     sameAs: [
-      'https://instagram.com/whoknowsmodels',
-      'https://facebook.com/whoknowsmodels',
+      'https://instagram.com/whoknows.models',
+      'https://www.facebook.com/profile.php?id=100069628367326',
     ],
   };
 }

@@ -48,7 +48,10 @@ export function CampaignCard({ campaign, index = 0 }: CampaignCardProps) {
           </div>
           {campaign.models && campaign.models.length > 0 && (
             <p className="text-sm text-neutral-500">
-              Featuring: {campaign.models.map((m) => m.model.name).join(', ')}
+              Featuring: {campaign.models
+                .filter(m => m.model)
+                .map((m) => m.model.name)
+                .join(', ')}
             </p>
           )}
         </div>

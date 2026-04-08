@@ -4,6 +4,8 @@ import { Users, Image as ImageIcon, MessageSquare, TrendingUp, ArrowUpRight, Arr
 import { db } from "@/lib/db";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 async function getStats() {
   try {
     const [menCount, womenCount, campaignCount, applicationCount] = await Promise.all([

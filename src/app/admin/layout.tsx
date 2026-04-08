@@ -21,11 +21,14 @@ import { cn } from "@/lib/utils";
 
 const sidebarLinks = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { name: "Models MEN", href: "/admin/models/men", icon: Users },
-  { name: "Models WOMAN", href: "/admin/models/women", icon: Users },
+  { name: "Applications", href: "/admin/applications", icon: FileText },
+  { name: "Contact Messages", href: "/admin/contacts", icon: FileText },
+  { name: "Models (Men)", href: "/admin/models/men", icon: Users },
+  { name: "Models (Women)", href: "/admin/models/women", icon: Users },
   { name: "Page Content", href: "/admin/content", icon: FileText },
   { name: "Hero Slides", href: "/admin/hero", icon: ImageIcon },
-  { name: "Campaigns", href: "/admin/campaigns", icon: ImageIcon },
+  { name: "Campaigns (Jobs)", href: "/admin/campaigns", icon: ImageIcon },
+  { name: "Activity Logs", href: "/admin/logs", icon: Settings },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

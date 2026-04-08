@@ -72,6 +72,9 @@ export function ApplyForm() {
 
       const response = await fetch('/api/apply', {
         method: 'POST',
+        headers: {
+          Accept: 'application/json',
+        },
         body: formData,
       });
 
@@ -187,7 +190,7 @@ export function ApplyForm() {
             <Label htmlFor="instagram">Instagram Handle</Label>
             <Input
               id="instagram"
-              placeholder="@username"
+              placeholder="@whoknows.models"
               {...register('instagram')}
             />
           </div>

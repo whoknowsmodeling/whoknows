@@ -5,6 +5,8 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 export default async function EditModelPage({ 
   params 
 }: { 

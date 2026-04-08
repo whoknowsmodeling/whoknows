@@ -5,7 +5,7 @@ import { db } from '@/lib/db';
 import type { Model } from '@/types';
 import { generateSEO, generateBreadcrumbSchema } from '@/lib/seo';
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 export const metadata: Metadata = generateSEO({
   title: 'Women Models',
@@ -25,7 +25,10 @@ export const metadata: Metadata = generateSEO({
 async function getWomenModels(): Promise<Model[]> {
   try {
     const models = await db.model.findMany({
-      where: { gender: 'women' },
+      where: { 
+        gender: 'women',
+        images: { some: {} }
+      },
       include: { images: { orderBy: { order: 'asc' } } },
       orderBy: { order: 'asc' },
     });

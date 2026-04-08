@@ -67,19 +67,19 @@ export function HeroVideo({ slide, videoSrc }: HeroVideoProps) {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="flex flex-col gap-1 lg:gap-2"
         >
-          <Link href="/women" className="text-white text-2xl lg:text-2xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
+          <Link href="/women" className="text-white text-2xl lg:text-1.5xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
             Models
           </Link>
-          <Link href="/men" className="text-white text-2xl lg:text-2xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
+          <Link href="/men" className="text-white text-2xl lg:text-1.5xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
             Men
           </Link>
-          <Link href="/women" className="text-white text-2xl lg:text-2xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
+          <Link href="/women" className="text-white text-2xl lg:text-1.5xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
             Women
           </Link>
-          <Link href="/contact" className="text-white text-2xl lg:text-2xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
+          <Link href="/contact" className="text-white text-2xl lg:text-1.5xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
             Contact
           </Link>
-          <Link href="/apply" className="text-white text-2xl lg:text-2xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
+          <Link href="/apply" className="text-white text-2xl lg:text-1.5xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
             Become a Model
           </Link>
         </motion.nav>

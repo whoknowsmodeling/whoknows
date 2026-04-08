@@ -9,7 +9,7 @@ import { db } from '@/lib/db';
 import { generateSEO, generateBreadcrumbSchema, generatePersonSchema } from '@/lib/seo';
 import { Button } from '@/components/ui/button';
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 interface ModelPageProps {
   params: Promise<{ slug: string }>;
@@ -122,6 +122,19 @@ export default async function ModelProfilePage({ params }: ModelPageProps) {
     { label: 'Location', value: model.location },
   ].filter((m) => m.value);
 
+  const groupedImages = model.images.reduce((acc: any, img: any) => {
+    const concept = img.concept || 'Portfolio';
+    if (!acc[concept]) acc[concept] = [];
+    acc[concept].push(img);
+    return acc;
+  }, {});
+
+  const concepts = Object.keys(groupedImages).sort((a, b) => {
+    if (a === 'Portfolio') return -1;
+    if (b === 'Portfolio') return 1;
+    return a.localeCompare(b);
+  });
+
   return (
     <>
       <article className="pt-24 lg:pt-32 pb-16 lg:pb-24">
@@ -129,49 +142,64 @@ export default async function ModelProfilePage({ params }: ModelPageProps) {
           {/* Back Link */}
           <Link
             href={`/${model.gender}`}
-            className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-black mb-8 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+            className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-black mb-12 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black group"
             aria-label={`Back to ${model.gender === 'women' ? 'Women' : 'Men'} models`}
           >
-            <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" aria-hidden="true" />
             Back to {model.gender === 'women' ? 'Women' : 'Men'}
           </Link>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-            {/* Gallery */}
-            <div className="lg:col-span-2">
-              <ImageGallery images={model.images} columns={2} />
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+            {/* Gallery Section */}
+            <div className="lg:col-span-8 space-y-16">
+              {concepts.map((concept) => (
+                <div key={concept} className="space-y-6">
+                  <div className="flex items-center gap-4">
+                    <h2 className="font-serif text-2xl lowercase tracking-tight opacity-50 italic">{concept}</h2>
+                    <div className="h-px flex-1 bg-neutral-100" />
+                  </div>
+                  <ImageGallery images={groupedImages[concept]} columns={2} />
+                </div>
+              ))}
             </div>
 
-            {/* Model Info */}
-            <div className="lg:col-span-1">
-              <div className="sticky top-24">
-                <h1 className="font-serif text-3xl lg:text-4xl font-medium tracking-tight mb-4">
-                  {model.name}
-                </h1>
-
-                {model.bio && (
-                  <p className="text-neutral-600 leading-relaxed mb-8">{model.bio}</p>
-                )}
+            {/* Model Info Sticky Sidebar */}
+            <div className="lg:col-span-4">
+              <div className="sticky top-32 space-y-12">
+                <div>
+                  <h1 className="font-serif text-4xl lg:text-5xl font-medium tracking-tighter mb-6 uppercase">
+                    {model.name}
+                  </h1>
+                  {model.bio && (
+                    <p className="text-neutral-500 leading-relaxed font-light">{model.bio}</p>
+                  )}
+                </div>
 
                 {/* Measurements */}
-                <div className="mb-8">
-                  <h2 className="text-sm uppercase tracking-wider text-neutral-500 mb-4">
-                    Measurements
+                <div className="space-y-6">
+                  <h2 className="text-[10px] uppercase tracking-[0.2em] font-bold text-neutral-400">
+                    Attributes
                   </h2>
-                  <dl className="space-y-3">
+                  <dl className="grid grid-cols-2 gap-y-4 gap-x-8 border-t border-neutral-100 pt-6">
                     {measurements.map(({ label, value }) => (
-                      <div key={label} className="flex justify-between">
-                        <dt className="text-neutral-500">{label}</dt>
-                        <dd className="font-medium">{value}</dd>
+                      <div key={label} className="space-y-1">
+                        <dt className="text-[10px] uppercase tracking-widest text-neutral-400">{label}</dt>
+                        <dd className="font-medium text-sm">{value}</dd>
                       </div>
                     ))}
                   </dl>
                 </div>
 
+                {/* Status Badge */}
+                <div className="flex items-center gap-2 pt-4">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-[10px] uppercase tracking-widest font-semibold text-neutral-500">Available for Booking</span>
+                </div>
+
                 {/* Booking Button */}
                 <Button
                   asChild
-                  className="w-full bg-black hover:bg-neutral-800 text-white"
+                  className="w-full bg-black hover:bg-neutral-800 text-white py-8 rounded-none uppercase tracking-[0.2em] text-[10px] font-bold transition-all hover:scale-[1.02] active:scale-[0.98]"
                 >
                   <a
                     href={`mailto:contact@whoknowsmodels.com?subject=Booking Inquiry: ${encodeURIComponent(model.name)}`}

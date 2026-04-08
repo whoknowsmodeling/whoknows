@@ -3,6 +3,14 @@ import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
 
 export async function GET() {
+  // Security Hardening: Only allow setup if explicitly enabled via environment variable
+  if (process.env.ADMIN_SETUP_ENABLED !== "true") {
+    return NextResponse.json({
+      success: false,
+      message: "Admin setup is disabled in production for security. Set ADMIN_SETUP_ENABLED=true to initialize.",
+    }, { status: 403 });
+  }
+
   try {
     const email = process.env.ADMIN_EMAIL || "whoknowsmodeling@gmail.com";
     const password = process.env.ADMIN_PASSWORD || "Car4sale123!";

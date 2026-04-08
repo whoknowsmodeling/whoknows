@@ -32,9 +32,11 @@ export function ModelCard({ model, index = 0, variant = 'default' }: ModelCardPr
               src={primaryImage.imageUrl}
               alt={primaryImage.alt || `${model.name} - Model`}
               fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              quality={50}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
-              loading="lazy"
+              priority={index < 4}
+              loading={index < 4 ? undefined : "lazy"}
             />
           )}
           <div className="absolute inset-0 bg-black/0 transition-all duration-300 group-hover:bg-black/20" />

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { uploadImage, deleteImage } from "@/lib/storage";
 import { slugify } from "@/lib/utils";
 import { redirect } from "next/navigation";
+import { logAction } from "@/lib/logger";
 
 export async function createCampaign(formData: FormData) {
   const title = formData.get("title") as string;
@@ -60,6 +61,8 @@ export async function createCampaign(formData: FormData) {
     }
   }
 
+  await logAction("create", "campaign", campaign.id, `Created campaign: ${title}`);
+
   revalidatePath("/admin/campaigns");
   revalidatePath("/campaigns");
   redirect("/admin/campaigns");
@@ -81,6 +84,7 @@ export async function deleteCampaign(id: string) {
     await db.campaign.delete({
       where: { id },
     });
+    await logAction("delete", "campaign", id, `Deleted campaign: ${campaign.title}`);
   }
 
   revalidatePath("/admin/campaigns");

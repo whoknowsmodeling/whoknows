@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { uploadImage, deleteImage } from "@/lib/storage";
 import { slugify } from "@/lib/utils";
+import { logAction } from "@/lib/logger";
 
 export async function createModel(formData: FormData) {
   const name = formData.get("name") as string;

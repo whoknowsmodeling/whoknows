@@ -1,6 +1,8 @@
 import CampaignManagement from "@/components/admin/CampaignManagement";
 import { db } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminCampaignsPage() {
   const [campaigns, models] = await Promise.all([
     db.campaign.findMany({

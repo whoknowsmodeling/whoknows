@@ -19,13 +19,15 @@ const navItems = [
 ];
 
 export function Navigation() {
+  const [isMounted, setIsMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
+    setIsMounted(true);
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 5);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -52,6 +54,11 @@ export function Navigation() {
     setIsMobileMenuOpen(false);
   };
 
+  if (!isMounted || pathname.startsWith('/admin')) return null;
+
+  const isHome = pathname === '/';
+  const showWhiteText = isHome && !isScrolled;
+
   return (
     <>
       <header
@@ -68,15 +75,14 @@ export function Navigation() {
             <Link
               href="/"
               onClick={closeMobileMenu}
-              className="relative z-10 flex items-center"
+              className="relative z-10 flex items-center h-12 lg:h-14 w-56 lg:w-64"
             >
-              <img 
-                src="/whoknows.webp?v=1" 
+              <Image 
+                src={showWhiteText ? "/whoknows.webp" : "/whoknowsBlack.webp"} 
                 alt="WhoKnows Models Logo" 
-                className={cn(
-                  "h-8 lg:h-10 w-auto object-contain transition-all duration-300",
-                  !isScrolled && pathname === '/' ? "brightness-0 invert" : ""
-                )}
+                fill
+                priority
+                className="object-contain transition-all duration-300"
               />
             </Link>
 
@@ -107,7 +113,7 @@ export function Navigation() {
                 href="/admin/login"
                 className={cn(
                   "p-2 rounded-full transition-all duration-300",
-                  isScrolled ? "text-neutral-600 hover:text-black" : "text-white hover:text-white/80"
+                  showWhiteText ? "text-white hover:text-white/80" : "text-neutral-600 hover:text-black"
                 )}
                 aria-label="Admin Login"
               >
@@ -121,7 +127,7 @@ export function Navigation() {
                 href="/admin/login"
                 className={cn(
                   "p-2 transition-all duration-300",
-                  isScrolled ? "text-neutral-600" : "text-white"
+                  showWhiteText ? "text-white" : "text-neutral-600"
                 )}
                 aria-label="Admin Login"
               >
@@ -131,7 +137,7 @@ export function Navigation() {
                 onClick={toggleMobileMenu}
                 className={cn(
                   "relative z-10 p-2 -mr-2 transition-all duration-300",
-                  isScrolled || isMobileMenuOpen ? "text-black" : "text-white"
+                  showWhiteText && !isMobileMenuOpen ? "text-white" : "text-black"
                 )}
                 aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
               >

@@ -90,6 +90,33 @@ const nextConfig: NextConfig = {
         destination: '/women',
         permanent: true,
       },
+      {
+        source: '/man',
+        destination: '/men',
+        permanent: true,
+      },
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'whoknows.beauty',
+          },
+        ],
+        destination: 'https://whoknowsmodels.com/:path*',
+        permanent: true,
+      },
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'www.whoknows.beauty',
+          },
+        ],
+        destination: 'https://whoknowsmodels.com/:path*',
+        permanent: true,
+      },
     ];
   },
 };

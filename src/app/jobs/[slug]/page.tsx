@@ -94,9 +94,11 @@ export default async function CampaignPage({ params }: CampaignPageProps) {
                 Featured Models
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {campaign.models.map(({ model }, index) => (
-                  <ModelCard key={model.id} model={model} index={index} />
-                ))}
+                {campaign.models
+                  .filter(m => m.model)
+                  .map(({ model }, index) => (
+                    <ModelCard key={model.id} model={model} index={index} />
+                  ))}
               </div>
             </div>
           )}

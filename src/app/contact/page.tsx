@@ -44,10 +44,16 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-medium mb-1">Email</h3>
                     <a
-                      href="mailto:contact@whoknowsmodels.com"
+                      href="mailto:contact@whoknows.beauty"
                       className="text-neutral-600 hover:text-black transition-colors"
                     >
-                      contact@whoknowsmodels.com
+                      contact@whoknows.beauty |
+                    </a>
+                    <a
+                      href="mailto:whoknowsmodels@gmail.com"
+                      className="text-neutral-600 hover:text-black transition-colors"
+                    >
+                    | whoknowsmodels@gmail.com
                     </a>
                   </div>
                 </div>
@@ -74,7 +80,7 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-medium mb-1">Location</h3>
                     <p className="text-neutral-600">
-                      Jakarta, Indonesia
+                      Bali, Indonesia
                     </p>
                   </div>
                 </div>
