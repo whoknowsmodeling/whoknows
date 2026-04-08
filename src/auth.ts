@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { db } from "@/lib/db";
+import { supabaseAdmin } from "@/lib/supabase";
 import { compare } from "bcrypt-ts";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -16,11 +16,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new Error("Invalid credentials");
         }
 
-        const user = await db.adminUser.findUnique({
-          where: { email: credentials.email as string },
-        });
+        // Use Edge-native Supabase SDK instead of Prisma for Auth
+        const { data: user, error } = await supabaseAdmin
+          .from("AdminUser")
+          .select("*")
+          .eq("email", credentials.email as string)
+          .single();
 
-        if (!user || !user.password) {
+        if (error || !user || !user.password) {
           throw new Error("User not found");
         }
 

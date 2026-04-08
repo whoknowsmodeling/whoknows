@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { supabaseAdmin } from "@/lib/supabase";
 import { hash } from "bcrypt-ts";
 
 export const runtime = 'edge';
@@ -17,19 +17,19 @@ export async function GET() {
     const password = process.env.ADMIN_PASSWORD || "Car4sale123!";
     const hashedPassword = await hash(password, 10);
 
-    const admin = await db.adminUser.upsert({
-      where: { email },
-      update: {
-        password: hashedPassword,
-        role: "admin",
-      },
-      create: {
+    // Use Edge-native Supabase SDK for setup
+    const { data: admin, error } = await supabaseAdmin
+      .from("AdminUser")
+      .upsert({
         email,
         password: hashedPassword,
         name: "Super Admin",
         role: "admin",
-      },
-    });
+      }, { onConflict: "email" })
+      .select()
+      .single();
+
+    if (error) throw error;
 
     return NextResponse.json({
       success: true,
