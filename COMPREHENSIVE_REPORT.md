@@ -1,8 +1,8 @@
 # WhoKnows Models — Comprehensive System Report
 
-> **Version:** 4.9.0 (Modern Adapter Transition)
+> **Version:** 5.0.0 (Production Baseline)
 > **Date:** 2026-04-09
-> **Status:** ✅ OpenNext Integration — Re-deploying with Modern Adapter
+> **Status:** ✅ Production Hardened (Next.js 15.1) — Final Build Relaunch
 
 ---
 
@@ -182,6 +182,8 @@ The platform has been specifically hardened for **Cloudflare Pages** deployment 
 ✅ All pages with ISR configured
 ✅ Admin Dashboard integrated
 ✅ Security Hardening applied to `/api/setup-admin`
+✅ Hardened Dynamic Route Types (Promises for `params`/`searchParams`)
+✅ Modernized `eslint.config.mjs` (Next.js 15 Flat Config compatible)
 ✅ Transitioned to Modern **OpenNext** Adapter (`@opennextjs/cloudflare`)
 ✅ New Build Command: `npx prisma generate && npm run build && npx @opennextjs/cloudflare`
 ✅ Aligned middleware with `experimental-edge` (as requested by Next.js 15 build log)

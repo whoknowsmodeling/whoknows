@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export default async function EditModelPage({ 
   params 
 }: { 
-  params: { gender: string, id: string } 
+  params: Promise<{ gender: string, id: string }> 
 }) {
   const { gender, id } = await params;
 

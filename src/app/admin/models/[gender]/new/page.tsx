@@ -6,7 +6,7 @@ import Link from "next/link";
 export const runtime = 'edge';
 export const dynamic = "force-dynamic";
 
-export default async function NewModelPage({ params }: { params: { gender: string } }) {
+export default async function NewModelPage({ params }: { params: Promise<{ gender: string }> }) {
   const gender = (await params).gender;
 
   return (
