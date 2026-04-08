@@ -1,5 +1,4 @@
 import { createClient } from "@supabase/supabase-js";
-import sharp from "sharp";
 import { v4 as uuidv4 } from "uuid";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -9,21 +8,13 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 export async function uploadImage(file: Buffer, path: string, filename: string) {
   try {
-    // Convert to target webp format (Advanced quality)
-    const optimizedBuffer = await sharp(file)
-      .webp({ 
-        quality: 85, 
-        effort: 6, // Higher effort for better compression
-        lossless: false,
-        smartSubsample: true
-      })
-      .toBuffer();
-
+    // Sharp optimization removed for Cloudflare Edge compatibility.
+    // Direct upload of raw buffer.
     const fullPath = `${path}/${filename}_${uuidv4()}.webp`;
 
     const { data, error } = await supabase.storage
       .from("models") // Default bucket name
-      .upload(fullPath, optimizedBuffer, {
+      .upload(fullPath, file, {
         contentType: "image/webp",
         cacheControl: "31536000",
         upsert: true,
