@@ -1,8 +1,8 @@
 # WhoKnows Models — Comprehensive System Report
 
-> **Version:** 4.6.0 (Zero-Config Proxy)
+> **Version:** 4.7.0 (Canonical Alignment)
 > **Date:** 2026-04-09
-> **Status:** ✅ Zero-Config Proxy Alignment — Re-launching Build
+> **Status:** ✅ Cloudflare Manifest Recovery — Canonical Build Push
 
 ---
 
@@ -182,6 +182,8 @@ The platform has been specifically hardened for **Cloudflare Pages** deployment 
 ✅ All pages with ISR configured
 ✅ Admin Dashboard integrated
 ✅ Security Hardening applied to `/api/setup-admin`
+✅ Reverted to standard `middleware.ts` with `experimental-edge`
+✅ Hardened dynamic routes (`/jobs/[slug]` & `/model/[slug]`) with `edge` runtime
 ✅ Implemented Zero-Config Proxy (Removed manually identified runtime)
 ✅ Maintained `edge` runtime identifier for API routes
 ✅ Satisfied Next.js 16 `proxy.ts` convention

@@ -1,6 +1,8 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
+export const runtime = 'experimental-edge';
+
 export default auth((req) => {
   const isLoggedIn = !!req.auth;
   const isLoginRoute = req.nextUrl.pathname.startsWith("/admin/login");
