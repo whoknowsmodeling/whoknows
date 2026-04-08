@@ -1,8 +1,8 @@
 # WhoKnows Models — Comprehensive System Report
 
-> **Version:** 4.4.0 (Experimental Alignment)
+> **Version:** 4.5.0 (Hybrid Runtime Alignment)
 > **Date:** 2026-04-09
-> **Status:** ✅ Next.js 16 Experimental Alignment — Final Hardening
+> **Status:** ✅ Hybrid Edge Strategy — Re-deploying
 
 ---
 
@@ -182,8 +182,8 @@ The platform has been specifically hardened for **Cloudflare Pages** deployment 
 ✅ All pages with ISR configured
 ✅ Admin Dashboard integrated
 ✅ Security Hardening applied to `/api/setup-admin`
-✅ Aligned with Next.js 16 `proxy.ts` convention
-✅ Updated runtime to `experimental-edge` (as requested by build log)
+✅ Implemented Hybrid Runtime: `edge` (API) & `experimental-edge` (Proxy)
+✅ Satisfied Next.js 16 `proxy.ts` convention
 ✅ Migrated to Auth.js v5 (`next-auth@beta.30`)
 ✅ Corrected `next.config.ts` (removed `standalone` output)
 ✅ Final Build Command: `npx prisma generate && npx @cloudflare/next-on-pages@1`
