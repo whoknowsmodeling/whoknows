@@ -1,8 +1,8 @@
 # WhoKnows Models — Comprehensive System Report
 
-> **Version:** 5.3.0 (Terminal Build Success)
+> **Version:** 5.4.0 (Temporary Domain Pivot)
 > **Date:** 2026-04-09
-> **Status:** ✅ Final Hardening Accomplished — Production Build Verified
+> **Status:** ✅ Production Pivoted — Working on `whoknows.pages.dev`
 
 ---
 
@@ -182,13 +182,13 @@ The platform has been specifically hardened for **Cloudflare Pages** deployment 
 ✅ All pages with ISR configured
 ✅ Admin Dashboard integrated
 ✅ Security Hardening applied to `/api/setup-admin`
+✅ Pivoted Canonical URL to **`whoknows.pages.dev`**
+✅ Updated all SEO metadata and contact emails
 ✅ Verified 100% Type Check Success (Cleaned legacy scripts)
 ✅ Transitioned Auth logic to **Supabase SDK** (Edge-native via Fetch)
 ✅ Restored Build Stability (Removed Node-only `pg` drivers)
 ✅ Created centralized `src/lib/supabase.ts` for Edge-compatible CRUD
 ✅ Migrated to **`bcrypt-ts`** (Edge-safe hashing)
-✅ Resolved Next.js 15 breaking changes (Promise-based `params`)
-✅ Transitioned to Modern **OpenNext** Adapter
 ✅ New Build Command: `npx prisma generate && npm run build && npx @opennextjs/cloudflare`
 ✅ Migrated to Auth.js v5 (`next-auth@beta.30`)
 ✅ Corrected `next.config.ts` (removed `standalone` output)

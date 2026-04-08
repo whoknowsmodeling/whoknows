@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://whoknowsmodels.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://whoknows.pages.dev';
 const SITE_NAME = 'WhoKnows Models';
 const DEFAULT_DESCRIPTION = 'WhoKnows Models is an international modelling agency representing the finest talent worldwide. Discover our roster of exceptional models for fashion, editorial, and commercial work.';
 const DEFAULT_KEYWORDS = ['modelling agency', 'fashion models', 'model management', 'fashion industry', 'editorial models', 'runway models', 'commercial models', 'international models', 'model booking'];
@@ -98,7 +98,7 @@ export function generateOrganizationSchema() {
       '@type': 'ContactPoint',
       telephone: '+62-857-2128-8138',
       contactType: 'customer service',
-      email: 'contact@whoknowsmodels.com',
+      email: 'contact@whoknows.pages.dev',
       availableLanguage: ['English'],
     },
     sameAs: [
@@ -185,7 +185,7 @@ export function generateLocalBusinessSchema() {
     description: DEFAULT_DESCRIPTION,
     url: SITE_URL,
     telephone: '+62-857-2128-8138',
-    email: 'contact@whoknowsmodels.com',
+    email: 'contact@whoknows.pages.dev',
     address: {
       '@type': 'PostalAddress',
       addressCountry: 'Indonesia',

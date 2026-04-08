@@ -5,7 +5,7 @@ export async function logAction(
   entity: string,
   entityId?: string,
   details?: string,
-  adminEmail: string = 'system@whoknowsmodels.com'
+  adminEmail: string = 'system@whoknows.pages.dev'
 ) {
   try {
     await db.adminLog.create({

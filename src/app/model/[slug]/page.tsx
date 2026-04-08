@@ -202,7 +202,7 @@ export default async function ModelProfilePage({ params }: ModelPageProps) {
                   className="w-full bg-black hover:bg-neutral-800 text-white py-8 rounded-none uppercase tracking-[0.2em] text-[10px] font-bold transition-all hover:scale-[1.02] active:scale-[0.98]"
                 >
                   <a
-                    href={`mailto:contact@whoknowsmodels.com?subject=Booking Inquiry: ${encodeURIComponent(model.name)}`}
+                    href={`mailto:contact@whoknows.pages.dev?subject=Booking Inquiry: ${encodeURIComponent(model.name)}`}
                     aria-label={`Book ${model.name.split(' ')[0]} via email`}
                   >
                     <Mail className="w-4 h-4 mr-2" aria-hidden="true" />
