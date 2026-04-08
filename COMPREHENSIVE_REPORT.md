@@ -1,8 +1,8 @@
 # WhoKnows Models — Comprehensive System Report
 
-> **Version:** 3.1.0 (Production Hardened)
+> **Version:** 3.2.0 (Deployment Optimized)
 > **Date:** 2026-04-08
-> **Status:** ✅ Admin Dashboard + Hardening Phase Complete
+> **Status:** ✅ Cloudflare Build Success — Finalizing Output Config
 
 ---
 
@@ -167,8 +167,8 @@ The platform has been specifically hardened for **Cloudflare Pages** deployment 
 | **Database Engine** | Migrated SQLite → PostgreSQL (Supabase) | ✅ Verified |
 | **Connection Pooling** | Implemented `6543` pooling + `5432` Direct URL | ✅ Active |
 | **Edge Runtime** | `export const runtime = 'edge'` on all API routes | ✅ Configured |
-| **Hero Redesign** | Bold bottom-left nav + Passport headshot carousel | ✅ Aesthetic Verified |
-| **Asset Size** | Optimized .webm video and .jpg headshots | ✅ Under 25MB |
+| **Build Strategy** | `@cloudflare/next-on-pages` (v1.13.16) | ✅ Integrated |
+| **Output Directory** | `.vercel/output/static` (Cloudflare Standard) | ✅ Configured |
 
 ---
 
