@@ -1,8 +1,8 @@
 # WhoKnows Models — Comprehensive System Report
 
-> **Version:** 4.8.0 (Sustainable Hardening)
+> **Version:** 4.9.0 (Modern Adapter Transition)
 > **Date:** 2026-04-09
-> **Status:** ✅ Stable Baseline (Next.js 15.1) — Re-deploying
+> **Status:** ✅ OpenNext Integration — Re-deploying with Modern Adapter
 
 ---
 
@@ -182,13 +182,13 @@ The platform has been specifically hardened for **Cloudflare Pages** deployment 
 ✅ All pages with ISR configured
 ✅ Admin Dashboard integrated
 ✅ Security Hardening applied to `/api/setup-admin`
+✅ Transitioned to Modern **OpenNext** Adapter (`@opennextjs/cloudflare`)
+✅ New Build Command: `npx prisma generate && npm run build && npx @opennextjs/cloudflare`
+✅ Aligned middleware with `experimental-edge` (as requested by Next.js 15 build log)
 ✅ Downgraded to Stable `next@15.1.7` & `react@19` baseline
 ✅ Resolved SSG/Edge conflict (Removed `runtime = edge` from static pages)
-✅ Reverted to standard `middleware.ts` with stable `edge` identifier
-✅ Maintained `edge` runtime identifier for API routes
 ✅ Migrated to Auth.js v5 (`next-auth@beta.30`)
 ✅ Corrected `next.config.ts` (removed `standalone` output)
-✅ Final Build Command: `npx prisma generate && npx @cloudflare/next-on-pages@1`
 ```
 
 ---
