@@ -143,3 +143,23 @@ model Client {
   active    Boolean  @default(true)
   createdAt DateTime @default(now())
 }
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // Hashed
+  name      String?
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+}
+
+model PageContent {
+  id        String   @id @default(cuid())
+  page      String   // e.g., "home", "about", "contact", "apply", "men", "women"
+  section   String   // e.g., "hero", "intro", "listing"
+  key       String   // e.g., "title", "subtitle", "description"
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
+
+  @@unique([page, section, key])
+}

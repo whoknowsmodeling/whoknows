@@ -90,6 +90,8 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
 };
 
+import { Providers } from "@/components/providers";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -111,12 +113,14 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased">
-        <div className="min-h-screen flex flex-col">
-          <Navigation />
-          <main className="flex-1" id="main-content">{children}</main>
-          <Footer />
-        </div>
-        <Toaster position="bottom-right" richColors closeButton />
+        <Providers>
+          <div className="min-h-screen flex flex-col">
+            <Navigation />
+            <main className="flex-1" id="main-content">{children}</main>
+            <Footer />
+          </div>
+          <Toaster position="bottom-right" richColors closeButton />
+        </Providers>
       </body>
     </html>
   );

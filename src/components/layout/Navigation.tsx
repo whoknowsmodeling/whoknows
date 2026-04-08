@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
@@ -71,9 +71,12 @@ export function Navigation() {
               className="relative z-10 flex items-center"
             >
               <img 
-                src="/whoknows.webp" 
+                src="/whoknows.webp?v=1" 
                 alt="WhoKnows Models Logo" 
-                className="h-8 lg:h-10 w-auto object-contain"
+                className={cn(
+                  "h-8 lg:h-10 w-auto object-contain transition-all duration-300",
+                  !isScrolled && pathname === '/' ? "brightness-0 invert" : ""
+                )}
               />
             </Link>
 
@@ -98,18 +101,47 @@ export function Navigation() {
               </ul>
             )}
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={toggleMobileMenu}
-              className="lg:hidden relative z-10 p-2 -mr-2 text-black"
-              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
-            >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </button>
+            {/* Desktop Login - Only show on desktop nav area */}
+            <div className="hidden lg:flex items-center gap-4">
+              <Link
+                href="/admin/login"
+                className={cn(
+                  "p-2 rounded-full transition-all duration-300",
+                  isScrolled ? "text-neutral-600 hover:text-black" : "text-white hover:text-white/80"
+                )}
+                aria-label="Admin Login"
+              >
+                <User className="w-5 h-5" />
+              </Link>
+            </div>
+
+            {/* Mobile Menu & Login Button */}
+            <div className="flex lg:hidden items-center gap-2">
+              <Link
+                href="/admin/login"
+                className={cn(
+                  "p-2 transition-all duration-300",
+                  isScrolled ? "text-neutral-600" : "text-white"
+                )}
+                aria-label="Admin Login"
+              >
+                <User className="w-6 h-6" />
+              </Link>
+              <button
+                onClick={toggleMobileMenu}
+                className={cn(
+                  "relative z-10 p-2 -mr-2 transition-all duration-300",
+                  isScrolled || isMobileMenuOpen ? "text-black" : "text-white"
+                )}
+                aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+              >
+                {isMobileMenuOpen ? (
+                  <X className="w-6 h-6" />
+                ) : (
+                  <Menu className="w-6 h-6" />
+                )}
+              </button>
+            </div>
           </div>
         </nav>
       </header>
