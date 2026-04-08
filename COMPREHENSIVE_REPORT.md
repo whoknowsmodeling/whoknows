@@ -1,8 +1,8 @@
 # WhoKnows Models — Comprehensive System Report
 
-> **Version:** 3.5.0 (Build Finalized)
+> **Version:** 3.6.0 (Auth Optimized)
 > **Date:** 2026-04-08
-> **Status:** ✅ Cloudflare Build Optimized — Critical Errors Resolved
+> **Status:** ✅ Cloudflare Build Optimized — Auth Incompatibility Resolved
 
 ---
 
@@ -182,9 +182,9 @@ The platform has been specifically hardened for **Cloudflare Pages** deployment 
 ✅ All pages with ISR configured
 ✅ Admin Dashboard integrated
 ✅ Security Hardening applied to `/api/setup-admin`
-✅ Cloudflare Pages Deployment Guide updated to v3.5
-✅ Edge Runtime (`edge`) enabled on 15+ dynamic routes
-✅ Syntax errors in Admin pages resolved (v3.5 fix)
+✅ Cloudflare Pages Deployment Guide updated to v3.6
+✅ Edge Runtime (`edge`) enabled on all pages EXCEPT Auth
+✅ Resolved NextAuth 'reading custom' error (v3.6 fix)
 ✅ Removed `sharp` dependency for Edge compatibility
 ```
 
