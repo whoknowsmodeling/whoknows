@@ -1,8 +1,8 @@
 # WhoKnows Models — Comprehensive System Report
 
-> **Version:** 4.7.0 (Canonical Alignment)
+> **Version:** 4.8.0 (Sustainable Hardening)
 > **Date:** 2026-04-09
-> **Status:** ✅ Cloudflare Manifest Recovery — Canonical Build Push
+> **Status:** ✅ Stable Baseline (Next.js 15.1) — Re-deploying
 
 ---
 
@@ -182,11 +182,10 @@ The platform has been specifically hardened for **Cloudflare Pages** deployment 
 ✅ All pages with ISR configured
 ✅ Admin Dashboard integrated
 ✅ Security Hardening applied to `/api/setup-admin`
-✅ Reverted to standard `middleware.ts` with `experimental-edge`
-✅ Hardened dynamic routes (`/jobs/[slug]` & `/model/[slug]`) with `edge` runtime
-✅ Implemented Zero-Config Proxy (Removed manually identified runtime)
+✅ Downgraded to Stable `next@15.1.7` & `react@19` baseline
+✅ Resolved SSG/Edge conflict (Removed `runtime = edge` from static pages)
+✅ Reverted to standard `middleware.ts` with stable `edge` identifier
 ✅ Maintained `edge` runtime identifier for API routes
-✅ Satisfied Next.js 16 `proxy.ts` convention
 ✅ Migrated to Auth.js v5 (`next-auth@beta.30`)
 ✅ Corrected `next.config.ts` (removed `standalone` output)
 ✅ Final Build Command: `npx prisma generate && npx @cloudflare/next-on-pages@1`
