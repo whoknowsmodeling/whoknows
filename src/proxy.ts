@@ -1,6 +1,8 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
+export const runtime = 'edge';
+
 export default withAuth(
   function middleware(req) {
     // If the user is logged in, but not an admin, redirect to home
