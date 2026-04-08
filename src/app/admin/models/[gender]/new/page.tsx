@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
+export const runtime = 'edge';
 export const dynamic = "force-dynamic";
 
 export default async function NewModelPage({ params }: { params: { gender: string } }) {

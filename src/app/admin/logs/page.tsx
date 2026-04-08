@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { format } from "date-fns";
 import { 
+export const runtime = 'edge';
   Activity, 
   User, 
   Calendar, 

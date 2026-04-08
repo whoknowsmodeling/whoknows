@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
 
+export const runtime = 'edge';
 export async function GET() {
   // Security Hardening: Only allow setup if explicitly enabled via environment variable
   if (process.env.ADMIN_SETUP_ENABLED !== "true") {

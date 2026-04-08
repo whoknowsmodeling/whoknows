@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
+export const runtime = 'edge';
 async function getPageContent(page: string) {
   try {
     const content = await db.pageContent.findMany({

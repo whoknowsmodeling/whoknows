@@ -1,6 +1,7 @@
 import HeroManagement from "@/components/admin/HeroManagement";
 import { db } from "@/lib/db";
 
+export const runtime = 'edge';
 export const dynamic = "force-dynamic";
 
 export default async function AdminHeroPage() {

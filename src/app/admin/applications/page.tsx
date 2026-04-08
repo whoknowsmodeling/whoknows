@@ -17,6 +17,7 @@ import { revalidatePath } from "next/cache";
 import Image from "next/image";
 
 export const revalidate = 0;
+export const runtime = 'edge';
 
 async function deleteApplication(formData: FormData) {
   'use server';

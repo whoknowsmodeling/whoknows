@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
+export const runtime = "edge";
 
 async function getStats() {
   try {
