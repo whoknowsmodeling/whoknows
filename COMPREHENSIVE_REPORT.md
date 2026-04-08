@@ -1,8 +1,8 @@
 # WhoKnows Models — Comprehensive System Report
 
-> **Version:** 5.0.0 (Production Baseline)
+> **Version:** 5.1.0 (Authentication Resilience)
 > **Date:** 2026-04-09
-> **Status:** ✅ Production Hardened (Next.js 15.1) — Final Build Relaunch
+> **Status:** ✅ Authentication Hardened — Resolving Admin Login
 
 ---
 
@@ -182,13 +182,13 @@ The platform has been specifically hardened for **Cloudflare Pages** deployment 
 ✅ All pages with ISR configured
 ✅ Admin Dashboard integrated
 ✅ Security Hardening applied to `/api/setup-admin`
+✅ Migrated to **`bcrypt-ts`** (Edge-safe hashing for Cloudflare)
+✅ Implemented **Prisma Driver Adapter** (`@prisma/adapter-pg`)
+✅ Resolved Node.js API conflicts in `auth.ts` and `setup-admin`
 ✅ Hardened Dynamic Route Types (Promises for `params`/`searchParams`)
 ✅ Modernized `eslint.config.mjs` (Next.js 15 Flat Config compatible)
 ✅ Transitioned to Modern **OpenNext** Adapter (`@opennextjs/cloudflare`)
 ✅ New Build Command: `npx prisma generate && npm run build && npx @opennextjs/cloudflare`
-✅ Aligned middleware with `experimental-edge` (as requested by Next.js 15 build log)
-✅ Downgraded to Stable `next@15.1.7` & `react@19` baseline
-✅ Resolved SSG/Edge conflict (Removed `runtime = edge` from static pages)
 ✅ Migrated to Auth.js v5 (`next-auth@beta.30`)
 ✅ Corrected `next.config.ts` (removed `standalone` output)
 ```

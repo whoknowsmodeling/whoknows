@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { db } from "@/lib/db";
-import bcrypt from "bcryptjs";
+import { compare } from "bcrypt-ts";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -24,7 +24,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new Error("User not found");
         }
 
-        const isValid = await bcrypt.compare(credentials.password as string, user.password);
+        const isValid = await compare(credentials.password as string, user.password);
 
         if (!isValid) {
           throw new Error("Invalid password");

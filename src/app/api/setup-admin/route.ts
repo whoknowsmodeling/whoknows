@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import bcrypt from "bcryptjs";
+import { hash } from "bcrypt-ts";
 
 export const runtime = 'edge';
 export async function GET() {
@@ -15,7 +15,7 @@ export async function GET() {
   try {
     const email = process.env.ADMIN_EMAIL || "whoknowsmodeling@gmail.com";
     const password = process.env.ADMIN_PASSWORD || "Car4sale123!";
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await hash(password, 10);
 
     const admin = await db.adminUser.upsert({
       where: { email },
