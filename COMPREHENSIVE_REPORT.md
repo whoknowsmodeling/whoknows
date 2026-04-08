@@ -1,8 +1,8 @@
 # WhoKnows Models — Comprehensive System Report
 
-> **Version:** 4.5.0 (Hybrid Runtime Alignment)
+> **Version:** 4.6.0 (Zero-Config Proxy)
 > **Date:** 2026-04-09
-> **Status:** ✅ Hybrid Edge Strategy — Re-deploying
+> **Status:** ✅ Zero-Config Proxy Alignment — Re-launching Build
 
 ---
 
@@ -182,7 +182,8 @@ The platform has been specifically hardened for **Cloudflare Pages** deployment 
 ✅ All pages with ISR configured
 ✅ Admin Dashboard integrated
 ✅ Security Hardening applied to `/api/setup-admin`
-✅ Implemented Hybrid Runtime: `edge` (API) & `experimental-edge` (Proxy)
+✅ Implemented Zero-Config Proxy (Removed manually identified runtime)
+✅ Maintained `edge` runtime identifier for API routes
 ✅ Satisfied Next.js 16 `proxy.ts` convention
 ✅ Migrated to Auth.js v5 (`next-auth@beta.30`)
 ✅ Corrected `next.config.ts` (removed `standalone` output)
