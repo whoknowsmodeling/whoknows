@@ -1,8 +1,8 @@
 # WhoKnows Models — Comprehensive System Report
 
-> **Version:** 4.3.0 (Definitive Recovery)
+> **Version:** 4.4.0 (Experimental Alignment)
 > **Date:** 2026-04-09
-> **Status:** ✅ Zero-Blocker Build configuration — Launch Imminent
+> **Status:** ✅ Next.js 16 Experimental Alignment — Final Hardening
 
 ---
 
@@ -182,11 +182,11 @@ The platform has been specifically hardened for **Cloudflare Pages** deployment 
 ✅ All pages with ISR configured
 ✅ Admin Dashboard integrated
 ✅ Security Hardening applied to `/api/setup-admin`
-✅ Restored `export const runtime = 'edge'` to Auth and Middleware
-✅ Reverted `proxy.ts` to industry-standard `middleware.ts`
+✅ Aligned with Next.js 16 `proxy.ts` convention
+✅ Updated runtime to `experimental-edge` (as requested by build log)
 ✅ Migrated to Auth.js v5 (`next-auth@beta.30`)
 ✅ Corrected `next.config.ts` (removed `standalone` output)
-✅ Definitive Build Command: `npx prisma generate && npx @cloudflare/next-on-pages@1`
+✅ Final Build Command: `npx prisma generate && npx @cloudflare/next-on-pages@1`
 ```
 
 ---
