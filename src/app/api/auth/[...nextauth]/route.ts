@@ -5,8 +5,8 @@ import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
 
 // Cloudflare Edge Compatibility Shim for NextAuth/openid-client
-// This prevents the "TypeError: Cannot read properties of undefined (reading 'custom')"
-// which occurs during static analysis of the Edge runtime build.
+// We force the Issuer options into the global scope to prevent the 'reading custom' error
+// during static analysis/module evaluation.
 if (typeof (globalThis as any).Issuer === 'undefined') {
   (globalThis as any).Issuer = {
     defaultHttpOptions: { timeout: 3500 }
@@ -76,6 +76,7 @@ const authOptions: NextAuthOptions = {
   },
 };
 
-const handler = NextAuth(authOptions);
+// Lazy initialization of the NextAuth handler to prevent build-time evaluation issues
+const handler = (req: any, res: any) => NextAuth(req, res, authOptions);
 
 export { handler as GET, handler as POST };

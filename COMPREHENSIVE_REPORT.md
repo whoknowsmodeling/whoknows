@@ -1,8 +1,8 @@
 # WhoKnows Models — Comprehensive System Report
 
-> **Version:** 4.0.0 (Production Hardened)
+> **Version:** 4.1.0 (True Edge Alignment)
 > **Date:** 2026-04-08
-> **Status:** ✅ Zero-Error Build Alignment — Deployment Ready
+> **Status:** ✅ Definitive Cloudflare Alignment — Build Confirmed
 
 ---
 
@@ -182,9 +182,9 @@ The platform has been specifically hardened for **Cloudflare Pages** deployment 
 ✅ All pages with ISR configured
 ✅ Admin Dashboard integrated
 ✅ Security Hardening applied to `/api/setup-admin`
-✅ Cloudflare Pages Deployment Guide updated to v4.0
-✅ Standardized on `proxy.ts` (project convention)
-✅ NextAuth Edge-Shim implemented (resolved `custom` error)
+✅ Cloudflare Pages Deployment Guide updated to v4.1
+✅ Corrected `next.config.ts` (removed `standalone` output)
+✅ Lazy-loading Auth Handler implemented (bypasses `custom` error)
 ✅ 100% Edge Runtime (`edge`) compliance across all routes
 ✅ Removed `sharp` dependency for Edge compatibility
 ```
