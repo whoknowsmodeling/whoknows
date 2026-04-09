@@ -3,6 +3,7 @@ import { fetchApplicationsAction } from "../actions";
 import { PaginatedApplications } from "@/components/admin/PaginatedApplications";
 import { Users } from "lucide-react";
 
+export const runtime = 'edge';
 export const revalidate = 0;
 
 export default async function ApplicationsPage() {

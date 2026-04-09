@@ -46,7 +46,7 @@ export default async function AdminModelsPage({ params }: { params: Promise<{ ge
             </div>
             <CardHeader className="p-4 flex flex-row items-center justify-between space-y-0">
               <div className="space-y-1">
-                <CardTitle className="text-lg font-serif">{model.name}</CardTitle>
+                <CardTitle className="text-lg font-serif text-white">{model.name}</CardTitle>
                 <CardDescription className="text-xs uppercase tracking-tight text-neutral-500">{model.location || "International"}</CardDescription>
               </div>
               <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">

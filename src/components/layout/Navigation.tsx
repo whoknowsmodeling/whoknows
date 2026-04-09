@@ -210,6 +210,7 @@ export function Navigation() {
                   <li key={item.href} className="hidden lg:block">
                     <Link
                       href={item.href}
+                      prefetch={true}
                       className={cn(
                         'text-[11px] font-bold tracking-[0.2em] uppercase transition-colors duration-200',
                         showWhiteText 

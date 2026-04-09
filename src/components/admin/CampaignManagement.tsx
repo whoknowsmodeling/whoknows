@@ -219,7 +219,7 @@ export default function CampaignManagement({ campaigns, models }: { campaigns: a
                 <p className="text-[10px] uppercase tracking-widest text-neutral-500">{campaign.client} • {campaign.year}</p>
                 {campaign.videoUrl && <Video className="w-3 h-3 text-neutral-600" />}
               </div>
-              <CardTitle className="font-serif text-xl">{campaign.title}</CardTitle>
+              <CardTitle className="font-serif text-xl text-white">{campaign.title}</CardTitle>
               <div className="flex flex-wrap gap-1 mt-3">
                 {campaign.models.map((m: any) => (
                   <Badge key={m.model.id} variant="outline" className="text-[8px] bg-neutral-800 border-neutral-700 text-neutral-400">
