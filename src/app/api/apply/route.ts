@@ -51,14 +51,35 @@ export async function POST(request: NextRequest) {
     for (const { formKey, dbType } of fileUploads) {
       const file = formData.get(formKey) as File | null;
       if (file && file.size > 0) {
-        // Pointing to a generic placeholder for now as edge doesn't have local filesystem access
-        // Ideally this would upload to Supabase Storage, but keeping compatibility for now
-        const imageUrl = `https://whoknows.pages.dev/uploads/${application.id}/${dbType}-${file.name}`;
-        photoUrls.push(`${dbType.toUpperCase()}: ${imageUrl}`);
+        // 🛠️ Industrial Storage Upload
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${application.id}/${dbType}-${Date.now()}.${fileExt}`;
+        const filePath = fileName;
+
+        const { data: uploadData, error: uploadError } = await supabaseAdmin
+          .storage
+          .from('applications')
+          .upload(filePath, file, {
+            contentType: file.type,
+            upsert: true
+          });
+
+        if (uploadError) {
+          console.error(`❌ Upload error for ${dbType}:`, uploadError);
+          continue;
+        }
+
+        // Get Public URL
+        const { data: { publicUrl } } = supabaseAdmin
+          .storage
+          .from('applications')
+          .getPublicUrl(filePath);
+
+        photoUrls.push(`${dbType.toUpperCase()}: ${publicUrl}`);
 
         await supabaseAdmin.from("ApplicationPhoto").insert({
           applicationId: application.id,
-          imageUrl,
+          imageUrl: publicUrl,
           type: dbType,
         });
       }

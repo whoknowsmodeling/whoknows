@@ -32,11 +32,13 @@ export function ModelCard({ model, index = 0, variant = 'default' }: ModelCardPr
               src={primaryImage.imageUrl}
               alt={primaryImage.alt || `${model.name} - Model`}
               fill
-              quality={50}
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-              priority={index < 4}
-              loading={index < 4 ? undefined : "lazy"}
+              quality={60}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover object-top transition-all duration-700 group-hover:scale-105"
+              priority={index < 8}
+              loading={index < 8 ? "eager" : "lazy"}
+              placeholder="blur"
+              blurDataURL="data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAAAwAQCdASoIAAUAAUAmJaQAA3AA/u66AAA="
             />
           )}
           <div className="absolute inset-0 bg-black/0 transition-all duration-300 group-hover:bg-black/20" />

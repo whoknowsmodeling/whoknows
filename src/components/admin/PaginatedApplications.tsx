@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
+import { ApplicationDeleteButton } from './ApplicationDeleteButton';
 
 interface PaginatedApplicationsProps {
   initialApplications: any[];
@@ -73,6 +74,16 @@ function ApplicationCard({ app }: { app: any }) {
                 <span className="flex items-center gap-1.5">{app.email}</span>
                 <span className="flex items-center gap-1.5">{app.city}, {app.country}</span>
               </div>
+            </div>
+            <div className="flex gap-2">
+              <ApplicationDeleteButton
+                id={app.id}
+                onDeleted={() => {
+                   // Optional: add local state removal if needed, 
+                   // but revalidatePath usually handles it on next load or we catch it here
+                   window.location.reload(); 
+                }} 
+              />
             </div>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

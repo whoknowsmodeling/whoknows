@@ -17,6 +17,8 @@ export function ModelCarousel({ models = [] }: ModelCarouselProps) {
     dragFree: true,
     align: 'start',
     containScroll: 'trimSnaps',
+    duration: 30, // Smooth transition
+    skipSnaps: true // Fluid swiping
   });
 
   const [canScrollPrev, setCanScrollPrev] = React.useState(false);

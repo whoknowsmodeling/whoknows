@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { revalidatePath } from "next/cache";
+import { ContactDeleteButton } from "@/components/admin/ContactDeleteButton";
 
 export const revalidate = 0;
 
@@ -60,17 +61,17 @@ export default async function ContactsPage() {
                   </div>
                 </div>
 
-                <div className="flex lg:flex-col gap-2">
-                  <a 
-                    href={`mailto:${contact.email}`}
-                    className="flex items-center justify-center gap-2 px-4 py-2 bg-white text-black rounded-lg text-sm font-medium hover:bg-neutral-200 transition-colors"
-                  >
-                    Reply <ExternalLink className="w-4 h-4" />
-                  </a>
-                  <div className="flex w-full">
-                    {/* Delete functionality will be re-implemented via Edge-safe Supabase actions */}
-                  </div>
-                </div>
+                 <div className="flex lg:flex-col gap-2">
+                   <a 
+                     href={`mailto:${contact.email}`}
+                     className="flex items-center justify-center gap-2 px-4 py-2 bg-white text-black rounded-lg text-sm font-medium hover:bg-neutral-200 transition-colors"
+                   >
+                     Reply <ExternalLink className="w-4 h-4" />
+                   </a>
+                   <div className="flex w-full justify-center">
+                     <ContactDeleteButton id={contact.id} />
+                   </div>
+                 </div>
               </div>
               
               {/* Status Indicator */}
