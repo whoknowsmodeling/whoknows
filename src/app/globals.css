@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Suppress IDE warnings for Tailwind v4 directives */
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -96,11 +97,17 @@
   
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
   }
   
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: var(--font-inter);
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+    -webkit-overflow-scrolling: touch;
   }
   
   h1, h2, h3, h4, h5, h6 {

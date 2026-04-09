@@ -13,36 +13,43 @@ export function GenderToggle({ currentGender }: GenderToggleProps) {
   return (
     <div className="flex items-center gap-3">
       {currentGender !== 'women' && (
-        <Link href="/women">
+        <Link href="/women" passHref>
           <Button 
+            asChild
             variant="ghost" 
             className="group text-sm uppercase tracking-widest text-neutral-500 hover:text-white hover:bg-white/5 px-4"
           >
-            <Users className="w-4 h-4 mr-2" />
-            Women
+            <span>
+              <Users className="w-4 h-4 mr-2" />
+              Women
+            </span>
           </Button>
         </Link>
       )}
       
       {currentGender !== 'men' && (
-        <Link href="/men">
+        <Link href="/men" passHref>
           <Button 
+            asChild
             variant="ghost" 
             className="group text-sm uppercase tracking-widest text-neutral-500 hover:text-white hover:bg-white/5 px-4"
           >
-            <Users className="w-4 h-4 mr-2" />
-            Men
+            <span>
+              <Users className="w-4 h-4 mr-2" />
+              Men
+            </span>
           </Button>
         </Link>
       )}
 
       {currentGender !== 'all' && (
-        <Link href="/models">
+        <Link href="/models" passHref>
           <Button 
+            asChild
             variant="ghost" 
             className="group text-sm uppercase tracking-widest text-neutral-500 hover:text-white hover:bg-white/5 px-4"
           >
-            All Talent
+            <span>All Talent (Men & Women)</span>
           </Button>
         </Link>
       )}

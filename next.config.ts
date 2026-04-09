@@ -80,16 +80,6 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: '/models',
-        destination: '/women',
-        permanent: true,
-      },
-      {
-        source: '/model',
-        destination: '/women',
-        permanent: true,
-      },
-      {
         source: '/man',
         destination: '/men',
         permanent: true,

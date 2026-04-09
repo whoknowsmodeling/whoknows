@@ -92,33 +92,49 @@ export async function getPublicHomeData() {
 }
 
 export async function getAllModels() {
-  const { data, error } = await getSupabase()
-    .from("Model")
-    .select(`
-      *,
-      images:ModelImage(*)
-    `)
-    .order("gender", { ascending: false }) // Women first usually
-    .order("order", { ascending: true });
+  const startTime = Date.now();
+  try {
+    const { data, error } = await getSupabase()
+      .from("Model")
+      .select(`
+        *,
+        images:ModelImage(*)
+      `)
+      .order("gender", { ascending: false })
+      .order("order", { ascending: true });
 
-  if (error) {
-    console.error(`Error fetching all models:`, error);
+    if (error) {
+      console.error(`[getAllModels] Database Error:`, error);
+      return [];
+    }
+
+    const allModels = data || [];
+    if (allModels.length === 0) return [];
+
+    // Case-insensitive filtering for robustness
+    const women = allModels.filter(m => m.gender?.toLowerCase() === 'women');
+    const men = allModels.filter(m => m.gender?.toLowerCase() === 'men');
+    
+    console.log(`[getAllModels] Fetched ${allModels.length} models (${women.length}W, ${men.length}M) in ${Date.now() - startTime}ms`);
+
+    // If filtering failed to find gendered groups but we have models, just return all
+    if (women.length === 0 && men.length === 0) {
+       return allModels;
+    }
+
+    const interleaved: any[] = [];
+    const maxLength = Math.max(women.length, men.length);
+    
+    for (let i = 0; i < maxLength; i++) {
+      if (women[i]) interleaved.push(women[i]);
+      if (men[i]) interleaved.push(men[i]);
+    }
+
+    return interleaved.length > 0 ? interleaved : allModels;
+  } catch (err) {
+    console.error(`[getAllModels] Unexpected Error:`, err);
     return [];
   }
-
-  const allModels = data || [];
-  const women = allModels.filter(m => m.gender === 'women');
-  const men = allModels.filter(m => m.gender === 'men');
-  
-  const interleaved: any[] = [];
-  const maxLength = Math.max(women.length, men.length);
-  
-  for (let i = 0; i < maxLength; i++) {
-    if (women[i]) interleaved.push(women[i]);
-    if (men[i]) interleaved.push(men[i]);
-  }
-
-  return interleaved;
 }
 
 export async function getGenderRoster(gender: string) {

@@ -1,4 +1,4 @@
-🚀 Welcome to Indo Design Website Scaffold
+🚀 Welcome to WhoKnows Models — Industrial Build v34.0.0
 
 A modern, production-ready web application scaffold built to accelerate development for professional website projects by Indo Design Website (indodesign.website / bali.technology).
 

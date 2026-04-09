@@ -60,26 +60,26 @@ export function HeroVideo({ slide, videoSrc }: HeroVideoProps) {
 
       {/* Content */}
       {/* Absolute Bottom-Left Navigation */}
-      <div className="absolute bottom-16 lg:bottom-24 left-8 lg:left-12 z-20">
+      <div className="absolute bottom-14 lg:bottom-18 left-10 lg:left-24 z-20">
         <motion.nav 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
           className="flex flex-col gap-1 lg:gap-2"
         >
-          <Link href="/models" prefetch={true} className="text-white text-2xl lg:text-1.5xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
+          <Link href="/models" prefetch={true} className="text-white text-2xl lg:text-2xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
             Models
           </Link>
-          <Link href="/men" prefetch={true} className="text-white text-2xl lg:text-1.5xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
+          <Link href="/men" prefetch={true} className="text-white text-2xl lg:text-2xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
             Men
           </Link>
-          <Link href="/women" prefetch={true} className="text-white text-2xl lg:text-1.5xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
+          <Link href="/women" prefetch={true} className="text-white text-2xl lg:text-2xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
             Women
           </Link>
-          <Link href="/contact" prefetch={true} className="text-white text-2xl lg:text-1.5xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
+          <Link href="/contact" prefetch={true} className="text-white text-2xl lg:text-2xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
             Contact
           </Link>
-          <Link href="/apply" prefetch={true} className="text-white text-2xl lg:text-1.5xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
+          <Link href="/apply" prefetch={true} className="text-white text-2xl lg:text-2xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
             Become a Model
           </Link>
         </motion.nav>

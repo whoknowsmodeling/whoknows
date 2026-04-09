@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import { performSearch, type SearchResult } from '@/lib/search';
 
 const navItems = [
+  { label: 'Home', href: '/' },
   { label: 'Apply', href: '/apply' },
   { label: 'Jobs', href: '/jobs' },
   { label: 'About', href: '/about' },
@@ -98,7 +99,7 @@ export function Navigation() {
             <Link
               href="/"
               onClick={closeMobileMenu}
-              className="relative z-10 flex items-center h-12 lg:h-14 w-48 lg:w-56"
+              className="relative z-10 flex items-center h-12 lg:h-20 w-48 lg:w-80"
             >
               <Image 
                 src={showWhiteText ? "/whoknows.webp" : "/whoknowsBlack.webp"} 
@@ -206,23 +207,28 @@ export function Navigation() {
                 </li>
 
                 {/* Conditional Nav Items (Hidden on Home) */}
-                {!isHome && navItems.map((item) => (
-                  <li key={item.href} className="hidden lg:block">
-                    <Link
-                      href={item.href}
-                      prefetch={true}
-                      className={cn(
-                        'text-[11px] font-bold tracking-[0.2em] uppercase transition-colors duration-200',
-                        showWhiteText 
-                          ? 'text-white/90 hover:text-white' 
-                          : 'text-neutral-500 hover:text-black',
-                        pathname === item.href && (showWhiteText ? 'text-white' : 'text-black')
-                      )}
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
+                {!isHome && navItems.map((item) => {
+                  // If we are on home, we don't need a home link in the menu
+                  if (isHome && item.href === '/') return null;
+                  
+                  return (
+                    <li key={item.href} className="hidden lg:block">
+                      <Link
+                        href={item.href}
+                        prefetch={true}
+                        className={cn(
+                          'text-[11px] font-bold tracking-[0.2em] uppercase transition-colors duration-200',
+                          showWhiteText 
+                            ? 'text-white/90 hover:text-white' 
+                            : 'text-neutral-500 hover:text-black',
+                          pathname === item.href && (showWhiteText ? 'text-white' : 'text-black')
+                        )}
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  );
+                })}
 
                 {/* Login Button (Icon Style) */}
                 <li>

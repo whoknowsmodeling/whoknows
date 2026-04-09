@@ -71,7 +71,7 @@ export default async function HomePage() {
               <p className="text-sm uppercase tracking-wider text-neutral-500 mb-2">Our Talent</p>
               <h2 id="featured-models-heading" className="font-serif text-3xl lg:text-4xl font-medium tracking-tight">Featured Models</h2>
             </div>
-            <Link href="/women" className="hidden sm:flex items-center gap-2 text-sm font-medium hover:gap-3 transition-all underline underline-offset-4">
+            <Link href="/models" className="hidden sm:flex items-center gap-2 text-sm font-medium hover:gap-3 transition-all underline underline-offset-4">
               View All <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
