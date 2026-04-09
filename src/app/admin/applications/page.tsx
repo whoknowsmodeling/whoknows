@@ -51,12 +51,9 @@ export default async function ApplicationsPage() {
                         <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5 text-neutral-500" /> {app.city}, {app.country}</span>
                       </div>
                     </div>
-                    <form action={deleteApplication}>
-                      <input type="hidden" name="id" value={app.id} />
-                      <Button variant="ghost" className="text-red-400 hover:text-red-300 hover:bg-red-500/10">
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </form>
+                    <div>
+                      {/* Delete functionality will be re-implemented via Edge-safe Supabase actions */}
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

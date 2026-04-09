@@ -67,17 +67,9 @@ export default async function ContactsPage() {
                   >
                     Reply <ExternalLink className="w-4 h-4" />
                   </a>
-                  <form action={deleteContact}>
-                    <input type="hidden" name="id" value={contact.id} />
-                    <Button 
-                      type="submit"
-                      variant="ghost" 
-                      className="w-full text-red-400 hover:text-red-300 hover:bg-red-500/10 gap-2"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                      Remove
-                    </Button>
-                  </form>
+                  <div className="flex w-full">
+                    {/* Delete functionality will be re-implemented via Edge-safe Supabase actions */}
+                  </div>
                 </div>
               </div>
               
