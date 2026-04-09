@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { getApplicationsList } from "@/lib/admin-data";
 import { format } from "date-fns";
 import { 
   Users, 
@@ -19,22 +19,8 @@ import Image from "next/image";
 export const revalidate = 0;
 export const runtime = 'edge';
 
-async function deleteApplication(formData: FormData) {
-  'use server';
-  const id = formData.get('id') as string;
-  await db.application.delete({
-    where: { id }
-  });
-  revalidatePath('/admin/applications');
-}
-
 export default async function ApplicationsPage() {
-  const applications = await db.application.findMany({
-    include: {
-      photos: true
-    },
-    orderBy: { createdAt: 'desc' }
-  });
+  const applications = await getApplicationsList();
 
   return (
     <div className="space-y-8">

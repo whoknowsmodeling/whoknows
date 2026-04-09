@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { getAdminLogs } from "@/lib/admin-data";
 import { format } from "date-fns";
 export const runtime = 'edge';
 import { 
@@ -14,10 +14,7 @@ import { cn } from "@/lib/utils";
 export const revalidate = 0; // Disable caching for the log page
 
 export default async function LogsPage() {
-  const logs = await db.adminLog.findMany({
-    orderBy: { createdAt: 'desc' },
-    take: 100
-  });
+  const logs = await getAdminLogs();
 
   return (
     <div className="space-y-8">

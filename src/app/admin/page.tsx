@@ -1,34 +1,18 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Users, Image as ImageIcon, MessageSquare, TrendingUp, ArrowUpRight, ArrowDownRight, Clock, ChevronRight } from "lucide-react";
-import { db } from "@/lib/db";
+import { getDashboardStats, getAdminLogs } from "@/lib/admin-data";
+import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 export const runtime = "edge";
 
-async function getStats() {
-  try {
-    const [menCount, womenCount, campaignCount, applicationCount] = await Promise.all([
-      db.model.count({ where: { gender: "men" } }),
-      db.model.count({ where: { gender: "women" } }),
-      db.campaign.count(),
-      db.application.count({ where: { status: "pending" } }),
-    ]);
-
-    return {
-      men: menCount,
-      women: womenCount,
-      campaigns: campaignCount,
-      pendingApps: applicationCount,
-    };
-  } catch (error) {
-    return { men: 0, women: 0, campaigns: 0, pendingApps: 0 };
-  }
-}
-
 export default async function AdminDashboardPage() {
-  const stats = await getStats();
+  const [stats, logs] = await Promise.all([
+    getDashboardStats(),
+    getAdminLogs()
+  ]);
 
   const cards = [
     { title: "Men Models", value: stats.men, icon: Users, color: "text-blue-500", trend: "+2 this month", trendUp: true },
@@ -81,30 +65,32 @@ export default async function AdminDashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
-              {[
-                { action: "Model Updated", target: "Athina (Women)", time: "2 hours ago", user: "Admin" },
-                { action: "Campaign Added", target: "Summer Escape 2024", time: "5 hours ago", user: "Admin" },
-                { action: "Application Rejected", target: "John Doe", time: "1 day ago", user: "Admin" },
-                { action: "Image Uploaded", target: "Celine - Studio Shots", time: "1 day ago", user: "Admin" },
-              ].map((activity, i) => (
+              {logs.slice(0, 5).map((log, i) => (
                 <div key={i} className="flex items-center justify-between border-b border-neutral-800 pb-4 last:border-0 last:pb-0">
                   <div className="space-y-1">
-                    <p className="text-sm font-medium text-white">{activity.action}</p>
-                    <p className="text-xs text-neutral-500">{activity.target}</p>
+                    <p className="text-sm font-medium text-white capitalize">{log.action} {log.entity}</p>
+                    <p className="text-xs text-neutral-500 truncate max-w-[150px] md:max-w-none">{log.details || `ID: ${log.entityId}`}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-xs text-neutral-400 flex items-center gap-1 justify-end">
                       <Clock className="w-3 h-3" />
-                      {activity.time}
+                      {formatDistanceToNow(new Date(log.createdAt))} ago
                     </p>
-                    <p className="text-[10px] text-neutral-600 uppercase tracking-tighter">By {activity.user}</p>
+                    <p className="text-[10px] text-neutral-600 uppercase tracking-tighter">By {log.adminEmail}</p>
                   </div>
                 </div>
               ))}
+              {logs.length === 0 && (
+                <div className="py-12 text-center text-neutral-500 italic text-sm">
+                  No activity logs recorded yet.
+                </div>
+              )}
             </div>
-            <Button variant="link" className="mt-6 text-xs text-neutral-500 p-0 hover:text-white transition-colors">
-              View All Activity <ChevronRight className="w-3 h-3 ml-1" />
-            </Button>
+            <Link href="/admin/logs">
+              <Button variant="link" className="mt-6 text-xs text-neutral-500 p-0 hover:text-white transition-colors">
+                View All Activity <ChevronRight className="w-3 h-3 ml-1" />
+              </Button>
+            </Link>
           </CardContent>
         </Card>
 

@@ -1,27 +1,32 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
-export const runtime = 'experimental-edge';
+export const runtime = 'edge';
 
 export default auth((req) => {
+  const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
-  const isLoginRoute = req.nextUrl.pathname.startsWith("/admin/login");
+  
+  const isAdminPath = nextUrl.pathname.startsWith("/admin");
+  const isLoginPath = nextUrl.pathname.startsWith("/admin/login");
 
-  if (isLoginRoute) {
-    if (isLoggedIn) {
-      return NextResponse.redirect(new URL("/admin", req.nextUrl));
-    }
-    return NextResponse.next();
+  // If not logged in and trying to access any admin page (except login), redirect to login
+  if (isAdminPath && !isLoginPath && !isLoggedIn) {
+     return NextResponse.redirect(new URL("/admin/login", nextUrl));
   }
 
-  if (!isLoggedIn && req.nextUrl.pathname.startsWith("/admin")) {
-    return NextResponse.redirect(new URL("/admin/login", req.nextUrl));
+  // If logged in and trying to access login, redirect to dashboard
+  if (isLoginPath && isLoggedIn) {
+    return NextResponse.redirect(new URL("/admin", nextUrl));
   }
 
+  // Role-based protection: non-admin users redirected to home
   // @ts-ignore
-  if (req.nextUrl.pathname.startsWith("/admin") && req.auth?.user?.role !== "admin") {
-    return NextResponse.redirect(new URL("/", req.url));
+  if (isAdminPath && isLoggedIn && req.auth?.user?.role !== "admin") {
+    return NextResponse.redirect(new URL("/", nextUrl));
   }
+  
+  return NextResponse.next();
 });
 
 export const config = {

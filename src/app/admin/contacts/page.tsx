@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { getContactSubmissions } from "@/lib/admin-data";
 import { format } from "date-fns";
 export const runtime = 'edge';
 import { 
@@ -14,19 +14,8 @@ import { revalidatePath } from "next/cache";
 
 export const revalidate = 0;
 
-async function deleteContact(formData: FormData) {
-  'use server';
-  const id = formData.get('id') as string;
-  await db.contactSubmission.delete({
-    where: { id }
-  });
-  revalidatePath('/admin/contacts');
-}
-
 export default async function ContactsPage() {
-  const contacts = await db.contactSubmission.findMany({
-    orderBy: { createdAt: 'desc' }
-  });
+  const contacts = await getContactSubmissions();
 
   return (
     <div className="space-y-8">

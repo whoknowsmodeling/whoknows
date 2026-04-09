@@ -1,13 +1,10 @@
-import HeroManagement from "@/components/admin/HeroManagement";
-import { db } from "@/lib/db";
+import { getHeroSlides } from "@/lib/admin-data";
 
 export const runtime = 'edge';
 export const dynamic = "force-dynamic";
 
 export default async function AdminHeroPage() {
-  const slides = await db.heroSlide.findMany({
-    orderBy: { order: "asc" },
-  });
+  const slides = await getHeroSlides();
 
   return <HeroManagement slides={slides} />;
 }

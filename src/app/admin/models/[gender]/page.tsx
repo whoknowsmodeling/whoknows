@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { getModelsList } from "@/lib/admin-data";
 import { Button } from "@/components/ui/button";
 import { Plus, Edit2, Trash2, ExternalLink } from "lucide-react";
 import Link from "next/link";
@@ -12,11 +12,7 @@ export const dynamic = "force-dynamic";
 export default async function AdminModelsPage({ params }: { params: Promise<{ gender: string }> }) {
   const gender = (await params).gender;
   
-  const models = await db.model.findMany({
-    where: { gender },
-    include: { images: { where: { isPrimary: true }, take: 1 } },
-    orderBy: { order: "asc" },
-  });
+  const models = await getModelsList(gender);
 
   return (
     <div className="space-y-8">
