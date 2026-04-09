@@ -1,4 +1,4 @@
-import { getAdminLogs } from "@/lib/admin-data";
+import { getAdminLogs } from "@/lib/edge-data";
 import { format } from "date-fns";
 export const runtime = 'edge';
 import { 

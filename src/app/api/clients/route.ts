@@ -1,13 +1,16 @@
 export const runtime = 'edge';
 import { NextResponse } from 'next/server';
-import { db } from '@/lib/db';
+import { supabaseAdmin } from '@/lib/supabase';
 
 export async function GET() {
     try {
-        const clients = await db.client.findMany({
-            where: { active: true },
-            orderBy: { order: 'asc' },
-        });
+        const { data: clients, error } = await supabaseAdmin
+            .from("Client")
+            .select("*")
+            .eq("active", true)
+            .order("order", { ascending: true });
+
+        if (error) throw error;
 
         return NextResponse.json(clients);
     } catch (error) {

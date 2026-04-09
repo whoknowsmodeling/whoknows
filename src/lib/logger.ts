@@ -1,4 +1,4 @@
-import { db } from './db';
+import { logAdminAction } from './edge-data';
 
 export async function logAction(
   action: string,
@@ -8,15 +8,7 @@ export async function logAction(
   adminEmail: string = 'system@whoknows.pages.dev'
 ) {
   try {
-    await db.adminLog.create({
-      data: {
-        action,
-        entity,
-        entityId,
-        details,
-        adminEmail,
-      },
-    });
+    await logAdminAction(action, entity, entityId, details, adminEmail);
   } catch (error) {
     console.error('Failed to create admin log:', error);
   }

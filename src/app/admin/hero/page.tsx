@@ -1,4 +1,5 @@
-import { getHeroSlides } from "@/lib/admin-data";
+import { getHeroSlides } from "@/lib/edge-data";
+import HeroManagement from "@/components/admin/HeroManagement";
 
 export const runtime = 'edge';
 export const dynamic = "force-dynamic";

@@ -1,8 +1,8 @@
 "use server";
 
-import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { uploadImage, deleteImage } from "@/lib/storage";
+import { supabaseAdmin } from "@/lib/supabase";
 
 export async function upsertHeroSlide(formData: FormData) {
   const id = formData.get("id") as string;
@@ -24,19 +24,22 @@ export async function upsertHeroSlide(formData: FormData) {
   }
 
   if (id) {
-    await db.heroSlide.update({
-      where: { id },
-      data: { title, subtitle, link, imageUrl, active },
-    });
+    await supabaseAdmin
+      .from("HeroSlide")
+      .update({ title, subtitle, link, imageUrl, active })
+      .eq("id", id);
   } else {
-    const lastSlide = await db.heroSlide.findFirst({
-      orderBy: { order: "desc" },
-    });
-    const order = lastSlide ? lastSlide.order + 1 : 0;
+    const { data: lastSlides } = await supabaseAdmin
+      .from("HeroSlide")
+      .select("order")
+      .order("order", { ascending: false })
+      .limit(1);
+
+    const order = lastSlides && lastSlides.length > 0 ? (lastSlides[0].order || 0) + 1 : 0;
     
-    await db.heroSlide.create({
-      data: { title, subtitle, link, imageUrl, active, order },
-    });
+    await supabaseAdmin
+      .from("HeroSlide")
+      .insert({ title, subtitle, link, imageUrl, active, order });
   }
 
   revalidatePath("/");
@@ -44,15 +47,18 @@ export async function upsertHeroSlide(formData: FormData) {
 }
 
 export async function deleteHeroSlide(id: string) {
-  const slide = await db.heroSlide.findUnique({
-    where: { id },
-  });
+  const { data: slide } = await supabaseAdmin
+    .from("HeroSlide")
+    .select("imageUrl")
+    .eq("id", id)
+    .single();
 
   if (slide) {
     await deleteImage(slide.imageUrl);
-    await db.heroSlide.delete({
-      where: { id },
-    });
+    await supabaseAdmin
+      .from("HeroSlide")
+      .delete()
+      .eq("id", id);
   }
 
   revalidatePath("/");
@@ -60,11 +66,13 @@ export async function deleteHeroSlide(id: string) {
 }
 
 export async function updateHeroSlideOrder(slides: { id: string, order: number }[]) {
+  // Supabase doesn't have a direct batch update-by-matching-id in one Go easily without RPC or loop
+  // For small hero counts, loop is fine
   for (const slide of slides) {
-    await db.heroSlide.update({
-      where: { id: slide.id },
-      data: { order: slide.order },
-    });
+    await supabaseAdmin
+      .from("HeroSlide")
+      .update({ order: slide.order })
+      .eq("id", slide.id);
   }
   revalidatePath("/");
 }

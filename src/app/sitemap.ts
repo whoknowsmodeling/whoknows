@@ -68,7 +68,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Fetch dynamic campaign slugs from Edge Layer, fall back to mock
   const campaigns: any[] = await getCampaignsList();
-  let campaignSlugs = campaigns.length > 0 ? campaigns.map((c: any) => c.slug) : mockCampaigns.map((c: any) => c.slug);
+  const campaignSlugs = campaigns.length > 0 ? campaigns.map((c: any) => c.slug) : mockCampaigns.map((c: any) => c.slug);
 
   const campaignPages: MetadataRoute.Sitemap = campaignSlugs.map((slug) => ({
     url: `${baseUrl}/jobs/${slug}`,

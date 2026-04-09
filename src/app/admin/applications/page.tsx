@@ -1,4 +1,4 @@
-import { getApplicationsList } from "@/lib/admin-data";
+import { getApplicationsList } from "@/lib/edge-data";
 import { format } from "date-fns";
 import { 
   Users, 

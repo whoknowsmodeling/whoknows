@@ -1,4 +1,4 @@
-import { getContactSubmissions } from "@/lib/admin-data";
+import { getContactSubmissions } from "@/lib/edge-data";
 import { format } from "date-fns";
 export const runtime = 'edge';
 import { 

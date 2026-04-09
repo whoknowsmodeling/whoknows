@@ -8,7 +8,18 @@ import { getGenderRoster } from '@/lib/edge-data';
 export const revalidate = 60;
 
 export const metadata: Metadata = generateSEO({
-// ... (rest of metadata)
+  title: 'Men Models',
+  description:
+    'Discover our talented male models at WhoKnows Models. Browse our roster of exceptional men models for fashion, editorial, and commercial bookings.',
+  keywords: [
+    'male models',
+    'men models',
+    'fashion models',
+    'editorial models',
+    'runway models',
+    'commercial models',
+    'WhoKnows Models',
+  ],
   canonical: '/men',
 });
 

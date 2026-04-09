@@ -1,8 +1,8 @@
-
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db';
+import { supabaseAdmin } from '@/lib/supabase';
 
 export const runtime = 'edge';
+
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
@@ -17,9 +17,10 @@ export async function POST(request: NextRequest) {
     const instagram = formData.get('instagram') as string;
     const message = formData.get('message') as string;
 
-    // Create application
-    const application = await db.application.create({
-      data: {
+    // Create application using Supabase SDK
+    const { data: application, error: dbError } = await supabaseAdmin
+      .from("Application")
+      .insert({
         name,
         email,
         phone,
@@ -30,8 +31,14 @@ export async function POST(request: NextRequest) {
         instagram,
         message,
         status: 'pending',
-      },
-    });
+      })
+      .select()
+      .single();
+
+    if (dbError) {
+      console.error('Database error in Apply route:', dbError);
+      throw dbError;
+    }
 
     // Handle file uploads — map form keys to DB type values
     const fileUploads: { formKey: string; dbType: string }[] = [
@@ -44,16 +51,15 @@ export async function POST(request: NextRequest) {
     for (const { formKey, dbType } of fileUploads) {
       const file = formData.get(formKey) as File | null;
       if (file && file.size > 0) {
-        // In production, upload to cloud storage (e.g. S3, Cloudinary)
-        const imageUrl = `/uploads/${application.id}/${dbType}-${file.name}`;
+        // Pointing to a generic placeholder for now as edge doesn't have local filesystem access
+        // Ideally this would upload to Supabase Storage, but keeping compatibility for now
+        const imageUrl = `https://whoknows.pages.dev/uploads/${application.id}/${dbType}-${file.name}`;
         photoUrls.push(`${dbType.toUpperCase()}: ${imageUrl}`);
 
-        await db.applicationPhoto.create({
-          data: {
-            applicationId: application.id,
-            imageUrl,
-            type: dbType,
-          },
+        await supabaseAdmin.from("ApplicationPhoto").insert({
+          applicationId: application.id,
+          imageUrl,
+          type: dbType,
         });
       }
     }
@@ -83,11 +89,9 @@ export async function POST(request: NextRequest) {
       });
       if (!formspreeResponse.ok) {
         console.error('Formspree Apply returned an error:', await formspreeResponse.text());
-        throw new Error('Formspree forwarding failed');
       }
     } catch (e) {
       console.error('Error contacting custom Formspree URL for Apply:', e);
-      // We will gracefully continue and return success to the user so they don't see an error if Formspree is temporarily down, since we saved to the db.
     }
 
     return NextResponse.json({ success: true, id: application.id });

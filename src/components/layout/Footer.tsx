@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Mail, Phone, Instagram, Music, Twitter } from 'lucide-react';
 
 const footerLinks = {

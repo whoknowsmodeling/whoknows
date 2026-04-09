@@ -119,6 +119,24 @@ export async function getModelDetail(slug: string) {
   return data;
 }
 
+export async function getModelById(id: string) {
+  const { data, error } = await supabaseAdmin
+    .from("Model")
+    .select(`
+      *,
+      images:ModelImage(*)
+    `)
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error("Error fetching model by id:", error);
+    return null;
+  }
+
+  return data;
+}
+
 export async function getSitemapSlugs() {
   const { data, error } = await supabaseAdmin
     .from("Model")
@@ -128,7 +146,55 @@ export async function getSitemapSlugs() {
   return data.map(m => m.slug);
 }
 
-// Legacy Admin Helpers (re-exported/continued)
+// --- ADMIN MUTATIONS (EDGE-SAFE) ---
+
+export async function logAdminAction(
+  action: string,
+  entity: string,
+  entityId?: string,
+  details?: string,
+  adminEmail: string = 'system@whoknows.pages.dev'
+) {
+  const { error } = await supabaseAdmin.from("AdminLog").insert({
+    action,
+    entity,
+    entityId,
+    details,
+    adminEmail,
+  });
+  if (error) console.error("AdminLog error:", error);
+}
+
+export async function deleteModelEdge(id: string) {
+  // Supabase takes care of cascade if configured, but let's be explicit if needed
+  const { error } = await supabaseAdmin.from("Model").delete().eq("id", id);
+  if (error) throw error;
+  await logAdminAction("delete", "model", id, "Deleted model via Edge Action");
+}
+
+export async function deleteModelImageEdge(imageId: string) {
+  const { error } = await supabaseAdmin.from("ModelImage").delete().eq("id", imageId);
+  if (error) throw error;
+}
+
+export async function setPrimaryImageEdge(modelId: string, imageId: string) {
+  // Reset all
+  await supabaseAdmin.from("ModelImage").update({ isPrimary: false }).eq("modelId", modelId);
+  // Set one
+  await supabaseAdmin.from("ModelImage").update({ isPrimary: true }).eq("id", imageId);
+}
+
+export async function createContactSubmissionEdge(data: any) {
+  const { data: submission, error } = await supabaseAdmin
+    .from("ContactSubmission")
+    .insert(data)
+    .select()
+    .single();
+  if (error) throw error;
+  return submission;
+}
+
+// Legacy Admin Helpers (now using supabaseAdmin)
 export async function getApplicationsList() {
   const { data, error } = await supabaseAdmin.from("Application").select(`*, photos:ApplicationPhoto(*)`).order("createdAt", { ascending: false });
   return data || [];

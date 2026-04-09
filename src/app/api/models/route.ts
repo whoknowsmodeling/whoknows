@@ -1,21 +1,24 @@
 export const runtime = 'edge';
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db';
+import { supabaseAdmin } from '@/lib/supabase';
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const gender = searchParams.get('gender');
 
-    const models = await db.model.findMany({
-      where: gender ? { gender } : undefined,
-      include: {
-        images: {
-          orderBy: { order: 'asc' },
-        },
-      },
-      orderBy: { order: 'asc' },
-    });
+    let query = supabaseAdmin
+      .from("Model")
+      .select(`*, images:ModelImage(*)`)
+      .order("order", { ascending: true });
+
+    if (gender) {
+      query = query.eq("gender", gender);
+    }
+
+    const { data: models, error } = await query;
+
+    if (error) throw error;
 
     return NextResponse.json(models, {
       headers: {

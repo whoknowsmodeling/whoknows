@@ -1,8 +1,8 @@
+import { getModelById } from "@/lib/edge-data";
 import ModelForm from "@/components/forms/ModelForm";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
-import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 
 export const runtime = 'edge';
@@ -15,10 +15,7 @@ export default async function EditModelPage({
 }) {
   const { gender, id } = await params;
 
-  const model = await db.model.findUnique({
-    where: { id },
-    include: { images: { orderBy: { order: "asc" } } },
-  });
+  const model = await getModelById(id);
 
   if (!model) {
     notFound();

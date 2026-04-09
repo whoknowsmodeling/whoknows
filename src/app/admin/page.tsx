@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Users, Image as ImageIcon, MessageSquare, TrendingUp, ArrowUpRight, ArrowDownRight, Clock, ChevronRight } from "lucide-react";
-import { getDashboardStats, getAdminLogs } from "@/lib/admin-data";
+import { getDashboardStats, getAdminLogs } from "@/lib/edge-data";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 

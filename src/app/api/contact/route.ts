@@ -1,8 +1,8 @@
-
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db';
+import { supabaseAdmin } from '@/lib/supabase';
 
 export const runtime = 'edge';
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -15,14 +15,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const submission = await db.contactSubmission.create({
-      data: {
+    const { data: submission, error: dbError } = await supabaseAdmin
+      .from("ContactSubmission")
+      .insert({
         name,
         email,
         subject,
         message,
-      },
-    });
+      })
+      .select()
+      .single();
+
+    if (dbError) {
+      console.error('Database error:', dbError);
+      throw dbError;
+    }
 
     // Forward securely to Formspree
     const formspreeUrl = process.env.NEXT_PUBLIC_FORMSPREE_CONTACT_URL || 'https://formspree.io/f/xbdpbkvz';

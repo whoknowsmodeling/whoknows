@@ -1,29 +1,24 @@
 export const runtime = 'edge';
 import { NextResponse } from 'next/server';
-import { db } from '@/lib/db';
+import { supabaseAdmin } from '@/lib/supabase';
 
 export async function GET() {
   try {
-    const campaigns = await db.campaign.findMany({
-      include: {
-        models: {
-          include: {
-            model: {
-              include: {
-                images: {
-                  where: { isPrimary: true },
-                  take: 1,
-                },
-              },
-            },
-          },
-        },
-        images: {
-          orderBy: { order: 'asc' },
-        },
-      },
-      orderBy: { order: 'asc' },
-    });
+    const { data: campaigns, error } = await supabaseAdmin
+      .from("Campaign")
+      .select(`
+        *,
+        images:CampaignImage(*),
+        models:CampaignModel(
+          model:Model(
+            *,
+            images:ModelImage(*)
+          )
+        )
+      `)
+      .order("order", { ascending: true });
+
+    if (error) throw error;
 
     return NextResponse.json(campaigns);
   } catch (error) {

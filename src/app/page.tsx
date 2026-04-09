@@ -7,6 +7,8 @@ import { ModelCarousel } from '@/components/models/ModelCarousel';
 import { CampaignGrid } from '@/components/models/CampaignCard';
 import { mockModels, mockCampaigns, mockHeroSlides, mockClients } from '@/lib/data';
 import { getPublicHomeData } from '@/lib/edge-data';
+import { generateSEO, generateBreadcrumbSchema } from '@/lib/seo';
+import type { Model, Campaign } from '@/types';
 
 export const revalidate = 60; // ISR: revalidate every minute for instant loading
 

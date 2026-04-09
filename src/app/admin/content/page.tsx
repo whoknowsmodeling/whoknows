@@ -4,16 +4,20 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { supabaseAdmin } from "@/lib/supabase";
 
 export const runtime = 'edge';
+
 async function getPageContent(page: string) {
   try {
-    const content = await db.pageContent.findMany({
-      where: { page },
-    });
-    return content;
+    const { data, error } = await supabaseAdmin
+      .from("PageContent")
+      .select("*")
+      .eq("page", page);
+    
+    if (error) throw error;
+    return data || [];
   } catch {
     return [];
   }
@@ -32,22 +36,20 @@ export default async function AdminContentPage() {
       
       const [section, contentKey] = key.split(".");
       
-      await db.pageContent.upsert({
-        where: {
-          page_section_key: {
-            page,
-            section,
-            key: contentKey,
-          },
-        },
-        update: { value: value as string },
-        create: {
+      // Upsert using Supabase
+      // Note: we need the unique constraint columns to match
+      const { error } = await supabaseAdmin
+        .from("PageContent")
+        .upsert({
           page,
           section,
           key: contentKey,
           value: value as string,
-        },
-      });
+        }, {
+          onConflict: 'page,section,key'
+        });
+
+      if (error) console.error("Upsert page content error:", error);
     }
     
     revalidatePath("/");
@@ -85,7 +87,7 @@ export default async function AdminContentPage() {
                       <Input name="hero.title" defaultValue="Discover Excellence" className="bg-neutral-800 border-neutral-700" />
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-xs uppercase tracking-wider text-neutral-400">Hero Subtitle</Label>
+                       <Label className="text-xs uppercase tracking-wider text-neutral-400">Hero Subtitle</Label>
                       <Textarea name="hero.subtitle" defaultValue="International modelling agency representing the finest talent worldwide" className="bg-neutral-800 border-neutral-700 h-24" />
                     </div>
                   </CardContent>

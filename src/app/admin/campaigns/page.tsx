@@ -1,4 +1,5 @@
-import { getCampaignsList, getSimpleModelsList } from "@/lib/admin-data";
+import { getCampaignsList, getSimpleModelsList } from "@/lib/edge-data";
+import CampaignManagement from "@/components/admin/CampaignManagement";
 
 export const runtime = 'edge';
 export const dynamic = "force-dynamic";

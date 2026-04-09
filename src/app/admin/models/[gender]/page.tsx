@@ -1,4 +1,4 @@
-import { getModelsList } from "@/lib/admin-data";
+import { getModelsList } from "@/lib/edge-data";
 import { Button } from "@/components/ui/button";
 import { Plus, Edit2, Trash2, ExternalLink } from "lucide-react";
 import Link from "next/link";

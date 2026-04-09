@@ -8,7 +8,18 @@ import { getCampaignsList } from '@/lib/edge-data';
 export const revalidate = 3600;
 
 export const metadata: Metadata = generateSEO({
-// ... (rest of metadata)
+  title: 'Jobs & Campaigns',
+  description:
+    'Explore the latest campaigns and modelling jobs at WhoKnows Models. See our models in action across fashion editorials, runway shows, and commercial campaigns.',
+  keywords: [
+    'modelling jobs',
+    'fashion campaigns',
+    'editorial work',
+    'runway shows',
+    'fashion photography',
+    'model portfolios',
+    'WhoKnows Models',
+  ],
   canonical: '/jobs',
 });
 
