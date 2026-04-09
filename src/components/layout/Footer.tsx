@@ -12,6 +12,12 @@ const footerLinks = {
     { label: 'Jobs', href: '/jobs' },
     { label: 'Contact', href: '/contact' },
   ],
+  policies: [
+    { label: 'Terms of Use', href: '/terms' },
+    { label: 'Privacy Policy', href: '/privacy' },
+    { label: 'Cookie Policy', href: '/cookies' },
+    { label: 'Under 18 FAQs', href: '/under-18' },
+  ],
 };
 
 export function Footer() {
@@ -20,7 +26,7 @@ export function Footer() {
   return (
     <footer className="bg-black text-white mt-auto">
       <div className="container mx-auto px-4 lg:px-8 py-12 lg:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link
@@ -86,6 +92,23 @@ export function Footer() {
             <h3 className="font-medium text-sm uppercase tracking-wider mb-4">Company</h3>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-neutral-400 text-sm hover:text-white transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Policies Links */}
+          <div>
+            <h3 className="font-medium text-sm uppercase tracking-wider mb-4">Policies</h3>
+            <ul className="space-y-3">
+              {footerLinks.policies.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}

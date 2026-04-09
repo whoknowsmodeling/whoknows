@@ -1,10 +1,17 @@
 import { createClient } from "@supabase/supabase-js";
 import { v4 as uuidv4 } from "uuid";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!; // Must be Service Role for uploads
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
+if (!supabaseUrl || !supabaseServiceKey) {
+  console.warn("Supabase storage credentials missing. Local uploads will fail.");
+}
+
+const supabase = createClient(
+  supabaseUrl || "https://placeholder.supabase.co", 
+  supabaseServiceKey || "placeholder"
+);
 
 export async function uploadImage(file: Buffer, path: string, filename: string) {
   try {
@@ -12,7 +19,7 @@ export async function uploadImage(file: Buffer, path: string, filename: string) 
     // Direct upload of raw buffer.
     const fullPath = `${path}/${filename}_${uuidv4()}.webp`;
 
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from("models") // Default bucket name
       .upload(fullPath, file, {
         contentType: "image/webp",
