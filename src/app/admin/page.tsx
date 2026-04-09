@@ -4,6 +4,7 @@ import { Users, Image as ImageIcon, MessageSquare, TrendingUp, ArrowUpRight, Arr
 import { getDashboardStats, getAdminLogs } from "@/lib/edge-data";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
+import { ApiOverview } from "@/components/admin/ApiOverview";
 
 export const dynamic = "force-dynamic";
 export const runtime = "edge";
@@ -116,6 +117,10 @@ export default async function AdminDashboardPage() {
             </Link>
           </CardContent>
         </Card>
+
+        <div className="lg:col-span-1">
+          <ApiOverview />
+        </div>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { mockModels } from '@/lib/data';
 import type { Model } from '@/types';
 import { generateSEO, generateBreadcrumbSchema } from '@/lib/seo';
 import { getGenderRoster } from '@/lib/edge-data';
+import { GenderToggle } from '@/components/layout/GenderToggle';
 
 export const revalidate = 60;
 
@@ -35,16 +36,22 @@ export default async function WomenPage() {
     <>
       <section className="pt-24 lg:pt-32 pb-16 lg:pb-24">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="mb-12 lg:mb-16">
-            <p className="text-sm uppercase tracking-wider text-neutral-500 mb-2">
-              Our Talent
-            </p>
-            <h1 className="font-serif text-4xl lg:text-5xl font-medium tracking-tight">
-              Women
-            </h1>
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12 lg:mb-16">
+            <div>
+              <p className="text-sm uppercase tracking-wider text-neutral-500 mb-2">
+                Our Talent
+              </p>
+              <h1 className="font-serif text-4xl lg:text-5xl font-medium tracking-tight">
+                Women
+              </h1>
+            </div>
+            
+            <div className="flex-shrink-0">
+              <GenderToggle currentGender="women" />
+            </div>
           </div>
 
-          <ModelGrid models={womenModels} columns={4} />
+          <ModelGrid models={womenModels} columns={4} forcePriority={true} />
         </div>
       </section>
 

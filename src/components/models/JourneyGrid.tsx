@@ -56,6 +56,7 @@ export function JourneyGrid({ models }: JourneyGridProps) {
                 fill
                 sizes="(max-width: 768px) 33vw, 25vw"
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
+                priority={idx < 4}
               />
               <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/20 flex items-center justify-center">
                 <span className="text-white text-[10px] uppercase tracking-widest font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">

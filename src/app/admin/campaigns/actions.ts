@@ -19,7 +19,7 @@ export async function createCampaign(formData: FormData) {
 
   if (coverImageFile && coverImageFile.size > 0) {
     const buffer = Buffer.from(await coverImageFile.arrayBuffer());
-    const publicUrl = await uploadMedia(buffer, "campaigns", coverImageFile.name);
+    const publicUrl = await uploadMedia(buffer, "covers", coverImageFile.name, "campaigns");
     
     if (coverImageFile.name.match(/\.(mp4|mov|avi|mkv|webm)$/i)) {
       coverVideoUrl = publicUrl;
@@ -71,7 +71,7 @@ export async function createCampaign(formData: FormData) {
       if (file.size === 0) continue;
 
       const buffer = Buffer.from(await file.arrayBuffer());
-      const publicUrl = await uploadMedia(buffer, `campaigns/${campaign.id}`, file.name);
+      const publicUrl = await uploadMedia(buffer, `gallery/${campaign.id}`, file.name, "campaigns");
       
       const isVideo = file.name.match(/\.(mp4|mov|avi|mkv|webm)$/i);
       

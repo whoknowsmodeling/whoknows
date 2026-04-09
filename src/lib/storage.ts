@@ -18,7 +18,7 @@ const supabase = createClient(
  * 🏎️ High-Performance Media Hosting
  * Uploads images (auto-converted to WebP) or videos (auto-transcoded to Webm).
  */
-export async function uploadMedia(file: Buffer, path: string, originalName: string) {
+export async function uploadMedia(file: Buffer, path: string, originalName: string, bucket: string = "models") {
   try {
     let finalBuffer = file;
     let extension = ".webp";
@@ -37,7 +37,7 @@ export async function uploadMedia(file: Buffer, path: string, originalName: stri
     const fullPath = `${path}/${uuidv4()}${extension}`;
 
     const { error } = await supabase.storage
-      .from("models") 
+      .from(bucket) 
       .upload(fullPath, finalBuffer, {
         contentType,
         cacheControl: "31536000",
@@ -47,7 +47,7 @@ export async function uploadMedia(file: Buffer, path: string, originalName: stri
     if (error) throw error;
 
     const { data: { publicUrl } } = supabase.storage
-      .from("models")
+      .from(bucket)
       .getPublicUrl(fullPath);
 
     return publicUrl;
@@ -67,14 +67,16 @@ export async function deleteImage(url: string) {
     const urlObj = new URL(url);
     const pathParts = urlObj.pathname.split("/");
     // Supabase URLs: /storage/v1/object/public/BUCKET/PATH
+    // index 4 is the bucket name
+    const bucket = pathParts[4];
     const path = pathParts.slice(5).join("/"); 
 
     const { error } = await supabase.storage
-      .from("models")
+      .from(bucket)
       .remove([path]);
 
     if (error) throw error;
   } catch (error) {
-    console.error("Delete error:", error);
+    console.error(`Delete error for ${url}:`, error);
   }
 }

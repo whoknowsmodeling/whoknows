@@ -7,6 +7,7 @@ import { mockModels } from '@/lib/data';
 import { getModelDetail, getSitemapSlugs } from '@/lib/edge-data';
 import { generateSEO, generateBreadcrumbSchema, generatePersonSchema } from '@/lib/seo';
 import { Button } from '@/components/ui/button';
+import { GenderToggle } from '@/components/layout/GenderToggle';
 
 export const revalidate = 60;
 
@@ -79,15 +80,19 @@ export default async function ModelProfilePage({ params }: ModelPageProps) {
     <>
       <article className="pt-24 lg:pt-32 pb-16 lg:pb-24">
         <div className="container mx-auto px-4 lg:px-8">
-          {/* Back Link */}
-          <Link
-            href={`/${model.gender}`}
-            className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-black mb-12 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black group"
-            aria-label={`Back to ${model.gender === 'women' ? 'Women' : 'Men'} models`}
-          >
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" aria-hidden="true" />
-            Back to {model.gender === 'women' ? 'Women' : 'Men'}
-          </Link>
+          {/* Navigation Controls */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+            <Link
+              href={`/${model.gender}`}
+              className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-black transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black group"
+              aria-label={`Back to ${model.gender === 'women' ? 'Women' : 'Men'} models`}
+            >
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" aria-hidden="true" />
+              Back to {model.gender === 'women' ? 'Women' : 'Men'}
+            </Link>
+
+            <GenderToggle currentGender="all" />
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
             {/* Gallery Section */}

@@ -66,7 +66,7 @@ export function ModelCarousel({ models = [] }: ModelCarouselProps) {
               key={model.id}
               className="min-w-0 flex-[0_0_85%] sm:flex-[0_0_33.333%] lg:flex-[0_0_20%] xl:flex-[0_0_16.666%] pl-4 lg:pl-6"
             >
-              <ModelCard model={model} index={index} variant="passport" />
+              <ModelCard model={model} index={index} variant="passport" forcePriority={index < 5} />
             </div>
           ))}
         </div>

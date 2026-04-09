@@ -10,9 +10,10 @@ interface ModelCardProps {
   model: Model;
   index?: number;
   variant?: 'default' | 'passport';
+  forcePriority?: boolean;
 }
 
-export function ModelCard({ model, index = 0, variant = 'default' }: ModelCardProps) {
+export function ModelCard({ model, index = 0, variant = 'default', forcePriority = false }: ModelCardProps) {
   const primaryImage = model.images.find((img) => img.isPrimary) || model.images[0];
 
   return (
@@ -35,8 +36,8 @@ export function ModelCard({ model, index = 0, variant = 'default' }: ModelCardPr
               quality={60}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover object-top transition-all duration-700 group-hover:scale-105"
-              priority={index < 8}
-              loading={index < 8 ? "eager" : "lazy"}
+              priority={forcePriority || index < 8}
+              loading={forcePriority || index < 8 ? "eager" : "lazy"}
               placeholder="blur"
               blurDataURL="data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAAAwAQCdASoIAAUAAUAmJaQAA3AA/u66AAA="
             />
@@ -77,9 +78,10 @@ export function ModelCard({ model, index = 0, variant = 'default' }: ModelCardPr
 interface ModelGridProps {
   models: Model[];
   columns?: 2 | 3 | 4;
+  forcePriority?: boolean;
 }
 
-export function ModelGrid({ models, columns = 4 }: ModelGridProps) {
+export function ModelGrid({ models, columns = 4, forcePriority = false }: ModelGridProps) {
   const gridCols = {
     2: 'grid-cols-1 sm:grid-cols-2',
     3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
@@ -89,7 +91,7 @@ export function ModelGrid({ models, columns = 4 }: ModelGridProps) {
   return (
     <div className={`grid ${gridCols[columns]} gap-4 lg:gap-6`}>
       {models.map((model, index) => (
-        <ModelCard key={model.id} model={model} index={index} />
+        <ModelCard key={model.id} model={model} index={index} forcePriority={forcePriority} />
       ))}
     </div>
   );
