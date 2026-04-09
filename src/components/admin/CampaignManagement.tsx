@@ -136,7 +136,14 @@ export default function CampaignManagement({ campaigns, models }: { campaigns: a
           <Card key={campaign.id} className="bg-neutral-900 border-neutral-800 overflow-hidden group">
             <div className="relative aspect-[3/4]">
               {campaign.coverImage && (
-                <Image src={campaign.coverImage} alt={campaign.title} fill className="object-cover" />
+                <Image 
+                  src={campaign.coverImage} 
+                  alt={campaign.title} 
+                  fill 
+                  className="object-cover" 
+                  sizes="(max-width: 768px) 50vw, 400px"
+                  quality={60}
+                />
               )}
               <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                 <Button variant="ghost" size="icon" className="text-red-400 hover:text-red-300" onClick={async () => {

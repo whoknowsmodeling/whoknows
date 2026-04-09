@@ -111,7 +111,14 @@ export default function HeroManagement({ slides }: { slides: any[] }) {
           <Card key={slide.id} className="bg-neutral-900 border-neutral-800 overflow-hidden">
             <CardContent className="p-0 flex items-center">
               <div className="w-64 aspect-[16/9] relative flex-shrink-0">
-                <Image src={slide.imageUrl} alt={slide.title || "Slide"} fill className="object-cover" />
+                <Image 
+                  src={slide.imageUrl} 
+                  alt={slide.title || "Slide"} 
+                  fill 
+                  className="object-cover" 
+                  sizes="(max-width: 768px) 100vw, 300px"
+                  quality={60}
+                />
               </div>
               <div className="flex-1 p-6 flex items-center justify-between">
                 <div>

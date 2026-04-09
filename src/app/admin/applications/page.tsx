@@ -4,7 +4,6 @@ import { PaginatedApplications } from "@/components/admin/PaginatedApplications"
 import { Users } from "lucide-react";
 
 export const revalidate = 0;
-export const runtime = 'edge';
 
 export default async function ApplicationsPage() {
   const initialApplications = await getApplicationsList(20, 0);

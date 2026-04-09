@@ -24,7 +24,7 @@ function slugify(text: string) {
 async function main() {
   console.log("🚀 Starting Real Talent Restoration Sync...");
 
-  const baseDir = path.join(process.cwd(), "public", "ALL MODELS");
+  const baseDir = path.join(process.cwd(), "public", "all-models");
   const genders = ["MEN", "WOMEN"];
 
   // 1. Clear existing generic/mock data to prevent pollution
@@ -90,7 +90,7 @@ async function main() {
       // Root images
       images.forEach(img => {
         allImagesFound.push({
-          path: `/ALL MODELS/${genderFolder}/${modelName}/${img}`,
+          path: encodeURI(`/all-models/${genderFolder}/${modelName}/${img}`),
           concept: "Portfolio",
           name: img
         });
@@ -104,7 +104,7 @@ async function main() {
 
         conceptImages.forEach(img => {
           allImagesFound.push({
-            path: `/ALL MODELS/${genderFolder}/${modelName}/${conceptName}/${img}`,
+            path: encodeURI(`/all-models/${genderFolder}/${modelName}/${conceptName}/${img}`),
             concept: conceptName,
             name: img
           });

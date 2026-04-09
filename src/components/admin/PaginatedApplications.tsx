@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
+import Image from 'next/image';
 
 interface PaginatedApplicationsProps {
   initialApplications: any[];
@@ -87,8 +88,15 @@ function ApplicationCard({ app }: { app: any }) {
         </div>
         <div className="xl:w-[300px] grid grid-cols-3 gap-2">
             {app.photos?.slice(0, 3).map((p: any) => (
-                <div key={p.id} className="aspect-[3/4] relative rounded-md overflow-hidden bg-black">
-                    <img src={p.imageUrl} className="object-cover w-full h-full" alt="Talent Preview" />
+                <div key={p.id} className="aspect-[3/4] relative rounded-md overflow-hidden bg-black transition-transform hover:scale-105 duration-300">
+                    <Image 
+                        src={p.imageUrl} 
+                        className="object-cover" 
+                        alt="Talent Preview" 
+                        fill
+                        sizes="(max-width: 768px) 33vw, 150px"
+                        quality={50}
+                    />
                 </div>
             ))}
         </div>
