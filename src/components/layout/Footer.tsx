@@ -1,5 +1,4 @@
-import Link from 'next/link';
-import { Mail, Phone, Instagram, Facebook, Twitter } from 'lucide-react';
+import { Mail, Phone, Instagram, Music, Twitter } from 'lucide-react';
 
 const footerLinks = {
   models: [
@@ -44,13 +43,13 @@ export function Footer() {
                 <Instagram className="w-5 h-5" />
               </a>
               <a
-                href="https://www.facebook.com/profile.php?id=100069628367326"
+                href="https://www.tiktok.com/@whoknowsmodels"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
-                aria-label="Facebook"
+                aria-label="TikTok"
               >
-                <Facebook className="w-5 h-5" />
+                <Music className="w-5 h-5" />
               </a>
               <a
                 href="https://twitter.com/whoknowsmodels"

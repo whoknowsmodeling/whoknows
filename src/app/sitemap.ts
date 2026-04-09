@@ -1,11 +1,11 @@
 import { MetadataRoute } from 'next';
 import { mockModels, mockCampaigns } from '@/lib/data';
-import { db } from '@/lib/db';
+import { getSitemapSlugs, getCampaignsList } from '@/lib/edge-data';
 
 export const revalidate = 86400; // revalidate sitemap daily
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://whoknows.design';
+  const baseUrl = 'https://whoknows.pages.dev';
 
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
@@ -53,12 +53,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Fetch dynamic model slugs from DB, fall back to mock
-  let modelSlugs: string[] = [];
-  try {
-    const models = await db.model.findMany({ select: { slug: true }, orderBy: { order: 'asc' } });
-    modelSlugs = models.length > 0 ? models.map((m) => m.slug) : mockModels.map((m) => m.slug);
-  } catch {
+  // Fetch dynamic model slugs from Edge Layer, fall back to mock
+  let modelSlugs = await getSitemapSlugs();
+  if (modelSlugs.length === 0) {
     modelSlugs = mockModels.map((m) => m.slug);
   }
 
@@ -69,14 +66,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  // Fetch dynamic campaign slugs from DB, fall back to mock
-  let campaignSlugs: string[] = [];
-  try {
-    const campaigns = await db.campaign.findMany({ select: { slug: true }, orderBy: { order: 'asc' } });
-    campaignSlugs = campaigns.length > 0 ? campaigns.map((c) => c.slug) : mockCampaigns.map((c) => c.slug);
-  } catch {
-    campaignSlugs = mockCampaigns.map((c) => c.slug);
-  }
+  // Fetch dynamic campaign slugs from Edge Layer, fall back to mock
+  const campaigns: any[] = await getCampaignsList();
+  let campaignSlugs = campaigns.length > 0 ? campaigns.map((c: any) => c.slug) : mockCampaigns.map((c: any) => c.slug);
 
   const campaignPages: MetadataRoute.Sitemap = campaignSlugs.map((slug) => ({
     url: `${baseUrl}/jobs/${slug}`,

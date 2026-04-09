@@ -6,9 +6,7 @@ import { HeroVideo } from '@/components/sections/HeroVideo';
 import { ModelCarousel } from '@/components/models/ModelCarousel';
 import { CampaignGrid } from '@/components/models/CampaignCard';
 import { mockModels, mockCampaigns, mockHeroSlides, mockClients } from '@/lib/data';
-import { db } from '@/lib/db';
-import type { Model, Campaign } from '@/types';
-import { generateSEO, generateBreadcrumbSchema } from '@/lib/seo';
+import { getPublicHomeData } from '@/lib/edge-data';
 
 export const revalidate = 60; // ISR: revalidate every minute for instant loading
 
@@ -24,56 +22,15 @@ export const metadata = generateSEO({
     'editorial models',
     'runway models',
     'international models',
+    'WhoKnows Models',
   ],
   canonical: '/',
 });
 
 async function getData() {
-  try {
-    const [dbModels, dbCampaigns, dbHeroSlides, dbClients] = await Promise.all([
-      db.model.findMany({
-        where: {
-          images: {
-            some: {} // Only models with at least one image
-          }
-        },
-        include: { images: { orderBy: { order: 'asc' } } },
-        orderBy: { order: 'asc' },
-      }),
-      db.campaign.findMany({
-        include: {
-          images: { orderBy: { order: 'asc' } },
-          models: { include: { model: { include: { images: { where: { isPrimary: true }, take: 1 } } } } },
-        },
-        orderBy: { order: 'asc' },
-        take: 2,
-      }),
-      db.heroSlide.findMany({
-        where: { active: true },
-        orderBy: { order: 'asc' },
-      }),
-      db.client.findMany({
-        where: { active: true },
-        orderBy: { order: 'asc' },
-      }),
-    ]);
-
-    // Prisma returns `gender` as `string`; cast to our typed Model/Campaign interfaces
-    const typedModels = dbModels as unknown as Model[];
-    const typedCampaigns = dbCampaigns as unknown as Campaign[];
-
-    // Only models with images are already filtered by the where clause
-    const modelsWithImages = typedModels;
-
-    return {
-      featuredModels: modelsWithImages.length > 0 ? modelsWithImages : (mockModels.filter((m) => m.featured).slice(0, 4) as Model[]),
-      campaigns: typedCampaigns.length > 0 ? typedCampaigns : (mockCampaigns.slice(0, 2) as unknown as Campaign[]),
-      heroSlides: dbHeroSlides.length > 0 ? dbHeroSlides : mockHeroSlides,
-      clients: dbClients.length > 0 ? dbClients : mockClients,
-      galleryModels: modelsWithImages.length > 0 ? modelsWithImages.slice(0, 18) : (mockModels.slice(0, 6) as Model[]),
-    };
-  } catch (error) {
-    console.error('Data fetch error:', error);
+  const data = await getPublicHomeData();
+  
+  if (!data) {
     // Fall back to mock data if DB is unreachable
     return {
       featuredModels: mockModels.filter((m) => m.featured).slice(0, 4) as Model[],
@@ -83,6 +40,18 @@ async function getData() {
       galleryModels: mockModels.slice(0, 6) as Model[],
     };
   }
+
+  // Cast types for UI components
+  const typedCampaigns = data.campaigns as unknown as Campaign[];
+  const typedModels = data.featuredModels as unknown as Model[];
+
+  return {
+    featuredModels: typedModels.length > 0 ? typedModels : (mockModels.filter((m) => m.featured).slice(0, 4) as Model[]),
+    campaigns: typedCampaigns.length > 0 ? typedCampaigns : (mockCampaigns.slice(0, 2) as unknown as Campaign[]),
+    heroSlides: data.heroSlides.length > 0 ? data.heroSlides : mockHeroSlides,
+    clients: data.clients.length > 0 ? data.clients : mockClients,
+    galleryModels: typedModels.length > 0 ? typedModels.slice(0, 18) : (mockModels.slice(0, 6) as Model[]),
+  };
 }
 
 export default async function HomePage() {

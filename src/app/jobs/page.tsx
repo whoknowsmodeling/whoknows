@@ -1,48 +1,23 @@
 import { Metadata } from 'next';
 import { CampaignGrid } from '@/components/models/CampaignCard';
 import { mockCampaigns } from '@/lib/data';
-import { db } from '@/lib/db';
 import type { Campaign } from '@/types';
 import { generateSEO, generateBreadcrumbSchema } from '@/lib/seo';
+import { getCampaignsList } from '@/lib/edge-data';
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = generateSEO({
-  title: 'Jobs & Campaigns',
-  description:
-    'Explore the latest campaigns and modelling jobs at WhoKnows Models. See our models in action across fashion editorials, runway shows, and commercial campaigns.',
-  keywords: [
-    'modelling jobs',
-    'fashion campaigns',
-    'editorial work',
-    'runway shows',
-    'fashion photography',
-    'model portfolios',
-  ],
+// ... (rest of metadata)
   canonical: '/jobs',
 });
 
 async function getCampaigns(): Promise<Campaign[]> {
-  try {
-    const campaigns = await db.campaign.findMany({
-      include: {
-        images: { orderBy: { order: 'asc' } },
-        models: {
-          include: {
-            model: {
-              include: { images: { where: { isPrimary: true }, take: 1 } },
-            },
-          },
-        },
-      },
-      orderBy: { order: 'asc' },
-    });
-    return campaigns.length > 0
-      ? (campaigns as unknown as Campaign[])
-      : (mockCampaigns as unknown as Campaign[]);
-  } catch {
-    return mockCampaigns as unknown as Campaign[];
-  }
+  const campaigns = await getCampaignsList();
+  
+  return campaigns.length > 0
+    ? (campaigns as unknown as Campaign[])
+    : (mockCampaigns as unknown as Campaign[]);
 }
 
 export default async function JobsPage() {

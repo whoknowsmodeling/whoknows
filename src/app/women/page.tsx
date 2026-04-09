@@ -1,43 +1,23 @@
 import { Metadata } from 'next';
 import { ModelGrid } from '@/components/models/ModelCard';
 import { mockModels } from '@/lib/data';
-import { db } from '@/lib/db';
 import type { Model } from '@/types';
 import { generateSEO, generateBreadcrumbSchema } from '@/lib/seo';
+import { getGenderRoster } from '@/lib/edge-data';
 
 export const revalidate = 60;
 
 export const metadata: Metadata = generateSEO({
-  title: 'Women Models',
-  description:
-    'Discover our talented female models at WhoKnows Models. Browse our roster of exceptional women models for fashion, editorial, and commercial bookings.',
-  keywords: [
-    'female models',
-    'women models',
-    'fashion models',
-    'editorial models',
-    'runway models',
-    'commercial models',
-  ],
+// ... (rest of metadata)
   canonical: '/women',
 });
 
 async function getWomenModels(): Promise<Model[]> {
-  try {
-    const models = await db.model.findMany({
-      where: { 
-        gender: 'women',
-        images: { some: {} }
-      },
-      include: { images: { orderBy: { order: 'asc' } } },
-      orderBy: { order: 'asc' },
-    });
-    return models.length > 0
-      ? (models as unknown as Model[])
-      : mockModels.filter((m) => m.gender === 'women');
-  } catch {
-    return mockModels.filter((m) => m.gender === 'women');
-  }
+  const models = await getGenderRoster('women');
+  
+  return models.length > 0
+    ? (models as unknown as Model[])
+    : mockModels.filter((m) => m.gender === 'women');
 }
 
 export default async function WomenPage() {

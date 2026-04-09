@@ -1,11 +1,10 @@
-export const dynamicParams = false;
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Mail } from 'lucide-react';
 import { ImageGallery } from '@/components/models/ImageGallery';
 import { mockModels } from '@/lib/data';
-import { db } from '@/lib/db';
+import { getModelDetail, getSitemapSlugs } from '@/lib/edge-data';
 import { generateSEO, generateBreadcrumbSchema, generatePersonSchema } from '@/lib/seo';
 import { Button } from '@/components/ui/button';
 
@@ -16,13 +15,9 @@ interface ModelPageProps {
 }
 
 export async function generateStaticParams() {
-  try {
-    const models = await db.model.findMany({ select: { slug: true } });
-    if (models.length > 0) {
-      return models.map((model) => ({ slug: model.slug }));
-    }
-  } catch {
-    // Fall back to mock data slugs
+  const slugs = await getSitemapSlugs();
+  if (slugs.length > 0) {
+    return slugs.map((slug) => ({ slug }));
   }
   return mockModels.map((model) => ({ slug: model.slug }));
 }
@@ -31,26 +26,24 @@ export async function generateMetadata({ params }: ModelPageProps): Promise<Meta
   const { slug } = await params;
 
   // Try DB first
-  let model: { name: string; bio?: string | null; gender: string; height?: string | null; location?: string | null; images: { imageUrl: string; isPrimary: boolean }[]; slug: string } | null = null;
-  try {
-    model = await db.model.findUnique({
-      where: { slug },
-      include: { images: { orderBy: { order: 'asc' } } },
-    });
-  } catch {
-    // ignore
-  }
+  let model = await getModelDetail(slug);
 
   // Fall back to mock data
   if (!model) {
-    model = mockModels.find((m) => m.slug === slug) ?? null;
+    const mockModel = mockModels.find((m) => m.slug === slug);
+    if (mockModel) {
+      model = {
+        ...mockModel,
+        images: mockModel.images.map(img => ({ ...img, alt: img.alt || null }))
+      } as any;
+    }
   }
 
   if (!model) {
     return { title: 'Model Not Found' };
   }
 
-  const primaryImage = model.images.find((img) => img.isPrimary) || model.images[0];
+  const primaryImage = model.images.find((img: any) => img.isPrimary) || model.images[0];
 
   return generateSEO({
     title: `${model.name} - Model Profile`,
@@ -71,32 +64,7 @@ export default async function ModelProfilePage({ params }: ModelPageProps) {
   const { slug } = await params;
 
   // Try DB first
-  let model: {
-    id: string;
-    name: string;
-    slug: string;
-    gender: string;
-    height?: string | null;
-    chest?: string | null;
-    waist?: string | null;
-    hips?: string | null;
-    hair?: string | null;
-    eyes?: string | null;
-    location?: string | null;
-    bio?: string | null;
-    featured: boolean;
-    order: number;
-    images: { id: string; modelId: string; imageUrl: string; alt?: string | null; order: number; isPrimary: boolean }[];
-  } | null = null;
-
-  try {
-    model = await db.model.findUnique({
-      where: { slug },
-      include: { images: { orderBy: { order: 'asc' } } },
-    });
-  } catch {
-    // fall back
-  }
+  let model = await getModelDetail(slug);
 
   if (!model) {
     const mockModel = mockModels.find((m) => m.slug === slug);
@@ -107,7 +75,7 @@ export default async function ModelProfilePage({ params }: ModelPageProps) {
         ...img,
         alt: img.alt ?? null,
       })),
-    };
+    } as any;
   }
 
   if (!model) notFound();
