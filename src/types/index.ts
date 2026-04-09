@@ -35,15 +35,19 @@ export interface Campaign {
   client: string | null;
   year: string | null;
   coverImage: string | null;
+  videoUrl: string | null;
+  active: boolean;
+  featured: boolean;
   order: number;
-  models: { model: Model }[];
+  models: { modelId: string; model: Model }[];
   images: CampaignImage[];
 }
 
 export interface CampaignImage {
   id: string;
   campaignId: string;
-  imageUrl: string;
+  imageUrl: string | null;
+  videoUrl: string | null;
   alt: string | null;
   order: number;
 }

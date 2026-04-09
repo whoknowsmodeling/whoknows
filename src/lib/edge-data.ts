@@ -73,7 +73,7 @@ export async function getPublicHomeData() {
       { data: clients }
     ] = await Promise.all([
       supabaseAdmin.from("Model").select(`*, images:ModelImage(*)`).eq("featured", true).order("gender", { ascending: false }).order("order", { ascending: true }),
-      supabaseAdmin.from("Campaign").select(`*, images:CampaignImage(*), models:CampaignModel(model:Model(*, images:ModelImage(*)))`).order("order", { ascending: true }).limit(2),
+      supabaseAdmin.from("Campaign").select(`*, images:CampaignImage(*), models:CampaignModel(model:Model(*, images:ModelImage(*)))`).eq("featured", true).eq("active", true).order("createdAt", { ascending: false }).limit(2),
       supabaseAdmin.from("HeroSlide").select("*").eq("active", true).order("order", { ascending: true }),
       supabaseAdmin.from("Client").select("*").eq("active", true).order("order", { ascending: true })
     ]);
@@ -260,8 +260,14 @@ export async function getContactSubmissions(limit: number = 20, offset: number =
   return data || [];
 }
 
-export async function getCampaignsList() {
-  const { data, error } = await supabaseAdmin.from("Campaign").select(`*, models:CampaignModel(model:Model(id, name))`).order("createdAt", { ascending: false });
+export async function getCampaignsList(onlyActive: boolean = false) {
+  let query = supabaseAdmin.from("Campaign").select(`*, images:CampaignImage(*), models:CampaignModel(model:Model(id, name))`);
+  
+  if (onlyActive) {
+    query = query.eq("active", true);
+  }
+  
+  const { data, error } = await query.order("createdAt", { ascending: false });
   return data || [];
 }
 

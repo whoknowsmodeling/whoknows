@@ -55,6 +55,9 @@ model Campaign {
   client      String?
   year        String?
   coverImage  String?
+  videoUrl    String?
+  active      Boolean  @default(true)
+  featured    Boolean  @default(false)
   order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -79,7 +82,8 @@ model CampaignImage {
   id         String   @id @default(cuid())
   campaignId String
   campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-  imageUrl   String
+  imageUrl   String?
+  videoUrl   String?
   alt        String?
   order      Int      @default(0)
   createdAt  DateTime @default(now())

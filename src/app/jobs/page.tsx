@@ -24,7 +24,7 @@ export const metadata: Metadata = generateSEO({
 });
 
 async function getCampaigns(): Promise<Campaign[]> {
-  const campaigns = await getCampaignsList();
+  const campaigns = await getCampaignsList(true);
   
   return campaigns.length > 0
     ? (campaigns as unknown as Campaign[])

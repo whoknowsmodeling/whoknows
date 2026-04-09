@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { Image as ImageIcon } from 'lucide-react';
 import type { Campaign } from '@/types';
 
 interface CampaignCardProps {
@@ -19,8 +20,17 @@ export function CampaignCard({ campaign, index = 0 }: CampaignCardProps) {
       transition={{ duration: 0.5, delay: index * 0.1 }}
     >
       <Link href={`/jobs/${campaign.slug}`} className="group block">
-        <div className="relative aspect-[16/10] overflow-hidden bg-neutral-100">
-          {campaign.coverImage && (
+        <div className="relative aspect-[16/10] overflow-hidden bg-neutral-900">
+          {campaign.videoUrl ? (
+             <video 
+               src={campaign.videoUrl} 
+               autoPlay 
+               muted 
+               loop 
+               playsInline
+               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+             />
+          ) : campaign.coverImage ? (
             <Image
               src={campaign.coverImage}
               alt={campaign.title}
@@ -29,8 +39,12 @@ export function CampaignCard({ campaign, index = 0 }: CampaignCardProps) {
               className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
               loading="lazy"
             />
+          ) : (
+            <div className="w-full h-full bg-neutral-800 flex items-center justify-center">
+               <ImageIcon className="w-8 h-8 text-neutral-700" />
+            </div>
           )}
-          <div className="absolute inset-0 bg-black/0 transition-all duration-300 group-hover:bg-black/30" />
+          <div className="absolute inset-0 bg-black/0 transition-all duration-300 group-hover:bg-black/10" />
         </div>
 
         <div className="mt-4 lg:mt-6 space-y-2">

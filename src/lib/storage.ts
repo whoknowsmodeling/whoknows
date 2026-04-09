@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { v4 as uuidv4 } from "uuid";
+import { processImageToWebP, processVideoToWebm, isVideoFile } from "./media-processor";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -13,16 +14,32 @@ const supabase = createClient(
   supabaseServiceKey || "placeholder"
 );
 
-export async function uploadImage(file: Buffer, path: string, filename: string) {
+/**
+ * 🏎️ High-Performance Media Hosting
+ * Uploads images (auto-converted to WebP) or videos (auto-transcoded to Webm).
+ */
+export async function uploadMedia(file: Buffer, path: string, originalName: string) {
   try {
-    // Sharp optimization removed for Cloudflare Edge compatibility.
-    // Direct upload of raw buffer.
-    const fullPath = `${path}/${filename}_${uuidv4()}.webp`;
+    let finalBuffer = file;
+    let extension = ".webp";
+    let contentType = "image/webp";
+
+    if (isVideoFile(originalName)) {
+      console.log(`🎬 Transcoding video: ${originalName}`);
+      finalBuffer = await processVideoToWebm(file);
+      extension = ".webm";
+      contentType = "video/webm";
+    } else {
+      console.log(`🖼️ Converting image to WebP: ${originalName}`);
+      finalBuffer = await processImageToWebP(file);
+    }
+
+    const fullPath = `${path}/${uuidv4()}${extension}`;
 
     const { error } = await supabase.storage
-      .from("models") // Default bucket name
-      .upload(fullPath, file, {
-        contentType: "image/webp",
+      .from("models") 
+      .upload(fullPath, finalBuffer, {
+        contentType,
         cacheControl: "31536000",
         upsert: true,
       });
@@ -40,11 +57,17 @@ export async function uploadImage(file: Buffer, path: string, filename: string) 
   }
 }
 
+// Keep legacy uploadImage for compatibility, but map it to new logic
+export async function uploadImage(file: Buffer, path: string, filename: string) {
+  return uploadMedia(file, path, filename);
+}
+
 export async function deleteImage(url: string) {
   try {
-    // Extract path from public URL
     const urlObj = new URL(url);
-    const path = urlObj.pathname.split("/").slice(3).join("/"); // Adjust based on Supabase URL structure
+    const pathParts = urlObj.pathname.split("/");
+    // Supabase URLs: /storage/v1/object/public/BUCKET/PATH
+    const path = pathParts.slice(5).join("/"); 
 
     const { error } = await supabase.storage
       .from("models")
