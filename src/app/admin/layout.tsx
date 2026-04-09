@@ -81,6 +81,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <ExternalLink className="w-5 h-5" />
             View Website
           </Link>
+          <Link
+            href="/"
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-neutral-400 hover:text-white transition-colors mt-1"
+          >
+            <ChevronRight className="w-5 h-5 rotate-180" />
+            Home
+          </Link>
           <button
             onClick={() => signOut({ callbackUrl: "/" })}
             className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-red-400 hover:bg-red-500/10 transition-colors mt-2 w-full text-left"

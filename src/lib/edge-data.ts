@@ -1,4 +1,12 @@
 import { supabaseAdmin } from "./supabase";
+import { supabasePublic } from "./supabase-public";
+import { auth } from "@/auth";
+
+// Helper to get the correct client based on environment (Server vs Browser)
+const getSupabase = () => {
+  const isBrowser = typeof window !== 'undefined';
+  return isBrowser ? supabasePublic : supabaseAdmin;
+};
 
 /**
  * Edge-native data layer for WhoKnows Models.
@@ -64,7 +72,7 @@ export async function getPublicHomeData() {
       { data: heroSlides },
       { data: clients }
     ] = await Promise.all([
-      supabaseAdmin.from("Model").select(`*, images:ModelImage(*)`).eq("featured", true).order("order", { ascending: true }),
+      supabaseAdmin.from("Model").select(`*, images:ModelImage(*)`).eq("featured", true).order("gender", { ascending: false }).order("order", { ascending: true }),
       supabaseAdmin.from("Campaign").select(`*, images:CampaignImage(*), models:CampaignModel(model:Model(*, images:ModelImage(*)))`).order("order", { ascending: true }).limit(2),
       supabaseAdmin.from("HeroSlide").select("*").eq("active", true).order("order", { ascending: true }),
       supabaseAdmin.from("Client").select("*").eq("active", true).order("order", { ascending: true })
@@ -81,6 +89,36 @@ export async function getPublicHomeData() {
     console.error("Error fetching public home data:", error);
     return null;
   }
+}
+
+export async function getAllModels() {
+  const { data, error } = await getSupabase()
+    .from("Model")
+    .select(`
+      *,
+      images:ModelImage(*)
+    `)
+    .order("gender", { ascending: false }) // Women first usually
+    .order("order", { ascending: true });
+
+  if (error) {
+    console.error(`Error fetching all models:`, error);
+    return [];
+  }
+
+  const allModels = data || [];
+  const women = allModels.filter(m => m.gender === 'women');
+  const men = allModels.filter(m => m.gender === 'men');
+  
+  const interleaved: any[] = [];
+  const maxLength = Math.max(women.length, men.length);
+  
+  for (let i = 0; i < maxLength; i++) {
+    if (women[i]) interleaved.push(women[i]);
+    if (men[i]) interleaved.push(men[i]);
+  }
+
+  return interleaved;
 }
 
 export async function getGenderRoster(gender: string) {
@@ -166,18 +204,27 @@ export async function logAdminAction(
 }
 
 export async function deleteModelEdge(id: string) {
+  const session = await auth();
+  if (!session) throw new Error("Unauthorized: Admin session required.");
+  
   // Supabase takes care of cascade if configured, but let's be explicit if needed
   const { error } = await supabaseAdmin.from("Model").delete().eq("id", id);
   if (error) throw error;
-  await logAdminAction("delete", "model", id, "Deleted model via Edge Action");
+  await logAdminAction("delete", "model", id, `Deleted model ${id} via Edge Action`, session.user?.email || 'system');
 }
 
 export async function deleteModelImageEdge(imageId: string) {
+  const session = await auth();
+  if (!session) throw new Error("Unauthorized");
+  
   const { error } = await supabaseAdmin.from("ModelImage").delete().eq("id", imageId);
   if (error) throw error;
 }
 
 export async function setPrimaryImageEdge(modelId: string, imageId: string) {
+  const session = await auth();
+  if (!session) throw new Error("Unauthorized");
+
   // Reset all
   await supabaseAdmin.from("ModelImage").update({ isPrimary: false }).eq("modelId", modelId);
   // Set one
@@ -195,13 +242,21 @@ export async function createContactSubmissionEdge(data: any) {
 }
 
 // Legacy Admin Helpers (now using supabaseAdmin)
-export async function getApplicationsList() {
-  const { data, error } = await supabaseAdmin.from("Application").select(`*, photos:ApplicationPhoto(*)`).order("createdAt", { ascending: false });
+export async function getApplicationsList(limit: number = 20, offset: number = 0) {
+  const { data, error } = await supabaseAdmin
+    .from("Application")
+    .select(`*, photos:ApplicationPhoto(*)`)
+    .order("createdAt", { ascending: false })
+    .range(offset, offset + limit - 1);
   return data || [];
 }
 
-export async function getContactSubmissions() {
-  const { data, error } = await supabaseAdmin.from("ContactSubmission").select("*").order("createdAt", { ascending: false });
+export async function getContactSubmissions(limit: number = 20, offset: number = 0) {
+  const { data, error } = await supabaseAdmin
+    .from("ContactSubmission")
+    .select("*")
+    .order("createdAt", { ascending: true })
+    .range(offset, offset + limit - 1);
   return data || [];
 }
 

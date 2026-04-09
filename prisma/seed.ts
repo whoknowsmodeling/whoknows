@@ -93,8 +93,15 @@ async function main() {
 
   // Seed clients
   for (const client of mockClients) {
-    await db.client.create({
-      data: {
+    await db.client.upsert({
+      where: { id: client.id },
+      update: {
+        name: client.name,
+        logoUrl: client.logoUrl,
+        order: client.order,
+        active: client.active,
+      },
+      create: {
         id: client.id,
         name: client.name,
         logoUrl: client.logoUrl,
@@ -102,7 +109,7 @@ async function main() {
         active: client.active,
       },
     });
-    console.log(`Created client: ${client.name}`);
+    console.log(`Upserted client: ${client.name}`);
   }
 
   console.log('Database seeding completed!');

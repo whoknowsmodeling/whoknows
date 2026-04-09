@@ -91,6 +91,8 @@ export const metadata: Metadata = {
 };
 
 import { Providers } from "@/components/providers";
+import { GlobalLoader } from "@/components/layout/GlobalLoader";
+import { Suspense } from "react";
 
 export default function RootLayout({
   children,
@@ -115,6 +117,9 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <Providers>
           <div className="min-h-screen flex flex-col">
+            <Suspense fallback={null}>
+              <GlobalLoader />
+            </Suspense>
             <Navigation />
             <main className="flex-1" id="main-content">{children}</main>
             <Footer />

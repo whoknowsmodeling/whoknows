@@ -25,10 +25,7 @@ export const metadata: Metadata = generateSEO({
 
 async function getMenModels(): Promise<Model[]> {
   const models = await getGenderRoster('men');
-  
-  return models.length > 0
-    ? (models as unknown as Model[])
-    : mockModels.filter((m) => m.gender === 'men');
+  return models as unknown as Model[];
 }
 
 export default async function MenPage() {

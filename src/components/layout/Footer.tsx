@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Mail, Phone, Instagram, Music, Twitter } from 'lucide-react';
+import { Mail, Phone, Instagram, Twitter } from 'lucide-react';
 
 const footerLinks = {
   models: [
@@ -11,6 +11,7 @@ const footerLinks = {
     { label: 'About Us', href: '/about' },
     { label: 'Jobs', href: '/jobs' },
     { label: 'Contact', href: '/contact' },
+    { label: 'Sitemap', href: '/sitemap' },
   ],
   policies: [
     { label: 'Terms of Use', href: '/terms' },
@@ -56,7 +57,13 @@ export function Footer() {
                 className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
                 aria-label="TikTok"
               >
-                <Music className="w-5 h-5" />
+                <svg 
+                  viewBox="0 0 24 24" 
+                  className="w-5 h-5 fill-current" 
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.474V9.574a6.33 6.33 0 0 0-6.326 6.325 6.33 6.33 0 0 0 10.741 4.474l.004-.004c.451-.444.814-.972 1.066-1.55.253-.577.387-1.192.39-1.815V8.474a8.231 8.231 0 0 0 5.488 2.325V7.354a4.793 4.793 0 0 1-2.13-.668Z"/>
+                </svg>
               </a>
               <a
                 href="https://twitter.com/whoknowsmodels"

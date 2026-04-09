@@ -16,28 +16,13 @@ interface ModelPageProps {
 
 export async function generateStaticParams() {
   const slugs = await getSitemapSlugs();
-  if (slugs.length > 0) {
-    return slugs.map((slug) => ({ slug }));
-  }
-  return mockModels.map((model) => ({ slug: model.slug }));
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: ModelPageProps): Promise<Metadata> {
   const { slug } = await params;
 
-  // Try DB first
-  let model = await getModelDetail(slug);
-
-  // Fall back to mock data
-  if (!model) {
-    const mockModel = mockModels.find((m) => m.slug === slug);
-    if (mockModel) {
-      model = {
-        ...mockModel,
-        images: mockModel.images.map(img => ({ ...img, alt: img.alt || null }))
-      } as any;
-    }
-  }
+  const model = await getModelDetail(slug);
 
   if (!model) {
     return { title: 'Model Not Found' };
@@ -63,20 +48,7 @@ export async function generateMetadata({ params }: ModelPageProps): Promise<Meta
 export default async function ModelProfilePage({ params }: ModelPageProps) {
   const { slug } = await params;
 
-  // Try DB first
-  let model = await getModelDetail(slug);
-
-  if (!model) {
-    const mockModel = mockModels.find((m) => m.slug === slug);
-    if (!mockModel) notFound();
-    model = {
-      ...mockModel,
-      images: mockModel.images.map((img) => ({
-        ...img,
-        alt: img.alt ?? null,
-      })),
-    } as any;
-  }
+  const model = await getModelDetail(slug);
 
   if (!model) notFound();
 

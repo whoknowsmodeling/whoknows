@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { HeroVideo } from '@/components/sections/HeroVideo';
 import { ModelCarousel } from '@/components/models/ModelCarousel';
+import { JourneyGrid } from '@/components/models/JourneyGrid';
 import { CampaignGrid } from '@/components/models/CampaignCard';
 import { mockModels, mockCampaigns, mockHeroSlides, mockClients } from '@/lib/data';
 import { getPublicHomeData } from '@/lib/edge-data';
@@ -33,13 +34,11 @@ async function getData() {
   const data = await getPublicHomeData();
   
   if (!data) {
-    // Fall back to mock data if DB is unreachable
     return {
-      featuredModels: mockModels.filter((m) => m.featured).slice(0, 4) as Model[],
-      campaigns: mockCampaigns.slice(0, 2) as unknown as Campaign[],
-      heroSlides: mockHeroSlides,
-      clients: mockClients,
-      galleryModels: mockModels.slice(0, 6) as Model[],
+      featuredModels: [],
+      campaigns: [],
+      heroSlides: [],
+      clients: [],
     };
   }
 
@@ -48,16 +47,15 @@ async function getData() {
   const typedModels = data.featuredModels as unknown as Model[];
 
   return {
-    featuredModels: typedModels.length > 0 ? typedModels : (mockModels.filter((m) => m.featured).slice(0, 4) as Model[]),
-    campaigns: typedCampaigns.length > 0 ? typedCampaigns : (mockCampaigns.slice(0, 2) as unknown as Campaign[]),
-    heroSlides: data.heroSlides.length > 0 ? data.heroSlides : mockHeroSlides,
-    clients: data.clients.length > 0 ? data.clients : mockClients,
-    galleryModels: typedModels.length > 0 ? typedModels.slice(0, 18) : (mockModels.slice(0, 6) as Model[]),
+    featuredModels: typedModels,
+    campaigns: typedCampaigns,
+    heroSlides: data.heroSlides,
+    clients: data.clients,
   };
 }
 
 export default async function HomePage() {
-  const { featuredModels, campaigns, heroSlides, clients, galleryModels } = await getData();
+  const { featuredModels, campaigns, heroSlides, clients } = await getData();
 
   return (
     <>
@@ -140,7 +138,7 @@ export default async function HomePage() {
         </div>
         <div className="w-full">
           <Suspense fallback={<div className="w-full h-96 animate-pulse bg-neutral-100" />}>
-            <ModelCarousel models={galleryModels} />
+            <JourneyGrid models={[...featuredModels].sort(() => Math.random() - 0.5)} />
           </Suspense>
         </div>
         <div className="container mx-auto px-4 lg:px-8 mt-12 text-center">

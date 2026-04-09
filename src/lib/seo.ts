@@ -2,8 +2,18 @@ import type { Metadata } from 'next';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://whoknows.pages.dev';
 const SITE_NAME = 'WhoKnows Models';
-const DEFAULT_DESCRIPTION = 'WhoKnows Models is an international modelling agency representing the finest talent worldwide. Discover our roster of exceptional models for fashion, editorial, and commercial work.';
-const DEFAULT_KEYWORDS = ['modelling agency', 'fashion models', 'model management', 'fashion industry', 'editorial models', 'runway models', 'commercial models', 'international models', 'model booking'];
+const DEFAULT_DESCRIPTION = 'WhoKnows Models is a premier international talent management agency based in Bali, Indonesia, representing the finest models for global fashion hubs including Paris, Milan, London, and New York. Discover elite talent for high-end editorial, runway, and commercial campaigns worldwide.';
+const DEFAULT_KEYWORDS = [
+  'international modelling agency', 
+  'global fashion models', 
+  'model management Bali', 
+  'Paris fashion models', 
+  'Milan runway talent', 
+  'London editorial models', 
+  'New York commercial talent', 
+  'luxury brand models', 
+  'Bali model agency international'
+];
 
 export function generateSEO({
   title,

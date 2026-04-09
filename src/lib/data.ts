@@ -207,4 +207,5 @@ export const mockClients = [
   { id: '4', name: 'GQ', logoUrl: '/clients/gq.svg', order: 4, active: true },
   { id: '5', name: 'L\'Officiel', logoUrl: '/clients/lofficiel.svg', order: 5, active: true },
   { id: '6', name: 'Numéro', logoUrl: '/clients/numero.svg', order: 6, active: true },
+  { id: '7', name: 'Bali Clothing', logoUrl: '/clients/bali.svg', order: 7, active: true },
 ];
