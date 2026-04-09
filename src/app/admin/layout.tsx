@@ -25,8 +25,6 @@ const sidebarLinks = [
   { name: "Contact Messages", href: "/admin/contacts", icon: FileText },
   { name: "Models (Men)", href: "/admin/models/men", icon: Users },
   { name: "Models (Women)", href: "/admin/models/women", icon: Users },
-  { name: "Page Content", href: "/admin/content", icon: FileText },
-  { name: "Hero Slides", href: "/admin/hero", icon: ImageIcon },
   { name: "Campaigns (Jobs)", href: "/admin/campaigns", icon: ImageIcon },
   { name: "Activity Logs", href: "/admin/logs", icon: Settings },
 ];
