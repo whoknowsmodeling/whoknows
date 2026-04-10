@@ -1,4 +1,4 @@
-🚀 Welcome to WhoKnows Models — Industrial Build v34.0.0
+🚀 Welcome to WhoKnows Models — Industrial Build v35.0.0
 
 A modern, production-ready web application scaffold built to accelerate development for professional website projects by Indo Design Website (indodesign.website / bali.technology).
 
@@ -25,6 +25,7 @@ This scaffold provides a robust foundation built with:
 🗄️ Database & Backend
 🗄️ Prisma - ORM for database
 🔐 NextAuth.js - Authentication system
+🧠 Intelligence Sync Engine - OpenAI (Persona) + Gemini (Data) Synchronized Layer
 🎨 Advanced UI Features
 📊 TanStack Table - Data tables
 🖱️ DND Kit - Drag & drop

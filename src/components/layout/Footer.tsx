@@ -6,6 +6,7 @@ const footerLinks = {
     { label: 'Women', href: '/women' },
     { label: 'Men', href: '/men' },
     { label: 'Apply Now', href: '/apply' },
+    { label: 'Blog', href: '/blog' },
   ],
   company: [
     { label: 'About Us', href: '/about' },

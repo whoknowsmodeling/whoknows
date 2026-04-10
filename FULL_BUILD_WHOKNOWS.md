@@ -1,6 +1,7 @@
 # WhoKnows Models — FULL SYSTEM BUILD & AUDIT REPORT
 
-> **Version:** 34.0.0 (The Industrial Standard Release)
+> **Version:** 35.0.0 (Oracle Intelligence Release)
+> **Intelligence:** Dual-Engine Sync (OpenAI GPT-4o Persona + Gemini 1.5 Data)
 > **Identity:** International Modelling Agency Digital Twin
 > **Developer:** Indo Design Website Scaffold indodesign.website | bali.technology
 > **Status:** ✅ LOCKED & STABILIZED — Final Production Build Pass
@@ -22,6 +23,7 @@ WhoKnows Models is a premium, industrial-grade modelling agency platform designe
 | **Styling** | Tailwind CSS 4 + Shadcn UI | Minimalist, responsive industrial design |
 | **Animations** | Framer Motion | Smooth, premium micro-interactions |
 | **Processing** | Sharp + FFmpeg (Admin) | Automated WebP/Webm media pipelines |
+| **Intelligence** | OpenAI 4o + Gemini 1.5 | Dual-Engine Persona Sync Protocol |
 
 ---
 
@@ -96,6 +98,7 @@ NEXT_PUBLIC_FORMSPREE_CONTACT_URL="https://formspree.io/f/XXXXXXX"
 
 # == INTELLIGENCE ==
 GEMINI_API_KEY="AIzaSyA7e4U1nLI0IUyTNyJelY_XXXXXXXXXXXX"
+OPENAI_API_KEY="sk-proj-XXXXXXXXXXXX"
 ```
 
 ---

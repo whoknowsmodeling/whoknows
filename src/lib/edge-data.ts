@@ -200,6 +200,34 @@ export async function getSitemapSlugs() {
   return data.map(m => m.slug);
 }
 
+export async function getPublishedBlogs() {
+  const { data, error } = await supabaseAdmin
+    .from("Blog")
+    .select("id, title, slug, publishedAt, seoMetadata")
+    .eq("status", "PUBLISHED")
+    .order("publishedAt", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching blogs:", error);
+    return [];
+  }
+  return data || [];
+}
+
+export async function getBlogBySlug(slug: string) {
+  const { data, error } = await supabaseAdmin
+    .from("Blog")
+    .select("*")
+    .eq("slug", slug)
+    .single();
+
+  if (error) {
+    console.error(`Error fetching blog [${slug}]:`, error);
+    return null;
+  }
+  return data;
+}
+
 // --- ADMIN MUTATIONS (EDGE-SAFE) ---
 
 export async function logAdminAction(
