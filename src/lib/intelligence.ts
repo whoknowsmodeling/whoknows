@@ -10,14 +10,22 @@ import OpenAI from "openai";
  */
 export class IntelligenceEngine {
   private static instance: IntelligenceEngine;
-  private genAI: GoogleGenerativeAI;
-  private openai: OpenAI;
+  private genAI: GoogleGenerativeAI | null = null;
+  private openai: OpenAI | null = null;
 
   private constructor() {
-    this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-    this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY!,
-    });
+    // Providers are initialized lazily to avoid build-time crashes when env vars are missing
+  }
+
+  private initProviders() {
+    if (!this.genAI && process.env.GEMINI_API_KEY) {
+      this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    }
+    if (!this.openai && process.env.OPENAI_API_KEY) {
+      this.openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+      });
+    }
   }
 
   public static getInstance(): IntelligenceEngine {
@@ -33,7 +41,8 @@ export class IntelligenceEngine {
    */
   private async getSuperchargedPersona(context: string): Promise<string> {
     try {
-      if (!process.env.OPENAI_API_KEY) return context;
+      this.initProviders();
+      if (!this.openai) return context;
 
       const response = await this.openai.chat.completions.create({
         model: "gpt-4o",
@@ -73,10 +82,13 @@ export class IntelligenceEngine {
     useOpenAIFallback?: boolean;
     model?: string;
   }) {
-    // 1. Sync: Refine Persona via OpenAI (cached logic could be added here in future)
+    // 1. Sync: Refine Persona via OpenAI
     const refinedPersona = await this.getSuperchargedPersona(systemPrompt);
 
     try {
+      this.initProviders();
+      if (!this.genAI) throw new Error("Google Intelligence Provider not initialized");
+
       // 2. Execution: Primary Agent (Gemini)
       // v35.3.1 Calibration: Using gemini-2.0-flash for confirmed compatibility with this project's API key
       const targetModel = model === 'gemini-1.5-pro' ? 'gemini-2.0-flash' : 'gemini-2.0-flash';
@@ -105,7 +117,7 @@ export class IntelligenceEngine {
     } catch (error: any) {
       console.error("[Intelligence] Gemini Execution failed:", error.message);
 
-      if (useOpenAIFallback && process.env.OPENAI_API_KEY) {
+      if (useOpenAIFallback && this.openai) {
         try {
           console.log("[Intelligence] Triggering OpenAI Fallback...");
           
