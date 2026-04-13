@@ -67,9 +67,9 @@ export async function deleteImage(url: string) {
     const urlObj = new URL(url);
     const pathParts = urlObj.pathname.split("/");
     // Supabase URLs: /storage/v1/object/public/BUCKET/PATH
-    // index 4 is the bucket name
-    const bucket = pathParts[4];
-    const path = pathParts.slice(5).join("/"); 
+    // v35.3.4 Correction: index 5 is the bucket name, index 4 is 'public'
+    const bucket = pathParts[5];
+    const path = pathParts.slice(6).join("/"); 
 
     const { error } = await supabase.storage
       .from(bucket)

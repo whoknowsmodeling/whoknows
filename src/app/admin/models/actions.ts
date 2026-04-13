@@ -42,19 +42,26 @@ export async function createModel(formData: FormData) {
   const primaryIndex = parseInt(formData.get("primaryImageIndex") as string || "0");
 
   if (images && images.length > 0) {
+    console.log(`📸 Processing ${images.length} portfolio assets for model: ${name}`);
     for (let i = 0; i < images.length; i++) {
       const file = images[i];
       if (file.size === 0) continue;
 
-      const buffer = Buffer.from(await file.arrayBuffer());
-      const imageUrl = await uploadImage(buffer, `models/${model.id}`, `image_${i}`);
-      
-      await supabaseAdmin.from("ModelImage").insert({
-        modelId: model.id,
-        imageUrl,
-        isPrimary: i === primaryIndex,
-        order: i,
-      });
+      try {
+        const buffer = Buffer.from(await file.arrayBuffer());
+        // v35.3.4: Cleaner pathing, bucket is already 'models'
+        const imageUrl = await uploadImage(buffer, `${model.id}`, `image_${i}`);
+        console.log(`✅ Uploaded image ${i}: ${imageUrl}`);
+        
+        await supabaseAdmin.from("ModelImage").insert({
+          modelId: model.id,
+          imageUrl,
+          isPrimary: i === primaryIndex,
+          order: i,
+        });
+      } catch (err: any) {
+        console.error(`❌ Failed to process image ${i} for ${name}:`, err.message);
+      }
     }
   }
 
@@ -102,20 +109,27 @@ export async function updateModel(id: string, formData: FormData) {
       .eq("modelId", id);
 
     const baseCount = currentImagesCount || 0;
+    console.log(`📸 Updating portfolio with ${images.length} new assets for: ${name}`);
 
     for (let i = 0; i < images.length; i++) {
       const file = images[i];
       if (file.size === 0) continue;
 
-      const buffer = Buffer.from(await file.arrayBuffer());
-      const imageUrl = await uploadImage(buffer, `models/${id}`, `image_update_${Date.now()}_${i}`);
-      
-      await supabaseAdmin.from("ModelImage").insert({
-        modelId: id,
-        imageUrl,
-        isPrimary: false,
-        order: baseCount + i,
-      });
+      try {
+        const buffer = Buffer.from(await file.arrayBuffer());
+        // v35.3.4: Cleaner pathing
+        const imageUrl = await uploadImage(buffer, `${id}`, `image_update_${Date.now()}_${i}`);
+        console.log(`✅ Uploaded new asset ${i}: ${imageUrl}`);
+        
+        await supabaseAdmin.from("ModelImage").insert({
+          modelId: id,
+          imageUrl,
+          isPrimary: false,
+          order: baseCount + i,
+        });
+      } catch (err: any) {
+        console.error(`❌ Failed to process new asset ${i} for ${name}:`, err.message);
+      }
     }
   }
 

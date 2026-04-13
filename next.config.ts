@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Industrial Hardening: Increase payload limit for Model Portfolio uploads
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
+  },
 
   // Image optimization settings
   images: {
