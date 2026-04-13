@@ -90,7 +90,7 @@ export default async function CampaignPage({ params }: CampaignPageProps) {
           {/* Featured Models */}
           {campaign.models && campaign.models.length > 0 && (
             <div>
-              <h2 className="font-serif text-2xl font-medium tracking-tight mb-8">
+              <h2 className="font-roman text-2xl font-small tracking-tight mb-8">
                 Featured Models
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

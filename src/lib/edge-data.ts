@@ -94,7 +94,9 @@ export async function getPublicHomeData() {
 export async function getAllModels() {
   const startTime = Date.now();
   try {
-    const { data, error } = await getSupabase()
+    // Standardizing on supabaseAdmin for all edge/server-side data fetches
+    // to ensure reliable build-time static generation and RLS bypass.
+    const { data, error } = await supabaseAdmin
       .from("Model")
       .select(`
         *,
