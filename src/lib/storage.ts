@@ -34,9 +34,11 @@ export async function uploadMedia(file: Buffer, path: string, originalName: stri
       finalBuffer = await processImageToWebP(file);
     }
 
+    // Industrial Flattening: We use uuid directly as filename within the provided path
+    // Previous versions had redundant 'models/models' folders; now we keep it clean.
     const fullPath = `${path}/${uuidv4()}${extension}`;
 
-    const { error } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from(bucket) 
       .upload(fullPath, finalBuffer, {
         contentType,
@@ -44,15 +46,18 @@ export async function uploadMedia(file: Buffer, path: string, originalName: stri
         upsert: true,
       });
 
-    if (error) throw error;
+    if (uploadError) throw new Error(`Supabase Storage Upload Error: ${uploadError.message}`);
 
     const { data: { publicUrl } } = supabase.storage
       .from(bucket)
       .getPublicUrl(fullPath);
 
+    if (!publicUrl) throw new Error("Failed to generate Public URL from storage provider.");
+
+    console.log(`✅ Media successfully uploaded to bucket '${bucket}': ${publicUrl}`);
     return publicUrl;
   } catch (error) {
-    console.error("Upload error:", error);
+    console.error("Industrial Upload error:", error);
     throw error;
   }
 }

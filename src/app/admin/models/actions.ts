@@ -53,14 +53,19 @@ export async function createModel(formData: FormData) {
         const imageUrl = await uploadImage(buffer, `${model.id}`, `image_${i}`);
         console.log(`✅ Uploaded image ${i}: ${imageUrl}`);
         
-        await supabaseAdmin.from("ModelImage").insert({
+        const { error: insertError } = await supabaseAdmin.from("ModelImage").insert({
           modelId: model.id,
           imageUrl,
           isPrimary: i === primaryIndex,
           order: i,
         });
+
+        if (insertError) {
+          console.error(`❌ Database sync failed for image ${i}:`, insertError.message);
+          throw new Error("Portfolio sync failed.");
+        }
       } catch (err: any) {
-        console.error(`❌ Failed to process image ${i} for ${name}:`, err.message);
+        console.error(`❌ Media Engine execution failed for image ${i}:`, err.message);
       }
     }
   }
@@ -121,14 +126,19 @@ export async function updateModel(id: string, formData: FormData) {
         const imageUrl = await uploadImage(buffer, `${id}`, `image_update_${Date.now()}_${i}`);
         console.log(`✅ Uploaded new asset ${i}: ${imageUrl}`);
         
-        await supabaseAdmin.from("ModelImage").insert({
+        const { error: insertError } = await supabaseAdmin.from("ModelImage").insert({
           modelId: id,
           imageUrl,
           isPrimary: false,
           order: baseCount + i,
         });
+
+        if (insertError) {
+          console.error(`❌ Database update failed for asset ${i}:`, insertError.message);
+          throw new Error("Portfolio update failed.");
+        }
       } catch (err: any) {
-        console.error(`❌ Failed to process new asset ${i} for ${name}:`, err.message);
+        console.error(`❌ Media Engine update failed for asset ${i}:`, err.message);
       }
     }
   }

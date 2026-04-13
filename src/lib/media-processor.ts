@@ -11,11 +11,16 @@ export async function processImageToWebP(inputBuffer: Buffer): Promise<Buffer> {
   try {
     // Prevent static bundling errors in Cloudflare Edge
     const sharp = eval('require')('sharp');
-    return await sharp(inputBuffer)
+    const startTime = Date.now();
+    
+    const outputBuffer = await sharp(inputBuffer)
       .webp({ quality: 80, effort: 6 })
       .toBuffer();
-  } catch (error) {
-    console.warn('Sharp conversion skipped (requires Node.js):', error);
+
+    console.log(`✨ Sharp WebP Conversion: ${inputBuffer.length}b -> ${outputBuffer.length}b in ${Date.now() - startTime}ms`);
+    return outputBuffer;
+  } catch (error: any) {
+    console.warn(`⚠️ Sharp conversion skipped (${error.message || 'Node.js dependency issue'}). Using original buffer.`);
     return inputBuffer;
   }
 }
