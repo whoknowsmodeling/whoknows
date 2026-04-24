@@ -1,0 +1,16 @@
+# Robots.txt for WhoKnows Models
+# https://whoknowsmodels.com
+
+User-agent: *
+Allow: /
+
+# Disallow admin and private paths
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# Sitemap
+Sitemap: https://whoknowsmodels.com/sitemap.xml
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1

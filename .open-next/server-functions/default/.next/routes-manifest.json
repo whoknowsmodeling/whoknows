@@ -1,0 +1,343 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    },
+    {
+      "source": "/models",
+      "destination": "/women",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/models(?:/)?$"
+    },
+    {
+      "source": "/model",
+      "destination": "/women",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/model(?:/)?$"
+    },
+    {
+      "source": "/man",
+      "destination": "/men",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/man(?:/)?$"
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "whoknows.beauty"
+        }
+      ],
+      "destination": "https://whoknowsmodels.com/:path*",
+      "statusCode": 308,
+      "regex": "^(?!/_next)(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?(?:/)?$"
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.whoknows.beauty"
+        }
+      ],
+      "destination": "https://whoknowsmodels.com/:path*",
+      "statusCode": 308,
+      "regex": "^(?!/_next)(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?(?:/)?$"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/:all*(svg|jpg|jpeg|png|gif|ico|webp|avif)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ],
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?(svg|jpg|jpeg|png|gif|ico|webp|avif)(?:/)?$"
+    },
+    {
+      "source": "/:path*",
+      "headers": [
+        {
+          "key": "X-DNS-Prefetch-Control",
+          "value": "on"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "origin-when-cross-origin"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ],
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?(?:/)?$"
+    }
+  ],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/admin/models/[gender]",
+      "regex": "^/admin/models/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPgender": "nxtPgender"
+      },
+      "namedRegex": "^/admin/models/(?<nxtPgender>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/admin/models/[gender]/new",
+      "regex": "^/admin/models/([^/]+?)/new(?:/)?$",
+      "routeKeys": {
+        "nxtPgender": "nxtPgender"
+      },
+      "namedRegex": "^/admin/models/(?<nxtPgender>[^/]+?)/new(?:/)?$"
+    },
+    {
+      "page": "/admin/models/[gender]/[id]/edit",
+      "regex": "^/admin/models/([^/]+?)/([^/]+?)/edit(?:/)?$",
+      "routeKeys": {
+        "nxtPgender": "nxtPgender",
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/admin/models/(?<nxtPgender>[^/]+?)/(?<nxtPid>[^/]+?)/edit(?:/)?$"
+    },
+    {
+      "page": "/api/auth/[...nextauth]",
+      "regex": "^/api/auth/(.+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPnextauth": "nxtPnextauth"
+      },
+      "namedRegex": "^/api/auth/(?<nxtPnextauth>.+?)(?:/)?$"
+    },
+    {
+      "page": "/jobs/[slug]",
+      "regex": "^/jobs/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/jobs/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/model/[slug]",
+      "regex": "^/model/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/model/(?<nxtPslug>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/about",
+      "regex": "^/about(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/about(?:/)?$"
+    },
+    {
+      "page": "/admin",
+      "regex": "^/admin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin(?:/)?$"
+    },
+    {
+      "page": "/admin/applications",
+      "regex": "^/admin/applications(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/applications(?:/)?$"
+    },
+    {
+      "page": "/admin/campaigns",
+      "regex": "^/admin/campaigns(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/campaigns(?:/)?$"
+    },
+    {
+      "page": "/admin/contacts",
+      "regex": "^/admin/contacts(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/contacts(?:/)?$"
+    },
+    {
+      "page": "/admin/content",
+      "regex": "^/admin/content(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/content(?:/)?$"
+    },
+    {
+      "page": "/admin/hero",
+      "regex": "^/admin/hero(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/hero(?:/)?$"
+    },
+    {
+      "page": "/admin/login",
+      "regex": "^/admin/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/login(?:/)?$"
+    },
+    {
+      "page": "/admin/logs",
+      "regex": "^/admin/logs(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/logs(?:/)?$"
+    },
+    {
+      "page": "/api",
+      "regex": "^/api(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api(?:/)?$"
+    },
+    {
+      "page": "/api/apply",
+      "regex": "^/api/apply(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/apply(?:/)?$"
+    },
+    {
+      "page": "/api/campaigns",
+      "regex": "^/api/campaigns(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/campaigns(?:/)?$"
+    },
+    {
+      "page": "/api/clients",
+      "regex": "^/api/clients(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/clients(?:/)?$"
+    },
+    {
+      "page": "/api/contact",
+      "regex": "^/api/contact(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/contact(?:/)?$"
+    },
+    {
+      "page": "/api/hero-slides",
+      "regex": "^/api/hero\\-slides(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/hero\\-slides(?:/)?$"
+    },
+    {
+      "page": "/api/models",
+      "regex": "^/api/models(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/models(?:/)?$"
+    },
+    {
+      "page": "/api/setup-admin",
+      "regex": "^/api/setup\\-admin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/setup\\-admin(?:/)?$"
+    },
+    {
+      "page": "/apply",
+      "regex": "^/apply(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/apply(?:/)?$"
+    },
+    {
+      "page": "/contact",
+      "regex": "^/contact(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/contact(?:/)?$"
+    },
+    {
+      "page": "/favicon.ico",
+      "regex": "^/favicon\\.ico(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
+      "page": "/jobs",
+      "regex": "^/jobs(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/jobs(?:/)?$"
+    },
+    {
+      "page": "/men",
+      "regex": "^/men(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/men(?:/)?$"
+    },
+    {
+      "page": "/sitemap.xml",
+      "regex": "^/sitemap\\.xml(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/sitemap\\.xml(?:/)?$"
+    },
+    {
+      "page": "/women",
+      "regex": "^/women(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/women(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}
