@@ -185,6 +185,40 @@ export async function deleteModelImage(imageId: string) {
 
 export async function setPrimaryImage(modelId: string, imageId: string) {
   await setPrimaryImageEdge(modelId, imageId);
-  revalidatePath(`/admin/models/men`); // simplistic revalidate for now
-  revalidatePath(`/admin/models/women`);
+  revalidatePath(`/admin/models`);
+}
+
+export async function toggleFaceImage(imageId: string, currentState: boolean) {
+  const { error } = await supabaseAdmin
+    .from("ModelImage")
+    .update({ isFace: !currentState })
+    .eq("id", imageId);
+  
+  if (error) throw error;
+  revalidatePath(`/admin/models`);
+  revalidatePath(`/`);
+}
+
+export async function setSpecialRole(imageId: string, role: "isPrimeAll" | "isPrimeWomen" | "isPrimeMen") {
+  // Unset this role for all other images first to ensure a single "Prime" representative
+  const updatePayload: any = {};
+  updatePayload[role] = false;
+  
+  await supabaseAdmin
+    .from("ModelImage")
+    .update(updatePayload)
+    .not("id", "eq", imageId);
+
+  // Set for this one
+  const successPayload: any = {};
+  successPayload[role] = true;
+  
+  const { error } = await supabaseAdmin
+    .from("ModelImage")
+    .update(successPayload)
+    .eq("id", imageId);
+
+  if (error) throw error;
+  revalidatePath(`/admin/models`);
+  revalidatePath(`/`);
 }

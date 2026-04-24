@@ -67,7 +67,7 @@ export function HeroVideo({ slide, videoSrc }: HeroVideoProps) {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="flex flex-col gap-1 lg:gap-2"
         >
-          <Link href="/models" prefetch={true} className="text-white text-2xl lg:text-2xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
+          <Link href="/archives" prefetch={true} className="text-white text-2xl lg:text-2xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">
             Models
           </Link>
           <Link href="/men" prefetch={true} className="text-white text-2xl lg:text-2xl font-bold uppercase tracking-tight hover:text-neutral-400 transition-colors">

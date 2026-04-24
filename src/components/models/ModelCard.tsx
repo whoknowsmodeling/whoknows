@@ -7,14 +7,14 @@ import { cn } from '@/lib/utils';
 import type { Model, ModelImage } from '@/types';
 
 interface ModelCardProps {
-  model: Model;
+  model: Model & { faceImage?: any; primeImage?: any };
   index?: number;
-  variant?: 'default' | 'passport';
+  variant?: 'default' | 'passport' | 'square';
   forcePriority?: boolean;
 }
 
 export function ModelCard({ model, index = 0, variant = 'default', forcePriority = false }: ModelCardProps) {
-  const primaryImage = model.images.find((img) => img.isPrimary) || model.images[0];
+  const primaryImage = model.faceImage || model.primeImage || model.images?.find((img) => img.isPrimary) || model.images?.[0];
 
   return (
     <motion.div
@@ -26,7 +26,8 @@ export function ModelCard({ model, index = 0, variant = 'default', forcePriority
       <Link href={`/model/${model.slug}`} className="group block">
         <div className={cn(
           "relative overflow-hidden bg-neutral-100",
-          variant === 'passport' ? "aspect-[4/5]" : "aspect-[3/4]"
+          variant === 'passport' ? "aspect-[4/5]" : 
+          variant === 'square' ? "aspect-square" : "aspect-[3/4]"
         )}>
           {primaryImage && (
             <Image

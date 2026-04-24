@@ -7,9 +7,11 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
-import { X, Upload, Check, Image as ImageIcon } from "lucide-react";
+import { X, Upload, Check, Image as ImageIcon, Star } from "lucide-react";
 import Image from "next/image";
-import { createModel, updateModel, deleteModelImage, setPrimaryImage } from "@/app/admin/models/actions";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import { createModel, updateModel, deleteModelImage, setPrimaryImage, toggleFaceImage, setSpecialRole } from "@/app/admin/models/actions";
 
 interface ModelFormProps {
   initialData?: any;
@@ -130,15 +132,54 @@ export default function ModelForm({ initialData, gender }: ModelFormProps) {
                 {existingImages.map((img: any) => (
                   <div key={img.id} className="relative aspect-[3/4] group">
                     <Image src={img.imageUrl} alt="Portfolio" fill className="object-cover rounded-md" />
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                      <Button type="button" size="icon" variant="ghost" onClick={() => handleSetPrimary(initialData.id, img.id)} className={img.isPrimary ? "text-emerald-500" : "text-white"}>
-                        <Check className="w-4 h-4" />
-                      </Button>
-                      <Button type="button" size="icon" variant="ghost" onClick={() => handleDeleteImage(img.id)} className="text-red-500">
-                        <X className="w-4 h-4" />
-                      </Button>
+                    
+                    {/* Hover Overlay with specialized roles */}
+                    <div className="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-2 gap-2">
+                       <div className="flex gap-2 mb-1">
+                        <Button type="button" size="icon" variant="ghost" title="Set Profile Primary" 
+                                onClick={() => handleSetPrimary(initialData.id, img.id)} 
+                                className={img.isPrimary ? "text-emerald-500" : "text-white"}>
+                          <Check className="w-5 h-5" />
+                        </Button>
+                        <Button type="button" size="icon" variant="ghost" title="Delete Image" 
+                                onClick={() => handleDeleteImage(img.id)} 
+                                className="text-red-500">
+                          <X className="w-5 h-5" />
+                        </Button>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-1.5 w-full">
+                        <Button type="button" variant="outline" size="sm" 
+                                className={cn("text-[9px] h-7 border-white/20 uppercase tracking-tighter transition-all font-bold", img.isFace ? "bg-white text-black" : "text-white hover:bg-white/10")} 
+                                onClick={() => toggleFaceImage(img.id, img.isFace)}>
+                          {img.isFace ? "In Faces" : "Add Face"}
+                        </Button>
+                        <Button type="button" variant="outline" size="sm" 
+                                className={cn("text-[9px] h-7 border-white/20 uppercase tracking-tighter transition-all font-bold", img.isPrimeAll ? "bg-white text-black" : "text-white hover:bg-white/10")} 
+                                onClick={() => setSpecialRole(img.id, "isPrimeAll")}>
+                          Prime-All
+                        </Button>
+                        <Button type="button" variant="outline" size="sm" 
+                                className={cn("text-[9px] h-7 border-white/20 uppercase tracking-tighter transition-all font-bold", img.isPrimeWomen ? "bg-white text-black" : "text-white hover:bg-white/10")} 
+                                onClick={() => setSpecialRole(img.id, "isPrimeWomen")}>
+                          Prime-W
+                        </Button>
+                        <Button type="button" variant="outline" size="sm" 
+                                className={cn("text-[9px] h-7 border-white/20 uppercase tracking-tighter transition-all font-bold", img.isPrimeMen ? "bg-white text-black" : "text-white hover:bg-white/10")} 
+                                onClick={() => setSpecialRole(img.id, "isPrimeMen")}>
+                          Prime-M
+                        </Button>
+                      </div>
                     </div>
-                    {img.isPrimary && <div className="absolute top-1 left-1 bg-emerald-500 text-[8px] uppercase font-bold px-1 rounded">Primary</div>}
+
+                    {/* Active Status Badges */}
+                    <div className="absolute top-1 left-1 flex flex-wrap gap-1 pointer-events-none">
+                      {img.isPrimary && <Badge className="bg-emerald-500 hover:bg-emerald-500 text-[7px] h-3 px-1 border-none shadow-none">Primary</Badge>}
+                      {img.isFace && <Badge className="bg-white text-black hover:bg-white text-[7px] h-3 px-1 border-none shadow-none">Face</Badge>}
+                      {img.isPrimeAll && <Badge className="bg-blue-500 hover:bg-blue-500 text-white text-[7px] h-3 px-1 border-none shadow-none">All</Badge>}
+                      {img.isPrimeWomen && <Badge className="bg-pink-500 hover:bg-pink-500 text-white text-[7px] h-3 px-1 border-none shadow-none">W-Prime</Badge>}
+                      {img.isPrimeMen && <Badge className="bg-indigo-500 hover:bg-indigo-500 text-white text-[7px] h-3 px-1 border-none shadow-none">M-Prime</Badge>}
+                    </div>
                   </div>
                 ))}
                 

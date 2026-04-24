@@ -17,7 +17,7 @@ export const mockModels = [
     bio: null,
     featured: true,
     order: 1,
-    images: [{ id: 'mi1', modelId: 'm1', imageUrl: '/models/men/ahmed-hassan-1.jpg', alt: 'Ahmed Hassan', order: 1, isPrimary: true }],
+    images: [{ id: 'mi1', modelId: 'm1', imageUrl: '/models/men/ahmed-hassan-1.jpg', alt: 'Ahmed Hassan', order: 1, isPrimary: true, isFace: false, isPrimeAll: false, isPrimeWomen: false, isPrimeMen: false }],
   },
   {
     id: 'm2',
@@ -34,7 +34,7 @@ export const mockModels = [
     bio: null,
     featured: true,
     order: 2,
-    images: [{ id: 'mi2', modelId: 'm2', imageUrl: '/models/men/david-kim-1.jpg', alt: 'David Kim', order: 1, isPrimary: true }],
+    images: [{ id: 'mi2', modelId: 'm2', imageUrl: '/models/men/david-kim-1.jpg', alt: 'David Kim', order: 1, isPrimary: true, isFace: false, isPrimeAll: false, isPrimeWomen: false, isPrimeMen: false }],
   },
   {
     id: 'w1',
@@ -51,7 +51,7 @@ export const mockModels = [
     bio: null,
     featured: true,
     order: 3,
-    images: [{ id: 'mi3', modelId: 'w1', imageUrl: '/models/women/aisha-patel-1.jpg', alt: 'Aisha Patel', order: 1, isPrimary: true }],
+    images: [{ id: 'mi3', modelId: 'w1', imageUrl: '/models/women/aisha-patel-1.jpg', alt: 'Aisha Patel', order: 1, isPrimary: true, isFace: false, isPrimeAll: false, isPrimeWomen: false, isPrimeMen: false }],
   },
   {
     id: 'w2',
@@ -68,7 +68,7 @@ export const mockModels = [
     bio: null,
     featured: true,
     order: 4,
-    images: [{ id: 'mi4', modelId: 'w2', imageUrl: '/models/women/emma-rodriguez-1.jpg', alt: 'Emma Rodriguez', order: 1, isPrimary: true }],
+    images: [{ id: 'mi4', modelId: 'w2', imageUrl: '/models/women/emma-rodriguez-1.jpg', alt: 'Emma Rodriguez', order: 1, isPrimary: true, isFace: false, isPrimeAll: false, isPrimeWomen: false, isPrimeMen: false }],
   },
   {
     id: 'm3',
@@ -85,7 +85,7 @@ export const mockModels = [
     bio: null,
     featured: false,
     order: 5,
-    images: [{ id: 'mi5', modelId: 'm3', imageUrl: '/models/men/james-morrison-1.jpg', alt: 'James Morrison', order: 1, isPrimary: true }],
+    images: [{ id: 'mi5', modelId: 'm3', imageUrl: '/models/men/james-morrison-1.jpg', alt: 'James Morrison', order: 1, isPrimary: true, isFace: false, isPrimeAll: false, isPrimeWomen: false, isPrimeMen: false }],
   },
   {
     id: 'w3',
@@ -102,7 +102,7 @@ export const mockModels = [
     bio: null,
     featured: false,
     order: 6,
-    images: [{ id: 'mi6', modelId: 'w3', imageUrl: '/models/women/maya-tanaka-1.jpg', alt: 'Maya Tanaka', order: 1, isPrimary: true }],
+    images: [{ id: 'mi6', modelId: 'w3', imageUrl: '/models/women/maya-tanaka-1.jpg', alt: 'Maya Tanaka', order: 1, isPrimary: true, isFace: false, isPrimeAll: false, isPrimeWomen: false, isPrimeMen: false }],
   },
 ];
 
@@ -182,7 +182,7 @@ export const mockHeroSlides = [
   },
   {
     id: '2',
-    title: 'New Faces 2024',
+    title: 'New Faces 2026',
     subtitle: 'Meet our latest signings making waves in the fashion industry',
     imageUrl: '/hero/hero-2.jpg',
     link: '/men',

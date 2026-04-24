@@ -51,4 +51,7 @@ server.log
 /skills/
 
 # OpenNext build output
-/.open-next/
+/.open-next/\n# Large Files\npublic/Lenny today/*.pdf
+
+# Large Files
+public/Lenny today/*.pdf

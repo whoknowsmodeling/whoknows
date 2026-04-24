@@ -90,6 +90,11 @@ const nextConfig: NextConfig = {
         destination: '/men',
         permanent: true,
       },
+      {
+        source: '/models',
+        destination: '/archives',
+        permanent: true,
+      },
     ];
   },
 };

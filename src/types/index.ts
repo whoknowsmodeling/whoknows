@@ -25,6 +25,10 @@ export interface ModelImage {
   alt: string | null;
   order: number;
   isPrimary: boolean;
+  isFace: boolean;
+  isPrimeAll: boolean;
+  isPrimeWomen: boolean;
+  isPrimeMen: boolean;
 }
 
 export interface Campaign {

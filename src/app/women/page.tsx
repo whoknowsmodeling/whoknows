@@ -1,10 +1,8 @@
 import { Metadata } from 'next';
-import { ModelGrid } from '@/components/models/ModelCard';
-import { mockModels } from '@/lib/data';
-import type { Model } from '@/types';
-import { generateSEO, generateBreadcrumbSchema } from '@/lib/seo';
+import { RosterSection } from '@/components/sections/RosterSection';
 import { getGenderRoster } from '@/lib/edge-data';
-import { GenderToggle } from '@/components/layout/GenderToggle';
+import { generateSEO, generateBreadcrumbSchema } from '@/lib/seo';
+import type { Model } from '@/types';
 
 export const revalidate = 60;
 
@@ -24,37 +22,12 @@ export const metadata: Metadata = generateSEO({
   canonical: '/women',
 });
 
-async function getWomenModels(): Promise<Model[]> {
-  const models = await getGenderRoster('women');
-  return models as unknown as Model[];
-}
-
 export default async function WomenPage() {
-  const womenModels = await getWomenModels();
+  const models = await getGenderRoster('women');
 
   return (
     <>
-      <section className="pt-24 lg:pt-32 pb-16 lg:pb-24">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12 lg:mb-16">
-            <div>
-              <p className="text-sm uppercase tracking-wider text-neutral-500 mb-2">
-                Our Talent
-              </p>
-              <h1 className="font-serif text-4xl lg:text-5xl font-medium tracking-tight">
-                Women
-              </h1>
-            </div>
-            
-            <div className="flex-shrink-0">
-              <GenderToggle currentGender="women" />
-            </div>
-          </div>
-
-          <ModelGrid models={womenModels} columns={4} forcePriority={true} />
-        </div>
-      </section>
-
+      <RosterSection gender="women" models={models as unknown as Model[]} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

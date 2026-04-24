@@ -42,6 +42,10 @@ model ModelImage {
   concept   String?
   order     Int      @default(0)
   isPrimary Boolean  @default(false)
+  isFace    Boolean  @default(false)
+  isPrimeAll Boolean @default(false)
+  isPrimeWomen Boolean @default(false)
+  isPrimeMen Boolean @default(false)
   createdAt DateTime @default(now())
   
   @@index([modelId])

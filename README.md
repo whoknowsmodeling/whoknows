@@ -1,4 +1,4 @@
-🚀 Welcome to WhoKnows Models — Industrial Build v35.3.3 by IndoDesign.Website | Bali.Technology
+🚀 Welcome to WhoKnows Models — Industrial Build v35.3.4 by IndoDesign.Website | Bali.Technology
 
 A modern, production-ready web application scaffold built to accelerate development for professional website projects by Indo Design Website (indodesign.website / bali.technology).
 
@@ -7,7 +7,7 @@ A modern, production-ready web application scaffold built to accelerate developm
 This scaffold provides a robust foundation built with:
 
 🎯 Core Framework
-⚡ Next.js 16 - Production-ready React framework with App Router
+⚡ Next.js 15.1.7 - Production-ready React framework with App Router
 📘 TypeScript 5 - Type-safe JavaScript
 🎨 Tailwind CSS 4 - Utility-first CSS framework
 🧩 UI Components & Styling

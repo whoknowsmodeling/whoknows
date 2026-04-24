@@ -4,7 +4,6 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { ModelCard } from './ModelCard';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 import type { Model } from '@/types';
 
 interface ModelCarouselProps {
@@ -47,8 +46,8 @@ export function ModelCarousel({ models = [] }: ModelCarouselProps) {
 
   if (!models || models.length === 0) {
     return (
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 h-96 animate-pulse bg-neutral-100 rounded flex items-center justify-center">
-        <p className="text-neutral-400">Loading models...</p>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 h-96 bg-neutral-100 rounded flex items-center justify-center">
+        <p className="text-neutral-400 col-span-2 lg:col-span-4 text-center">No models available</p>
       </div>
     );
   }
@@ -64,9 +63,9 @@ export function ModelCarousel({ models = [] }: ModelCarouselProps) {
           {models.map((model, index) => (
             <div
               key={model.id}
-              className="min-w-0 flex-[0_0_85%] sm:flex-[0_0_33.333%] lg:flex-[0_0_20%] xl:flex-[0_0_16.666%] pl-4 lg:pl-6"
+              className="min-w-0 flex-[0_0_85%] sm:flex-[0_0_40%] lg:flex-[0_0_25%] pl-4 lg:pl-6"
             >
-              <ModelCard model={model} index={index} variant="passport" forcePriority={index < 5} />
+              <ModelCard model={model} index={index} variant="square" forcePriority={index < 4} />
             </div>
           ))}
         </div>

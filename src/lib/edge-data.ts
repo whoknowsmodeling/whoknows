@@ -67,23 +67,44 @@ export async function getModelsList(gender: string) {
 export async function getPublicHomeData() {
   try {
     const [
-      { data: models },
-      { data: campaigns },
-      { data: heroSlides },
-      { data: clients }
+      faceResult,
+      womenPrimeResult,
+      menPrimeResult,
+      campaignsResult,
+      heroSlidesResult,
+      clientsResult
     ] = await Promise.all([
-      supabaseAdmin.from("Model").select(`*, images:ModelImage(*)`).eq("featured", true).order("gender", { ascending: false }).order("order", { ascending: true }),
+      supabaseAdmin.from("ModelImage").select("*, model:Model(*)").eq("isFace", true).limit(20),
+      supabaseAdmin.from("ModelImage").select("*, model:Model(*)").eq("isPrimeWomen", true).limit(1),
+      supabaseAdmin.from("ModelImage").select("*, model:Model(*)").eq("isPrimeMen", true).limit(1),
       supabaseAdmin.from("Campaign").select(`*, images:CampaignImage(*), models:CampaignModel(model:Model(*, images:ModelImage(*)))`).eq("featured", true).eq("active", true).order("createdAt", { ascending: false }).limit(2),
       supabaseAdmin.from("HeroSlide").select("*").eq("active", true).order("order", { ascending: true }),
       supabaseAdmin.from("Client").select("*").eq("active", true).order("order", { ascending: true })
     ]);
 
+    if (faceResult.error) console.error("[HomeData] faceImages error:", faceResult.error.message, faceResult.error);
+    if (womenPrimeResult.error) console.error("[HomeData] womenPrime error:", womenPrimeResult.error.message);
+    if (menPrimeResult.error) console.error("[HomeData] menPrime error:", menPrimeResult.error.message);
+    if (campaignsResult.error) console.error("[HomeData] campaigns error:", campaignsResult.error.message);
+    if (heroSlidesResult.error) console.error("[HomeData] heroSlides error:", heroSlidesResult.error.message);
+    if (clientsResult.error) console.error("[HomeData] clients error:", clientsResult.error.message);
+
+    const faceImages = faceResult.data;
+    const womenPrimeImages = womenPrimeResult.data;
+    const menPrimeImages = menPrimeResult.data;
+    const campaigns = campaignsResult.data;
+    const heroSlides = heroSlidesResult.data;
+    const clients = clientsResult.data;
+
     return {
-      featuredModels: models || [],
+      faceModels: (faceImages || []).map(img => ({ ...img.model, faceImage: img })),
+      womenPrime: womenPrimeImages?.[0] ? { ...womenPrimeImages[0].model, primeImage: womenPrimeImages[0] } : null,
+      menPrime: menPrimeImages?.[0] ? { ...menPrimeImages[0].model, primeImage: menPrimeImages[0] } : null,
       campaigns: campaigns || [],
       heroSlides: heroSlides || [],
       clients: clients || [],
-      galleryModels: (models || []).slice(0, 18)
+      // For backwards compatibility or gallery
+      featuredModels: (faceImages || []).map(img => img.model)
     };
   } catch (error) {
     console.error("Error fetching public home data:", error);
