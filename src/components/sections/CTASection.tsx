@@ -20,7 +20,7 @@ export function CTASection() {
             alt="MEN"
             width={380}
             height={220}
-            className="h-14 lg:h-24 w-auto"
+            className="h-10 lg:h-16 w-auto"
             loading="lazy"
           />
         </Link>
@@ -36,7 +36,7 @@ export function CTASection() {
             alt="WOMEN"
             width={560}
             height={220}
-            className="h-14 lg:h-24 w-auto"
+            className="h-10 lg:h-16 w-auto"
             loading="lazy"
           />
         </Link>

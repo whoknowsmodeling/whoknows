@@ -145,15 +145,21 @@ export async function getAllModels() {
        return allModels;
     }
 
+    // Interleave pattern: Woman | Man | Woman
     const interleaved: any[] = [];
-    const maxLength = Math.max(women.length, men.length);
+    let wIdx = 0;
+    let mIdx = 0;
     
-    for (let i = 0; i < maxLength; i++) {
-      if (women[i]) interleaved.push(women[i]);
-      if (men[i]) interleaved.push(men[i]);
+    while (wIdx < women.length || mIdx < men.length) {
+      // First Woman
+      if (wIdx < women.length) interleaved.push(women[wIdx++]);
+      // Then Man
+      if (mIdx < men.length) interleaved.push(men[mIdx++]);
+      // Then Second Woman
+      if (wIdx < women.length) interleaved.push(women[wIdx++]);
     }
 
-    return interleaved.length > 0 ? interleaved : allModels;
+    return interleaved;
   } catch (err) {
     console.error(`[getAllModels] Unexpected Error:`, err);
     return [];

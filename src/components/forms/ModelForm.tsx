@@ -69,54 +69,54 @@ export default function ModelForm({ initialData, gender }: ModelFormProps) {
             <CardContent className="pt-6 space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label>Full Name</Label>
-                  <Input name="name" defaultValue={initialData?.name} required className="bg-neutral-800 border-neutral-700" />
+                  <Label className="text-white">Full Name</Label>
+                  <Input name="name" defaultValue={initialData?.name} required className="bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500" />
                 </div>
                 <div className="space-y-2">
-                  <Label>Location</Label>
-                  <Input name="location" defaultValue={initialData?.location} placeholder="e.g. New York, London" className="bg-neutral-800 border-neutral-700" />
+                  <Label className="text-white">Location</Label>
+                  <Input name="location" defaultValue={initialData?.location} placeholder="e.g. New York, London" className="bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500" />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label>Biography</Label>
-                <Textarea name="bio" defaultValue={initialData?.bio} className="bg-neutral-800 border-neutral-700 h-32" />
+                <Label className="text-white">Biography</Label>
+                <Textarea name="bio" defaultValue={initialData?.bio} className="bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 h-32" />
               </div>
 
               <div className="flex items-center space-x-2 pt-2">
                 <Switch name="featured" defaultChecked={initialData?.featured} id="featured" />
-                <Label htmlFor="featured">Featured Talent</Label>
+                <Label htmlFor="featured" className="text-white">Featured Talent</Label>
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-neutral-900 border-neutral-800">
             <CardContent className="pt-6">
-              <Label className="text-lg font-serif mb-4 block">Physical Attributes</Label>
+              <Label className="text-lg font-serif mb-4 block text-white">Physical Attributes</Label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="space-y-2">
-                  <Label className="text-xs uppercase text-neutral-500">Height</Label>
-                  <Input name="height" defaultValue={initialData?.height} placeholder="5'10" className="bg-neutral-800 border-neutral-700" />
+                  <Label className="text-xs uppercase text-neutral-400">Height</Label>
+                  <Input name="height" defaultValue={initialData?.height} placeholder="5'10" className="bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500" />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-xs uppercase text-neutral-500">Chest/Bust</Label>
-                  <Input name="chest" defaultValue={initialData?.chest} placeholder="32" className="bg-neutral-800 border-neutral-700" />
+                  <Label className="text-xs uppercase text-neutral-400">Chest/Bust</Label>
+                  <Input name="chest" defaultValue={initialData?.chest} placeholder="32" className="bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500" />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-xs uppercase text-neutral-500">Waist</Label>
-                  <Input name="waist" defaultValue={initialData?.waist} placeholder="24" className="bg-neutral-800 border-neutral-700" />
+                  <Label className="text-xs uppercase text-neutral-400">Waist</Label>
+                  <Input name="waist" defaultValue={initialData?.waist} placeholder="24" className="bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500" />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-xs uppercase text-neutral-500">Hips</Label>
-                  <Input name="hips" defaultValue={initialData?.hips} placeholder="34" className="bg-neutral-800 border-neutral-700" />
+                  <Label className="text-xs uppercase text-neutral-400">Hips</Label>
+                  <Input name="hips" defaultValue={initialData?.hips} placeholder="34" className="bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500" />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-xs uppercase text-neutral-500">Hair</Label>
-                  <Input name="hair" defaultValue={initialData?.hair} placeholder="Brown" className="bg-neutral-800 border-neutral-700" />
+                  <Label className="text-xs uppercase text-neutral-400">Hair</Label>
+                  <Input name="hair" defaultValue={initialData?.hair} placeholder="Brown" className="bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500" />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-xs uppercase text-neutral-500">Eyes</Label>
-                  <Input name="eyes" defaultValue={initialData?.eyes} placeholder="Blue" className="bg-neutral-800 border-neutral-700" />
+                  <Label className="text-xs uppercase text-neutral-400">Eyes</Label>
+                  <Input name="eyes" defaultValue={initialData?.eyes} placeholder="Blue" className="bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500" />
                 </div>
               </div>
             </CardContent>
@@ -126,7 +126,7 @@ export default function ModelForm({ initialData, gender }: ModelFormProps) {
         <div className="space-y-6">
           <Card className="bg-neutral-900 border-neutral-800">
             <CardContent className="pt-6 space-y-4">
-              <Label className="text-lg font-serif">Portfolio Images</Label>
+              <Label className="text-lg font-serif text-white">Portfolio Images</Label>
               
               <div className="grid grid-cols-2 gap-2">
                 {existingImages.map((img: any) => (
@@ -193,12 +193,12 @@ export default function ModelForm({ initialData, gender }: ModelFormProps) {
                 ))}
 
                 <label className="aspect-[3/4] border-2 border-dashed border-neutral-800 hover:border-neutral-700 rounded-md cursor-pointer flex flex-col items-center justify-center gap-2 transition-colors">
-                  <Upload className="w-6 h-6 text-neutral-500" />
-                  <span className="text-[10px] uppercase tracking-widest text-neutral-500">Upload</span>
+                  <Upload className="w-6 h-6 text-neutral-400" />
+                  <span className="text-[10px] uppercase tracking-widest text-white/70">Upload</span>
                   <input type="file" name={initialData ? "newImages" : "images"} multiple accept="image/*" className="hidden" onChange={handleFileChange} />
                 </label>
               </div>
-              <p className="text-[10px] text-neutral-500 italic">Images will be automatically optimized to WebP format.</p>
+              <p className="text-[10px] text-neutral-400 italic">Images will be automatically optimized to WebP format.</p>
             </CardContent>
           </Card>
 

@@ -12,12 +12,39 @@ interface FacesSectionProps {
 }
 
 export function FacesSection({ models = [] }: FacesSectionProps) {
-  const [emblaRef] = useEmblaCarousel({
+  const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
     dragFree: true,
     align: 'start',
     containScroll: 'trimSnaps',
   });
+
+  // MacBook Trackpad / Wheel Support
+  React.useEffect(() => {
+    if (!emblaApi) return;
+    
+    const emblaNode = emblaApi.rootNode();
+    const onWheel = (e: WheelEvent) => {
+      // If the swipe is primarily horizontal
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        // Horizontal swiping for trackpad
+        const engine = emblaApi.internalEngine();
+        
+        // Move the carousel by the delta amount
+        engine.location.add(-e.deltaX);
+        engine.target.set(engine.location);
+        
+        // Trigger the animation to update the view
+        engine.animation.start();
+        
+        // If we want to prevent the browser's back/forward gesture during swipe:
+        // e.preventDefault(); 
+      }
+    };
+
+    emblaNode.addEventListener('wheel', onWheel as any, { passive: true });
+    return () => emblaNode.removeEventListener('wheel', onWheel as any);
+  }, [emblaApi]);
 
   if (!models || models.length === 0) {
     return (
@@ -39,7 +66,7 @@ export function FacesSection({ models = [] }: FacesSectionProps) {
     <section className="py-12 bg-white" aria-label="Faces">
       {/* Header */}
       <div className="px-4 lg:px-8 mb-5 flex items-center justify-between">
-        <span className="font-sans text-3xl font-semibold tracking-tight">FACES</span>
+        <span className="font-sans text-5xl lg:text-5xl font-black tracking-tighter">FACES</span>
         <Link
           href="/models"
           className="hidden sm:flex items-center gap-1 font-sans text-xs uppercase tracking-[0.1em] hover:opacity-60 transition-opacity"
@@ -56,7 +83,7 @@ export function FacesSection({ models = [] }: FacesSectionProps) {
             return (
               <div
                 key={model.id}
-                className="flex-[0_0_50%] sm:flex-[0_0_33.333%] lg:flex-[0_0_25%] min-w-0 pr-[1px]"
+                className="flex-[0_0_50%] sm:flex-[0_0_33.333%] lg:flex-[0_0_25%] min-w-0 pr-2 lg:pr-4"
               >
                 <Link href={`/model/${model.slug}`} className="group block">
                   <div className="aspect-square relative overflow-hidden bg-neutral-100">

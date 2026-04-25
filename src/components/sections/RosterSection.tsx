@@ -41,7 +41,7 @@ export function RosterSection({ gender, models = [], showSubtitle = true }: Rost
             alt={cfg.headingAlt}
             width={400}
             height={180}
-            className="h-12 lg:h-20 w-auto"
+            className="h-10 lg:h-14 w-auto"
             loading="lazy"
           />
         </Link>

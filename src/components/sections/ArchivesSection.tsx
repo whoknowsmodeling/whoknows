@@ -128,13 +128,13 @@ export function ArchivesSection({ models = [] }: ArchivesSectionProps) {
   return (
     <section className="bg-white py-12 lg:py-16" aria-label="Archives">
       {/* ARCHIVES heading — WebP */}
-      <div className="flex flex-col items-center mb-8 pt-8 lg:pt-12">
+      <div className="flex flex-col items-center mb-8 pt-6 lg:pt-10">
         <Image
           src="/design/archives.webp"
           alt="ARCHIVES — WHOKNOWS ++ MODELS"
           width={800}
           height={120}
-          className="w-auto max-w-[300px] lg:max-w-[460px] h-auto"
+          className="w-auto max-w-[240px] lg:max-w-[380px] h-auto"
           loading="lazy"
         />
       </div>

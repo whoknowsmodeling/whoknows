@@ -8,6 +8,7 @@ import { getModelDetail, getSitemapSlugs } from '@/lib/edge-data';
 import { generateSEO, generateBreadcrumbSchema, generatePersonSchema } from '@/lib/seo';
 import { Button } from '@/components/ui/button';
 import { GenderToggle } from '@/components/layout/GenderToggle';
+import { BookingCTA } from '@/components/models/BookingCTA';
 
 export const revalidate = 60;
 
@@ -135,25 +136,8 @@ export default async function ModelProfilePage({ params }: ModelPageProps) {
                   </dl>
                 </div>
 
-                {/* Status Badge */}
-                <div className="flex items-center gap-2 pt-4">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="text-[10px] uppercase tracking-widest font-semibold text-neutral-500">Available for Booking</span>
-                </div>
-
-                {/* Booking Button */}
-                <Button
-                  asChild
-                  className="w-full bg-black hover:bg-neutral-800 text-white py-8 rounded-none uppercase tracking-[0.2em] text-[10px] font-bold transition-all hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  <a
-                    href={`mailto:contact@whoknows.pages.dev?subject=Booking Inquiry: ${encodeURIComponent(model.name)}`}
-                    aria-label={`Book ${model.name.split(' ')[0]} via email`}
-                  >
-                    <Mail className="w-4 h-4 mr-2" aria-hidden="true" />
-                    Book {model.name.split(' ')[0]}
-                  </a>
-                </Button>
+                {/* Booking CTA (Modal Trigger) */}
+                <BookingCTA modelName={model.name} />
               </div>
             </div>
           </div>
