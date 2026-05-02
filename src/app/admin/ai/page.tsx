@@ -109,7 +109,8 @@ export default function WKAiPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  useEffect(() => { scrollToBottom(); }, [messages]);
+  // Scroll to bottom disabled per user request
+  // useEffect(() => { scrollToBottom(); }, [messages]);
 
   const fetchLogs = useCallback(async () => {
     setLogsLoading(true);
@@ -179,73 +180,73 @@ export default function WKAiPage() {
   });
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-serif font-light tracking-tight">WK_Ai Intelligence</h1>
-          <p className="text-neutral-500 text-sm mt-1">
+          <h1 className="text-2xl font-serif font-light tracking-tight">WK_Ai Intelligence</h1>
+          <p className="text-neutral-500 text-xs mt-1">
             Your dedicated COO — powered by the Oracle Engine
           </p>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1.5 bg-violet-500/10 border border-violet-500/30 rounded-full">
-          <div className="w-2 h-2 bg-violet-400 rounded-full animate-pulse" />
-          <span className="text-violet-300 text-xs font-medium">WK_Ai ONLINE</span>
+        <div className="flex items-center gap-2 px-3 py-1 bg-violet-500/10 border border-violet-500/30 rounded-full">
+          <div className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-pulse" />
+          <span className="text-violet-300 text-[10px] font-medium tracking-wider uppercase">Online</span>
         </div>
       </div>
 
       {/* Chat Interface */}
-      <Card className="bg-neutral-900/50 border-neutral-800 overflow-hidden">
-        <CardHeader className="border-b border-neutral-800 pb-4">
+      <Card className="bg-neutral-900/50 border-neutral-800 overflow-hidden shadow-2xl">
+        <CardHeader className="border-b border-neutral-800 py-3 px-5">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-600 to-indigo-800 flex items-center justify-center shadow-lg shadow-violet-900/40">
-              <Bot className="w-5 h-5 text-white" />
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-600 to-indigo-800 flex items-center justify-center shadow-lg shadow-violet-900/40">
+              <Bot className="w-4 h-4 text-white" />
             </div>
             <div>
-              <CardTitle className="text-base font-medium text-white">WK_Ai — Chief Operating Officer</CardTitle>
-              <p className="text-neutral-500 text-xs">WhoKnows Models Intelligence Layer</p>
+              <CardTitle className="text-sm font-medium text-white">WK_Ai — Chief Operating Officer</CardTitle>
+              <p className="text-neutral-500 text-[10px]">WhoKnows Models Intelligence Layer</p>
             </div>
-            <div className="ml-auto flex items-center gap-1.5">
-              <Zap className="w-3.5 h-3.5 text-amber-400" />
-              <span className="text-amber-400/80 text-xs font-mono tracking-wider">v35.0.0 — OPENAI SYNC</span>
+            <div className="ml-auto flex items-center gap-1.5 bg-neutral-950/50 px-2 py-1 rounded border border-neutral-800">
+              <Zap className="w-3 h-3 text-amber-400" />
+              <span className="text-amber-400/80 text-[9px] font-mono tracking-widest uppercase">Sync v35</span>
             </div>
           </div>
         </CardHeader>
         <CardContent className="p-0">
           {/* Messages */}
-          <ScrollArea className="h-[440px] p-6">
-            <div className="space-y-6">
+          <ScrollArea className="h-[400px] p-5">
+            <div className="space-y-5">
               {messages.map((msg, i) => (
                 <div key={i} className={cn('flex gap-3', msg.role === 'user' ? 'justify-end' : 'justify-start')}>
                   {msg.role === 'model' && (
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-600 to-indigo-800 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Bot className="w-4 h-4 text-white" />
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-violet-600 to-indigo-800 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Bot className="w-3.5 h-3.5 text-white" />
                     </div>
                   )}
                   <div
                     className={cn(
-                      'max-w-[78%] rounded-2xl px-4 py-3 text-sm leading-relaxed',
+                      'max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed break-words overflow-hidden shadow-sm',
                       msg.role === 'user'
                         ? 'bg-white text-black rounded-tr-sm'
-                        : 'bg-neutral-800 text-neutral-100 rounded-tl-sm'
+                        : 'bg-neutral-800/80 text-neutral-100 rounded-tl-sm border border-neutral-700/50'
                     )}
                   >
                     {msg.role === 'model' ? (
-                      <div className="prose prose-invert prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-li:my-0.5">
+                      <div className="prose prose-invert prose-sm max-w-none prose-p:my-0.5 prose-ul:my-0.5 prose-li:my-0.5 break-words">
                         <ReactMarkdown>{msg.content}</ReactMarkdown>
                       </div>
                     ) : (
-                      <p>{msg.content}</p>
+                      <p className="whitespace-pre-wrap">{msg.content}</p>
                     )}
                     {msg.timestamp && (
-                      <p className={cn('text-[10px] mt-1.5 font-mono', msg.role === 'user' ? 'text-neutral-500' : 'text-neutral-600')}>
+                      <p className={cn('text-[9px] mt-1 font-mono opacity-50', msg.role === 'user' ? 'text-neutral-500 text-right' : 'text-neutral-400')}>
                         {format(msg.timestamp, 'HH:mm:ss')}
                       </p>
                     )}
                   </div>
                   {msg.role === 'user' && (
-                    <div className="w-8 h-8 rounded-full bg-neutral-700 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <User className="w-4 h-4 text-neutral-300" />
+                    <div className="w-7 h-7 rounded-full bg-neutral-700 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <User className="w-3.5 h-3.5 text-neutral-300" />
                     </div>
                   )}
                 </div>
@@ -253,13 +254,13 @@ export default function WKAiPage() {
 
               {isLoading && (
                 <div className="flex gap-3 justify-start">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-600 to-indigo-800 flex items-center justify-center">
-                    <Bot className="w-4 h-4 text-white" />
+                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-violet-600 to-indigo-800 flex items-center justify-center">
+                    <Bot className="w-3.5 h-3.5 text-white" />
                   </div>
-                  <div className="bg-neutral-800 rounded-2xl rounded-tl-sm px-4 py-3">
-                    <div className="flex items-center gap-2 text-neutral-400 text-sm">
-                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                      Analyzing agency data...
+                  <div className="bg-neutral-800/80 rounded-2xl rounded-tl-sm px-4 py-2.5 border border-neutral-700/50">
+                    <div className="flex items-center gap-2 text-neutral-400 text-xs">
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                      Analyzing intelligence streams...
                     </div>
                   </div>
                 </div>
@@ -269,20 +270,20 @@ export default function WKAiPage() {
           </ScrollArea>
 
           {/* Input */}
-          <div className="border-t border-neutral-800 p-4 flex gap-3">
+          <div className="border-t border-neutral-800 p-4 bg-neutral-950/30 flex gap-3">
             <Input
               ref={inputRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Brief WK_Ai on your objective, Boss..."
-              className="bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500 focus-visible:ring-violet-500/50 focus-visible:border-violet-500/50 flex-1"
+              className="bg-neutral-900 border-neutral-800 text-white placeholder:text-neutral-600 focus-visible:ring-violet-500/50 focus-visible:border-violet-500/30 flex-1 h-11"
               disabled={isLoading}
             />
             <Button
               onClick={sendMessage}
               disabled={!input.trim() || isLoading}
-              className="bg-violet-600 hover:bg-violet-500 text-white px-4 transition-all"
+              className="bg-violet-600 hover:bg-violet-500 text-white w-11 h-11 p-0 transition-all flex-shrink-0 shadow-lg shadow-violet-900/20"
             >
               {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
             </Button>

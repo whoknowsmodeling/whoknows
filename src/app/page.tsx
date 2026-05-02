@@ -7,6 +7,7 @@ import { CTASection } from '@/components/sections/CTASection';
 import { BrandsSection } from '@/components/sections/BrandsSection';
 import { getPublicHomeData, getAllModels } from '@/lib/edge-data';
 import { generateSEO, generateBreadcrumbSchema } from '@/lib/seo';
+import { preload } from 'react-dom';
 
 export const revalidate = 60;
 
@@ -83,6 +84,18 @@ function SectionSkeleton() {
 export default async function HomePage() {
   const { faceModels, heroSlides, clients, allModels, womenModels, menModels } =
     await getData();
+
+  // Preload first 4 faces (LCP optimization)
+  faceModels.slice(0, 4).forEach((model: any) => {
+    const img = model.faceImage || model.images?.[0];
+    if (img?.imageUrl) {
+      preload(img.imageUrl, { 
+        as: 'image', 
+        fetchPriority: 'high',
+        imageSizes: "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+      });
+    }
+  });
 
   return (
     <>

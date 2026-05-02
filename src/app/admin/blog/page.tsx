@@ -17,7 +17,7 @@ import { useReactTable, getCoreRowModel, flexRender, ColumnDef } from '@tanstack
 import ReactMarkdown from 'react-markdown';
 import {
   FileText, Sparkles, Loader2, RefreshCw, Trash2,
-  CheckCircle2, Edit3, X, Eye, EyeOff, ExternalLink,
+  CheckCircle2, Edit3, X, Eye, EyeOff, ExternalLink, Plus,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -252,6 +252,37 @@ export default function BlogEnginePage() {
     await fetchBlogs();
   }
 
+  async function createManual() {
+    const title = prompt('Enter article title:', 'New Blog Post');
+    if (!title) return;
+    
+    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    
+    try {
+      const res = await fetch('/api/admin/blog', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title,
+          slug,
+          content: '# ' + title + '\n\nStart writing your article here...',
+          seoMetadata: {
+            title: title + ' | WhoKnows Models',
+            metaDescription: 'Read the latest from WhoKnows Models.',
+          }
+        }),
+      });
+      const data = await res.json();
+      if (data.id) {
+        await fetchBlogs();
+        await openEditor(data.id);
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Failed to create manual post.');
+    }
+  }
+
   // ── TanStack Table Columns ─────────────────────────────────────────────────
   const columns: ColumnDef<Blog>[] = [
     {
@@ -299,6 +330,17 @@ export default function BlogEnginePage() {
       header: '',
       cell: ({ row }) => (
         <div className="flex items-center gap-1.5 justify-end">
+          {row.original.status === 'DRAFT' && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 px-2 text-emerald-500 hover:text-emerald-400 hover:bg-emerald-500/10"
+              onClick={() => publishBlog(row.original.id)}
+            >
+              <CheckCircle2 className="w-3.5 h-3.5 mr-1" />
+              Publish
+            </Button>
+          )}
           {row.original.status === 'PUBLISHED' && (
             <a href={`/blog/${row.original.slug}`} target="_blank" rel="noopener noreferrer">
               <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-neutral-400 hover:text-white">
@@ -353,6 +395,10 @@ export default function BlogEnginePage() {
           <Button variant="outline" size="sm" onClick={fetchBlogs} disabled={loading} className="border-neutral-700 text-neutral-400 hover:text-white">
             <RefreshCw className={cn('w-4 h-4 mr-2', loading && 'animate-spin')} />
             Refresh
+          </Button>
+          <Button variant="outline" size="sm" onClick={createManual} className="border-violet-500/30 bg-violet-500/5 text-violet-300 hover:bg-violet-500/10">
+            <Plus className="w-4 h-4 mr-2" />
+            Create Manual
           </Button>
           <Button
             onClick={generateBlog}
