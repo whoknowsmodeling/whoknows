@@ -1,3 +1,5 @@
+'use server';
+
 import { getAllModels } from './edge-data';
 import { analyzeSearchIntent } from './gemini';
 
