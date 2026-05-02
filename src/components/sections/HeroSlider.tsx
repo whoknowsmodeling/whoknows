@@ -40,26 +40,29 @@ export function HeroSlider({ slides }: HeroSliderProps) {
 
   return (
     <section className="relative h-[70vh] lg:h-[90vh] overflow-hidden bg-black">
-      <AnimatePresence mode="wait">
+      {/* EXTREME PRE-CACHING: Render all slides in DOM to force background download */}
+      {slides.map((slide, index) => (
         <motion.div
-          key={currentIndex}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          key={index}
+          initial={false}
+          animate={{ opacity: index === currentIndex ? 1 : 0 }}
           transition={{ duration: 0.7 }}
-          className="absolute inset-0"
+          className="absolute inset-0 pointer-events-none"
+          style={{ zIndex: index === currentIndex ? 1 : 0 }}
         >
           <Image
-            src={slides[currentIndex].imageUrl}
-            alt={slides[currentIndex].title || 'Hero image'}
+            src={slide.imageUrl}
+            alt={slide.title || 'Hero image'}
             fill
-            priority={currentIndex === 0}
+            priority={index <= 1} // Aggressively preload first 2 slides
+            loading={index > 1 ? "eager" : undefined} // Force download all other slides invisibly
             className="object-cover object-center"
             sizes="100vw"
+            quality={85}
           />
           <div className="absolute inset-0 bg-black/30" />
         </motion.div>
-      </AnimatePresence>
+      ))}
 
       {/* Content */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">

@@ -1,6 +1,6 @@
-🚀 Welcome to WhoKnows Models — Industrial Build v35.3.4 by IndoDesign.Website | Bali.Technology
+🚀 Welcome to WhoKnows Models — Industrial Build v36.0.0 by IndoDesign.Website | Bali.Technology
 
-A modern, production-ready web application scaffold built to accelerate development for professional website projects by Indo Design Website (indodesign.website / bali.technology).
+A modern, production-ready web application scaffold built to accelerate development for professional website projects by Indo Design Website (indodesign.website / bali.technology). This version (v36.0.0) introduces the **Performance & Booking Milestone**.
 
 ✨ Technology Stack
 
@@ -14,6 +14,7 @@ This scaffold provides a robust foundation built with:
 🧩 shadcn/ui - Accessible component system (Radix-based)
 🎯 Lucide React - Icon system
 🌈 Framer Motion - Animation & interaction
+🖱️ Embla Carousel 8.6 - Optimized trackpad-friendly carousels
 🎨 Next Themes - Dark mode system
 📋 Forms & Validation
 🎣 React Hook Form - Form handling
@@ -25,27 +26,15 @@ This scaffold provides a robust foundation built with:
 🗄️ Database & Backend
 🗄️ Prisma - ORM for database
 🔐 NextAuth.js - Authentication system
-🧠 Intelligence Sync Engine - OpenAI (Persona) + Gemini (Data) Synchronized Layer
-🎨 Advanced UI Features
-📊 TanStack Table - Data tables
-🖱️ DND Kit - Drag & drop
-📊 Recharts - Charts
-🖼️ Sharp - Image processing
-🌍 Internationalization & Utilities
-🌍 Next Intl - i18n support
-📅 Date-fns - Date utilities
-🪝 ReactUse - Utility hooks
-🎯 Why This Scaffold?
-🏎️ Fast Development - Pre-configured best practices
-🎨 Clean UI System - Structured component system
-🔒 Type Safety - Full TypeScript + Zod
-📱 Responsive - Mobile-first approach
-🗄️ Backend Ready - Prisma + API structure
-🔐 Auth Ready - Authentication system included
-📊 Data Ready - Tables, charts, interactions
-🌍 Multi-language Ready
-🚀 Production Ready - Optimized build & deployment
-⚙️ Business-Oriented Structure - Designed for real client projects
+🧠 Intelligence Sync Engine - OpenAI 4o (Persona) + Gemini 2.0 (Data) Synchronized Layer
+
+🎯 Key Milestone Features (v36.0.0)
+- 🎟️ **Integrated Booking System**: New scrollable modal for talent inquiries.
+- 📐 **W-M-W Pattern Grid**: Strictly balanced 2:1 Woman-to-Man talent interleaving.
+- 🖱️ **Trackpad Support**: Native MacBook horizontal swipe gestures for the Faces section.
+- ⚡ **WebP-First Architecture**: High-performance image optimization for "Instant Page" loads.
+- 🔒 **Admin UI Hardening**: High-contrast readability fixes for administrative model forms.
+
 🚀 Quick Start
 # Install dependencies
 bun install
@@ -59,61 +48,32 @@ bun run build
 # Start production server
 bun start
 
-Open http://localhost:3000
- to view the project.
+Open http://localhost:3000 to view the project.
 
 🏗️ Built for Indo Design Website System
 
 This scaffold is structured for:
+- Website development projects (company profile, landing page, custom system)
+- Client-based workflow (multi-project handling)
+- Scalable architecture for future feature expansion
+- Clean separation between UI, logic, and data layer
 
-Website development projects (company profile, landing page, custom system)
-Client-based workflow (multi-project handling)
-Scalable architecture for future feature expansion
-Clean separation between UI, logic, and data layer
-📁 Project Structure
+Folder Structure
 src/
 ├── app/                 # Next.js App Router pages
 ├── components/          # Reusable components
+│   ├── sections/       # Core landing page sections
+│   ├── models/         # Talent & Booking specific components
 │   └── ui/             # shadcn/ui components
 ├── hooks/              # Custom hooks
-└── lib/                # Utilities & configs
-🎨 Available Features & Components
-🧩 UI Components
-Layout: Card, Separator, Resizable Panels
-Forms: Input, Select, Checkbox, Switch
-Feedback: Alert, Toast, Skeleton
-Navigation: Breadcrumb, Menu, Pagination
-Overlay: Dialog, Tooltip, Popover
-Data Display: Badge, Avatar, Calendar
-📊 Data Features
-Tables (TanStack Table)
-Charts (Recharts)
-Forms with validation
-🎨 Interaction Features
-Animations (Framer Motion)
-Drag & Drop (DND Kit)
-Theme switching
-🔐 Backend Integration
-Authentication (NextAuth.js)
-Database ORM (Prisma)
-API layer with Fetch + Query
-State management with Zustand
-🌍 Production Features
-Internationalization
-Image optimization
-Type-safe architecture
-Utility hooks
-🤝 Development Workflow
-Setup project using this scaffold
-Customize based on client requirements
-Integrate backend & database
-Deploy to production environment
-Maintain & scale system
+└── lib/                # Utilities & configs (edge-data, supabase, etc.)
+
 🌐 About Indo Design Website
 
 Indo Design Website (indodesign.website | bali.technology) focuses on:
+- Professional website development
+- Custom web systems
+- Business-oriented digital solutions
+- Scalable and maintainable architecture
 
-Professional website development
-Custom web systems
-Business-oriented digital solutions
-Scalable and maintainable architecture
+*Generated by WhoKnows Models Engineering — Industrial Audit v36.0.0*

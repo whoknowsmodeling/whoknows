@@ -14,6 +14,13 @@ export async function processImageToWebP(inputBuffer: Buffer): Promise<Buffer> {
     const startTime = Date.now();
     
     const outputBuffer = await sharp(inputBuffer)
+      .resize({
+        width: 2000,
+        height: 2000,
+        fit: 'inside',
+        withoutEnlargement: true
+      })
+      .withMetadata(false) // Strip EXIF data
       .webp({ quality: 80, effort: 6 })
       .toBuffer();
 

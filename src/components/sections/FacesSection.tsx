@@ -87,16 +87,18 @@ export function FacesSection({ models = [] }: FacesSectionProps) {
               >
                 <Link href={`/model/${model.slug}`} className="group block">
                   <div className="aspect-square relative overflow-hidden bg-neutral-100">
+                    <div className="absolute inset-0 bg-neutral-200 animate-pulse" />
                     {img && (
                       <Image
                         src={img.imageUrl}
                         alt={img.alt || model.name}
                         fill
-                        quality={70}
+                        quality={75}
                         sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                         className="object-cover object-top"
                         priority={index < 4}
                         loading={index < 4 ? 'eager' : 'lazy'}
+                        fetchPriority={index < 4 ? 'high' : 'auto'}
                         placeholder="blur"
                         blurDataURL="data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAAAwAQCdASoIAAUAAUAmJaQAA3AA/u66AAA="
                       />

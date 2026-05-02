@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { preload } from 'react-dom';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Volume2, VolumeX } from 'lucide-react';
@@ -12,6 +13,9 @@ interface HeroVideoProps {
 }
 
 export function HeroVideo({ slide, videoSrc }: HeroVideoProps) {
+  // EXTREME PRE-CACHING: Tell the browser to download the poster image immediately with high priority
+  preload('/Hero-poster.webp', { as: 'image', fetchPriority: 'high' });
+
   const [isMuted, setIsMuted] = useState(true);
   const audioRef = useRef<HTMLAudioElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -40,7 +44,7 @@ export function HeroVideo({ slide, videoSrc }: HeroVideoProps) {
           ref={videoRef}
           src={videoSrc}
           poster="/Hero-poster.webp"
-          preload="metadata"
+          preload="auto"
           autoPlay
           loop
           muted

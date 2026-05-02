@@ -97,7 +97,7 @@ export default async function ModelProfilePage({ params }: ModelPageProps) {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
             {/* Gallery Section */}
-            <div className="lg:col-span-8 space-y-16">
+            <div className="lg:col-span-8 space-y-16 order-last lg:order-first">
               {concepts.map((concept) => (
                 <div key={concept} className="space-y-6">
                   <div className="flex items-center gap-4">
@@ -110,7 +110,7 @@ export default async function ModelProfilePage({ params }: ModelPageProps) {
             </div>
 
             {/* Model Info Sticky Sidebar */}
-            <div className="lg:col-span-4">
+            <div className="lg:col-span-4 order-first lg:order-last">
               <div className="sticky top-32 space-y-12">
                 <div>
                   <h1 className="font-serif text-4xl lg:text-5xl font-medium tracking-tighter mb-6 uppercase">

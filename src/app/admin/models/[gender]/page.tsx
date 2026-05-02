@@ -29,14 +29,20 @@ export default async function AdminModelsPage({ params }: { params: Promise<{ ge
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {models.map((model) => (
+        {models.map((model, index) => (
           <Card key={model.id} className="bg-neutral-900 border-neutral-800 overflow-hidden group">
             <div className="relative aspect-[3/4] bg-neutral-800">
+              {/* Shimmer Effect */}
+              <div className="absolute inset-0 bg-neutral-800 animate-pulse" />
               {model.images[0]?.imageUrl && (
                 <Image
                   src={model.images[0].imageUrl}
                   alt={model.name}
                   fill
+                  quality={60}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  priority={index < 8}
+                  loading={index < 8 ? "eager" : "lazy"}
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               )}

@@ -16,12 +16,15 @@ interface ModelCardProps {
 export function ModelCard({ model, index = 0, variant = 'default', forcePriority = false }: ModelCardProps) {
   const primaryImage = model.faceImage || model.primeImage || model.images?.find((img) => img.isPrimary) || model.images?.[0];
 
+  const isPriority = forcePriority || index < 4;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.5, delay: index * 0.05 }}
+      initial={isPriority ? false : { opacity: 0, y: 20 }}
+      whileInView={isPriority ? undefined : { opacity: 1, y: 0 }}
+      viewport={isPriority ? undefined : { once: true, margin: '-50px' }}
+      transition={isPriority ? undefined : { duration: 0.5, delay: index * 0.05 }}
+      style={isPriority ? { opacity: 1, y: 0 } : undefined}
     >
       <Link href={`/model/${model.slug}`} className="group block">
         <div className={cn(
@@ -29,16 +32,20 @@ export function ModelCard({ model, index = 0, variant = 'default', forcePriority
           variant === 'passport' ? "aspect-[4/5]" : 
           variant === 'square' ? "aspect-square" : "aspect-[3/4]"
         )}>
+          {/* Shimmer Effect Background */}
+          <div className="absolute inset-0 bg-neutral-200 animate-pulse" />
+
           {primaryImage && (
             <Image
               src={primaryImage.imageUrl}
               alt={primaryImage.alt || `${model.name} - Model`}
               fill
-              quality={60}
+              quality={75}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover object-top transition-all duration-700 group-hover:scale-105"
               priority={forcePriority || index < 8}
               loading={forcePriority || index < 8 ? "eager" : "lazy"}
+              fetchPriority={forcePriority || index < 4 ? "high" : "auto"}
               placeholder="blur"
               blurDataURL="data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAAAwAQCdASoIAAUAAUAmJaQAA3AA/u66AAA="
             />
