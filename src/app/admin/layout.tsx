@@ -17,6 +17,8 @@ import {
   Bot,
   Sparkles,
   Layers,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -39,6 +41,7 @@ const sidebarLinks = [
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   // Don't show sidebar on login page
   if (pathname === "/admin/login") return <>{children}</>;
@@ -46,12 +49,29 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="flex min-h-screen bg-neutral-950 text-white font-sans">
       {/* Sidebar - Desktop */}
-      <aside className="hidden lg:flex flex-col w-72 bg-neutral-900 border-r border-neutral-800 fixed h-screen z-40 transition-all duration-300">
-        <div className="p-8 border-b border-neutral-800">
-          <Link href="/admin" className="flex items-center gap-3 group">
-            <div className="w-8 h-8 bg-white text-black rounded flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">WK</div>
-            <span className="font-serif text-xl font-medium tracking-tight">Admin <span className="text-neutral-500 font-sans text-xs uppercase tracking-widest ml-1">v3.0</span></span>
-          </Link>
+      <aside className={cn(
+        "hidden lg:flex flex-col bg-neutral-900 border-r border-neutral-800 fixed h-screen z-40 transition-all duration-300 ease-in-out",
+        isCollapsed ? "w-20" : "w-72"
+      )}>
+        <div className={cn(
+          "p-6 border-b border-neutral-800 flex items-center transition-all duration-300",
+          isCollapsed ? "justify-center px-0" : "justify-between"
+        )}>
+          {!isCollapsed && (
+            <Link href="/admin" className="flex items-center gap-3 group overflow-hidden">
+              <div className="w-8 h-8 bg-white text-black rounded flex-shrink-0 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">WK</div>
+              <span className="font-serif text-xl font-medium tracking-tight whitespace-nowrap">Admin <span className="text-neutral-500 font-sans text-xs uppercase tracking-widest ml-1">v3.0</span></span>
+            </Link>
+          )}
+          <button 
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className={cn(
+              "p-2 rounded-lg hover:bg-neutral-800 text-neutral-400 hover:text-white transition-colors",
+              isCollapsed ? "" : "ml-2"
+            )}
+          >
+            {isCollapsed ? <PanelLeftOpen className="w-5 h-5" /> : <PanelLeftClose className="w-5 h-5" />}
+          </button>
         </div>
 
         <nav className="flex-1 p-4 space-y-1 mt-4 overflow-y-auto custom-scrollbar">
@@ -66,39 +86,45 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 group relative",
                   isActive 
                     ? "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.1)]" 
-                    : "text-neutral-400 hover:text-white hover:bg-neutral-800/50"
+                    : "text-neutral-400 hover:text-white hover:bg-neutral-800/50",
+                  isCollapsed && "justify-center px-0 mx-2"
                 )}
+                title={isCollapsed ? link.name : ""}
               >
-                <Icon className={cn("w-5 h-5", isActive ? "" : "group-hover:scale-110 transition-transform")} />
-                {link.name}
-                {isActive && <ChevronRight className="w-4 h-4 ml-auto" />}
+                <Icon className={cn("w-5 h-5 flex-shrink-0", isActive ? "" : "group-hover:scale-110 transition-transform")} />
+                {!isCollapsed && <span className="truncate">{link.name}</span>}
+                {isActive && !isCollapsed && <ChevronRight className="w-4 h-4 ml-auto flex-shrink-0" />}
               </Link>
             );
           })}
         </nav>
 
-        <div className="p-4 border-t border-neutral-800 bg-neutral-900/50 backdrop-blur">
+        <div className={cn(
+          "p-4 border-t border-neutral-800 bg-neutral-900/50 backdrop-blur transition-all",
+          isCollapsed ? "items-center px-2" : ""
+        )}>
           <Link
             href="/"
             target="_blank"
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-neutral-400 hover:text-white transition-colors"
+            className={cn(
+              "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-neutral-400 hover:text-white transition-colors",
+              isCollapsed && "justify-center px-0"
+            )}
+            title={isCollapsed ? "View Website" : ""}
           >
-            <ExternalLink className="w-5 h-5" />
-            View Website
-          </Link>
-          <Link
-            href="/"
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-neutral-400 hover:text-white transition-colors mt-1"
-          >
-            <ChevronRight className="w-5 h-5 rotate-180" />
-            Home
+            <ExternalLink className="w-5 h-5 flex-shrink-0" />
+            {!isCollapsed && <span>View Website</span>}
           </Link>
           <button
             onClick={() => signOut({ callbackUrl: "/" })}
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-red-400 hover:bg-red-500/10 transition-colors mt-2 w-full text-left"
+            className={cn(
+              "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-red-400 hover:bg-red-500/10 transition-colors mt-2 w-full text-left",
+              isCollapsed && "justify-center px-0"
+            )}
+            title={isCollapsed ? "Sign Out" : ""}
           >
-            <LogOut className="w-5 h-5" />
-            Sign Out
+            <LogOut className="w-5 h-5 flex-shrink-0" />
+            {!isCollapsed && <span>Sign Out</span>}
           </button>
         </div>
       </aside>
@@ -148,7 +174,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 lg:ml-72 min-h-screen relative flex flex-col">
+      <main className={cn(
+        "flex-1 min-h-screen relative flex flex-col transition-all duration-300 ease-in-out",
+        isCollapsed ? "lg:ml-20" : "lg:ml-72"
+      )}>
         {/* Top Header - Mobile Only */}
         <header className={cn(
           "lg:hidden h-16 bg-neutral-900 border-b border-neutral-800 flex items-center justify-between px-6 sticky top-0 z-30",
