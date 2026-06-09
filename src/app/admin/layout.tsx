@@ -19,6 +19,7 @@ import {
   Layers,
   PanelLeftClose,
   PanelLeftOpen,
+  BookOpen,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -36,6 +37,7 @@ const sidebarLinks = [
   { name: "Blog Engine", href: "/admin/blog", icon: Sparkles },
   { name: "Cluster Engine", href: "/admin/services", icon: Layers },
   { name: "Activity Logs", href: "/admin/logs", icon: Settings },
+  { name: "Help & Guide", href: "/admin/help", icon: BookOpen },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
