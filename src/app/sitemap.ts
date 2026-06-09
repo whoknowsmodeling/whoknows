@@ -8,7 +8,7 @@ export const revalidate = 86400; // 24 hours
  * Orchestrates a large-scale indexing map for four distinct database layers.
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://whoknows.beauty";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://whoknowsmodels.com";
 
   // --- Static Core Routes (Priority 1.0) ---
   const staticRoutes: MetadataRoute.Sitemap = [

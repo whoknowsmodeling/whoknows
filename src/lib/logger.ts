@@ -5,7 +5,7 @@ export async function logAction(
   entity: string,
   entityId?: string,
   details?: string,
-  adminEmail: string = 'system@whoknows.pages.dev'
+  adminEmail: string = 'whoknowsmodeling@gmail.com'
 ) {
   try {
     await logAdminAction(action, entity, entityId, details, adminEmail);

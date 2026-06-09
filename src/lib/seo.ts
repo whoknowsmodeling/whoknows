@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://whoknows.pages.dev';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://whoknowsmodels.com';
 const SITE_NAME = 'WhoKnows Models';
 const DEFAULT_DESCRIPTION = 'WhoKnows Models is a premier international talent management agency based in Bali, Indonesia, representing the finest models for global fashion hubs including Paris, Milan, London, and New York. Discover elite talent for high-end editorial, runway, and commercial campaigns worldwide.';
 const DEFAULT_KEYWORDS = [
@@ -86,7 +86,13 @@ export function generateSEO({
           },
         },
     verification: {
-      google: 'your-google-verification-code',
+      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'your-google-verification-code',
+    },
+    other: {
+      'geo.region': 'ID-BA',
+      'geo.placename': 'Bali, Indonesia',
+      'geo.position': '-8.409518;115.188916',
+      'ICBM': '-8.409518, 115.188916',
     },
   };
 }
@@ -102,18 +108,21 @@ export function generateOrganizationSchema() {
     description: DEFAULT_DESCRIPTION,
     address: {
       '@type': 'PostalAddress',
+      addressLocality: 'Bali',
+      addressRegion: 'Bali',
       addressCountry: 'ID',
     },
     contactPoint: {
       '@type': 'ContactPoint',
       telephone: '+62-857-2128-8138',
       contactType: 'customer service',
-      email: 'contact@whoknows.pages.dev',
+      email: 'whoknowsmodels@gmail.com',
       availableLanguage: ['English'],
     },
     sameAs: [
       'https://instagram.com/whoknows.models',
-      'https://www.facebook.com/profile.php?id=100069628367326',
+      'https://www.tiktok.com/@whoknowsmodels',
+      'https://twitter.com/whoknowsmodels',
     ],
   };
 }
@@ -190,17 +199,32 @@ export function generateLocalBusinessSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
-    '@id': SITE_URL,
+    '@id': `${SITE_URL}/#local-business`,
     name: 'WhoKnows Models',
+    image: `${SITE_URL}/logo.svg`,
     description: DEFAULT_DESCRIPTION,
     url: SITE_URL,
     telephone: '+62-857-2128-8138',
-    email: 'contact@whoknows.pages.dev',
+    email: 'whoknowsmodels@gmail.com',
     address: {
       '@type': 'PostalAddress',
-      addressCountry: 'Indonesia',
+      streetAddress: 'Sunset Road',
+      addressLocality: 'Kuta, Badung',
+      addressRegion: 'Bali',
+      postalCode: '80361',
+      addressCountry: 'ID',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: '-8.409518',
+      longitude: '115.188916',
     },
     openingHours: 'Mo-Fr 09:00-18:00',
     priceRange: '$$$',
+    sameAs: [
+      'https://instagram.com/whoknows.models',
+      'https://www.tiktok.com/@whoknowsmodels',
+      'https://twitter.com/whoknowsmodels',
+    ],
   };
 }

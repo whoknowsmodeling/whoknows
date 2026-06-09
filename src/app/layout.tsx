@@ -4,7 +4,7 @@ import "./globals.css";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "sonner";
-import { generateOrganizationSchema, generateWebsiteSchema } from "@/lib/seo";
+import { generateOrganizationSchema, generateWebsiteSchema, generateLocalBusinessSchema } from "@/lib/seo";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -19,7 +19,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://whoknows.design"),
+  metadataBase: new URL("https://whoknowsmodels.com"),
   title: {
     default: "WhoKnows Models | International Modelling Agency",
     template: "%s | WhoKnows Models",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     title: "WhoKnows Models | International Modelling Agency",
     description:
       "Discover exceptional models for fashion, editorial, and commercial work. International modelling agency representing the finest talent worldwide.",
-    url: "https://whoknows.design",
+    url: "https://whoknowsmodels.com",
     siteName: "WhoKnows Models",
     images: [
       {
@@ -88,6 +88,12 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: "/site.webmanifest",
+  other: {
+    "geo.region": "ID-BA",
+    "geo.placename": "Bali, Indonesia",
+    "geo.position": "-8.409518;115.188916",
+    "ICBM": "-8.409518, 115.188916",
+  },
 };
 
 import { Providers } from "@/components/providers";
@@ -112,6 +118,7 @@ export default function RootLayout({
             __html: JSON.stringify([
               generateOrganizationSchema(),
               generateWebsiteSchema(),
+              generateLocalBusinessSchema(),
             ]),
           }}
         />

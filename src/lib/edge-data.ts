@@ -264,7 +264,7 @@ export async function logAdminAction(
   entity: string,
   entityId?: string,
   details?: string,
-  adminEmail: string = 'system@whoknows.pages.dev'
+  adminEmail: string = 'whoknowsmodeling@gmail.com'
 ) {
   const { error } = await supabaseAdmin.from("AdminLog").insert({
     action,
