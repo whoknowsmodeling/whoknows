@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Upload, X, ShieldAlert, Laptop, Lock, RefreshCw, Eye, EyeOff } from "lucide-react";
+import { Upload, X, ShieldAlert, Laptop, Lock, RefreshCw, Eye, EyeOff, HelpCircle } from "lucide-react";
 import { updateGeneralSettings, updateWebsitePassword, updateAdminPassword } from "@/app/admin/settings/actions";
 
 interface WebsiteSettingsFormProps {
@@ -51,6 +51,7 @@ export default function WebsiteSettingsForm({ settings, systemInfo }: WebsiteSet
   const [showNewAdminPassword, setShowNewAdminPassword] = useState(false);
   const [showConfirmAdminPassword, setShowConfirmAdminPassword] = useState(false);
   const [adminPasswordLoading, setAdminPasswordLoading] = useState(false);
+  const [showGuidance, setShowGuidance] = useState(false);
 
   // --- GENERAL HANDLERS ---
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -158,10 +159,73 @@ export default function WebsiteSettingsForm({ settings, systemInfo }: WebsiteSet
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="font-serif text-3xl font-medium tracking-tight">Website Settings</h1>
-        <p className="text-neutral-500 mt-2">Manage maintenance mode settings, logos, backgrounds, and access control.</p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="font-serif text-3xl font-medium tracking-tight">Website Settings</h1>
+          <p className="text-neutral-500 mt-2">Manage maintenance mode settings, logos, backgrounds, and access control.</p>
+        </div>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => setShowGuidance(!showGuidance)}
+          className="bg-neutral-900 border-neutral-800 text-neutral-300 hover:bg-neutral-800 hover:text-white flex items-center gap-2 self-start sm:self-center"
+        >
+          <HelpCircle className="w-4 h-4" />
+          {showGuidance ? "Sembunyikan Panduan" : "Panduan Penggunaan"}
+        </Button>
       </div>
+
+      {showGuidance && (
+        <Card className="bg-neutral-900/50 border-neutral-800 backdrop-blur-sm transition-all duration-300 animate-in fade-in slide-in-from-top-4">
+          <CardHeader>
+            <CardTitle className="font-serif text-lg text-white flex items-center gap-2">
+              <HelpCircle className="w-5 h-5 text-neutral-400" /> Panduan Lengkap Penggunaan Website Settings
+            </CardTitle>
+            <CardDescription className="text-neutral-400">
+              Silakan baca petunjuk di bawah ini untuk memahami fitur-fitur yang ada di modul pengaturan ini.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6 text-sm text-neutral-300">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="space-y-2 p-4 bg-neutral-950/40 rounded-xl border border-neutral-800/50">
+                <h4 className="font-semibold text-white flex items-center gap-1.5">
+                  <Laptop className="w-4 h-4 text-neutral-400" /> 1. General Info
+                </h4>
+                <p className="text-xs text-neutral-400 leading-relaxed">
+                  Menampilkan ringkasan status teknis server, URL aplikasi, mode lingkungan (*environment*), dan versi sistem saat ini. Informasi ini bersifat *read-only* (hanya baca).
+                </p>
+              </div>
+
+              <div className="space-y-2 p-4 bg-neutral-950/40 rounded-xl border border-neutral-800/50">
+                <h4 className="font-semibold text-white flex items-center gap-1.5">
+                  <ShieldAlert className="w-4 h-4 text-neutral-400" /> 2. Maintenance Mode
+                </h4>
+                <p className="text-xs text-neutral-400 leading-relaxed">
+                  Gunakan tombol toggle di bagian atas untuk menyalakan/mematikan pemeliharaan. Jika aktif, pengunjung umum akan otomatis dialihkan ke halaman pemeliharaan. Anda dapat menyesuaikan konten visual, teks, dan tombol.
+                </p>
+              </div>
+
+              <div className="space-y-2 p-4 bg-neutral-950/40 rounded-xl border border-neutral-800/50">
+                <h4 className="font-semibold text-white flex items-center gap-1.5">
+                  <Lock className="w-4 h-4 text-neutral-400" /> 3. Sandi Akses & Keamanan
+                </h4>
+                <p className="text-xs text-neutral-400 leading-relaxed">
+                  <strong>Website Access Password</strong> digunakan untuk membagikan akses pratinjau halaman kepada klien/mitra tanpa membeberkan sandi Admin. Anda juga dapat memperbarui sandi masuk Admin Dashboard Anda di tab Security.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-neutral-950/20 border border-neutral-800 p-4 rounded-xl space-y-2">
+              <h5 className="font-semibold text-xs text-white uppercase tracking-wider">💡 Tips Penting:</h5>
+              <ul className="list-disc list-inside space-y-1 text-xs text-neutral-400">
+                <li>Setiap logo atau background yang diunggah akan otomatis dikonversi ke format <strong>WebP</strong> untuk menjaga performa loading tetap instan.</li>
+                <li>Jika tombol *"Allow Admin Login Password"* dicentang, Anda dapat menggunakan sandi masuk Admin utama untuk membuka kunci halaman pemeliharaan.</li>
+                <li>Gunakan tombol "X" di pojok gambar unggahan jika ingin menghapus logo atau background bawaan, lalu simpan dengan tombol **Save Settings**.</li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <Tabs defaultValue="maintenance" className="w-full">
         <TabsList className="bg-neutral-900 border border-neutral-800 p-1 mb-6">
