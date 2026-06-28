@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
+import { headers } from "next/headers";
 import "./globals.css";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
@@ -100,11 +101,17 @@ import { Providers } from "@/components/providers";
 import { GlobalLoader } from "@/components/layout/GlobalLoader";
 import { Suspense } from "react";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headerList = await headers();
+  const pathname = headerList.get("x-pathname") || "";
+  const isMaintenance = pathname === "/maintenance";
+  const isAdmin = pathname.startsWith("/admin");
+  const showNavAndFooter = !isMaintenance && !isAdmin;
+
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${playfair.variable}`}>
       <head>
@@ -129,9 +136,9 @@ export default function RootLayout({
             <Suspense fallback={null}>
               <GlobalLoader />
             </Suspense>
-            <Navigation />
+            {showNavAndFooter && <Navigation />}
             <main className="flex-1" id="main-content">{children}</main>
-            <Footer />
+            {showNavAndFooter && <Footer />}
           </div>
           <Toaster position="bottom-right" richColors closeButton />
         </Providers>

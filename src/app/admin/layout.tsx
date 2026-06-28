@@ -20,6 +20,7 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   BookOpen,
+  Sliders,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -37,6 +38,7 @@ const sidebarLinks = [
   { name: "Blog Engine", href: "/admin/blog", icon: Sparkles },
   { name: "Cluster Engine", href: "/admin/services", icon: Layers },
   { name: "Activity Logs", href: "/admin/logs", icon: Settings },
+  { name: "Website Settings", href: "/admin/settings", icon: Sliders },
   { name: "Help & Guide", href: "/admin/help", icon: BookOpen },
 ];
 

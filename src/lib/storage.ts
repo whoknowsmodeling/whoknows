@@ -11,7 +11,13 @@ if (!supabaseUrl || !supabaseServiceKey) {
 
 const supabase = createClient(
   supabaseUrl || "https://placeholder.supabase.co", 
-  supabaseServiceKey || "placeholder"
+  supabaseServiceKey || "placeholder",
+  {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+  }
 );
 
 /**

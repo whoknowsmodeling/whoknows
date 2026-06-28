@@ -42,6 +42,29 @@ export default function AdminLoginPage() {
     }
   };
 
+  const [resetLoading, setResetLoading] = useState(false);
+
+  const handleForgotPassword = async () => {
+    const confirmReset = window.confirm("Apakah Anda yakin ingin mereset kata sandi admin? Sandi baru sementara akan dikirimkan ke email whoknowsmodeling@gmail.com.");
+    if (!confirmReset) return;
+
+    setResetLoading(true);
+    try {
+      const { resetAdminPasswordAction } = await import("./actions");
+      const result = await resetAdminPasswordAction();
+
+      if (result.success) {
+        toast.success("Sandi sementara berhasil dikirim ke whoknowsmodeling@gmail.com! Silakan cek kotak masuk/spam Anda.");
+      } else {
+        toast.error(result.error || "Gagal melakukan reset sandi.");
+      }
+    } catch (error) {
+      toast.error("Terjadi kesalahan sistem saat memproses.");
+    } finally {
+      setResetLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-neutral-950 p-4">
       <div className="w-full max-w-md bg-neutral-900 border border-neutral-800 p-8 rounded-2xl shadow-2xl">
@@ -98,11 +121,20 @@ export default function AdminLoginPage() {
           </Button>
         </form>
 
-        <div className="mt-8 text-center">
+        <div className="mt-6 flex flex-col items-center gap-3 text-center">
+          <button 
+            type="button"
+            onClick={handleForgotPassword}
+            disabled={resetLoading}
+            className="text-neutral-400 hover:text-white text-xs transition-colors uppercase tracking-widest text-[10px] font-semibold"
+          >
+            {resetLoading ? "Processing..." : "Forgot Password?"}
+          </button>
+          
           <button 
             type="button"
             onClick={() => router.push("/")}
-            className="text-neutral-500 hover:text-neutral-300 text-xs transition-colors"
+            className="text-neutral-500 hover:text-neutral-300 text-xs transition-colors mt-2"
           >
             Back to Website
           </button>

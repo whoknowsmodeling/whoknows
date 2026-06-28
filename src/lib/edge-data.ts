@@ -96,15 +96,30 @@ export async function getPublicHomeData() {
     const heroSlides = heroSlidesResult.data;
     const clients = clientsResult.data;
 
+    // Deduplicate models to ensure each model is only included once in faceModels
+    const seenModelIds = new Set();
+    const faceModels: any[] = [];
+    if (faceImages) {
+      for (const img of faceImages) {
+        if (img.model && !seenModelIds.has(img.model.id)) {
+          seenModelIds.add(img.model.id);
+          faceModels.push({ ...img.model, faceImage: img });
+        }
+      }
+    }
+
     return {
-      faceModels: (faceImages || []).map(img => ({ ...img.model, faceImage: img })),
+      faceModels,
       womenPrime: womenPrimeImages?.[0] ? { ...womenPrimeImages[0].model, primeImage: womenPrimeImages[0] } : null,
       menPrime: menPrimeImages?.[0] ? { ...menPrimeImages[0].model, primeImage: menPrimeImages[0] } : null,
       campaigns: campaigns || [],
       heroSlides: heroSlides || [],
       clients: clients || [],
       // For backwards compatibility or gallery
-      featuredModels: (faceImages || []).map(img => img.model)
+      featuredModels: faceModels.map(m => {
+        const { faceImage, ...model } = m;
+        return model;
+      })
     };
   } catch (error) {
     console.error("Error fetching public home data:", error);

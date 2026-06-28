@@ -235,3 +235,23 @@ model ClusterPages {
   @@index([clusterSlug])
   @@map("ClusterPages")
 }
+
+model WebsiteSettings {
+  id                      String   @id @default("default")
+  maintenance_enabled     Boolean  @default(false)
+  allow_admin_password    Boolean  @default(true)
+  website_password_hash   String?
+  maintenance_title       String   @default("Under Maintenance")
+  maintenance_subtitle    String   @default("We'll be back shortly.")
+  maintenance_description String   @default("The site is currently undergoing scheduled maintenance. Please check back soon.")
+  button_text            String   @default("Enter")
+  password_placeholder    String   @default("Enter Password")
+  footer_text             String   @default("© WhoKnows Models. All Rights Reserved.")
+  contact_email          String?
+  logo                   String?
+  background_image        String?
+  updated_at              DateTime @updatedAt
+  updated_by              String?
+
+  @@map("website_settings")
+}
