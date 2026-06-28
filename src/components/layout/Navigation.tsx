@@ -79,7 +79,7 @@ export function Navigation() {
   };
 
   const SELF_NAV_ROUTES = ['/men', '/women', '/archives'];
-  if (!isMounted || pathname.startsWith('/admin') || SELF_NAV_ROUTES.includes(pathname)) return null;
+  if (!isMounted || pathname.startsWith('/admin') || pathname === '/maintenance' || SELF_NAV_ROUTES.includes(pathname)) return null;
 
   const isHome = pathname === '/';
   const showWhiteText = isHome && !isScrolled;

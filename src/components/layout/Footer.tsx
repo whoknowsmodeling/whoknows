@@ -1,5 +1,8 @@
+"use client";
+
 import Link from 'next/link';
 import { Mail, Phone, Instagram, Twitter } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 const footerLinks = {
   models: [
@@ -24,6 +27,9 @@ const footerLinks = {
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const pathname = usePathname();
+
+  if (pathname.startsWith('/admin') || pathname === '/maintenance') return null;
 
   return (
     <footer className="bg-black text-white mt-auto">
