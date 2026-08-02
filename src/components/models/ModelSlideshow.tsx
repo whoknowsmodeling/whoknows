@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import NextImage from "next/image";
 import { Instagram } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -309,13 +310,16 @@ export function ModelSlideshow({
                     maxHeight: isLandscape ? "58vh" : "84vh",
                   }}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <NextImage
                     src={img.imageUrl}
                     alt={img.alt || modelName}
-                    loading={currentSlide === 0 && idx === 0 ? "eager" : "lazy"}
+                    fill
+                    quality={80}
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    priority={currentSlide === 0 && idx === 0}
+                    fetchPriority={currentSlide === 0 && idx === 0 ? "high" : "auto"}
                     onLoad={(e) => handleImageLoad(img.id, e)}
-                    className="w-full h-full object-cover object-top"
+                    className="object-cover object-top select-none"
                     draggable={false}
                   />
                 </div>

@@ -53,20 +53,20 @@ export default function CampaignManagement({ campaigns, models }: { campaigns: a
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-serif font-medium">Campaigns (Jobs)</h1>
-          <p className="text-neutral-500 text-sm">Industrial editorial and commercial campaign showcases.</p>
+          <h1 className="text-3xl font-serif font-medium">Archive</h1>
+          <p className="text-neutral-500 text-sm">Brand shoot portfolio — showcased to clients (Whispertone, Gucci, and more).</p>
         </div>
-        
+
         <Dialog open={open} onOpenChange={handleOpenChange}>
           <DialogTrigger asChild>
             <Button className="bg-white text-black hover:bg-neutral-200 uppercase tracking-widest text-xs px-6 py-4">
-              <Plus className="w-4 h-4 mr-2" /> New Job
+              <Plus className="w-4 h-4 mr-2" /> New Entry
             </Button>
           </DialogTrigger>
           <DialogContent className="bg-neutral-900 border-neutral-800 text-white max-w-4xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="font-serif text-2xl">
-                {editingCampaign ? "Edit Job" : "Create New Job"}
+                {editingCampaign ? "Edit Archive Entry" : "Add Archive Entry"}
               </DialogTitle>
             </DialogHeader>
             <form action={async (formData) => {
@@ -84,7 +84,7 @@ export default function CampaignManagement({ campaigns, models }: { campaigns: a
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label>Job Title / Campaign Name</Label>
+                    <Label>Shoot Title / Campaign Name</Label>
                     <Input name="title" required defaultValue={editingCampaign?.title} className="bg-neutral-800 border-neutral-700" />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
@@ -106,7 +106,7 @@ export default function CampaignManagement({ campaigns, models }: { campaigns: a
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <Label>Visible on Website</Label>
-                        <p className="text-[10px] text-neutral-500 uppercase tracking-tighter">Show this Job on the /jobs page</p>
+                        <p className="text-[10px] text-neutral-500 uppercase tracking-tighter">Show this entry on the /jobs page</p>
                       </div>
                       <Switch name="active" defaultChecked={editingCampaign ? editingCampaign.active : true} />
                     </div>
@@ -173,7 +173,7 @@ export default function CampaignManagement({ campaigns, models }: { campaigns: a
               <div className="pt-4 flex justify-end gap-3 sticky bottom-0 bg-neutral-900 pb-2">
                 <Button type="button" variant="ghost" onClick={() => handleOpenChange(false)}>Cancel</Button>
                 <Button type="submit" className="bg-white text-black hover:bg-neutral-200 px-8 uppercase tracking-widest text-xs font-bold">
-                  {editingCampaign ? "Save Changes" : "Create Job"}
+                  {editingCampaign ? "Save Changes" : "Add to Archive"}
                 </Button>
               </div>
             </form>
@@ -233,7 +233,7 @@ export default function CampaignManagement({ campaigns, models }: { campaigns: a
 
         {campaigns.length === 0 && (
           <div className="col-span-full py-24 text-center border-2 border-dashed border-neutral-800 rounded-2xl">
-            <p className="text-neutral-500 font-serif text-lg">No commercial jobs found.</p>
+            <p className="text-neutral-500 font-serif text-lg">No archive entries found.</p>
           </div>
         )}
       </div>

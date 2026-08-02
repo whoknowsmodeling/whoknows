@@ -100,3 +100,8 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+// Gives getCloudflareContext() access to real Cloudflare bindings (e.g. the
+// IMAGES binding) when running under `next dev`, via Wrangler's local proxy.
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
+initOpenNextCloudflareForDev();

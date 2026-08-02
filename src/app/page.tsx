@@ -2,7 +2,6 @@ import { Suspense } from 'react';
 import { HeroVideo } from '@/components/sections/HeroVideo';
 import { FacesSection } from '@/components/sections/FacesSection';
 import { ArchivesSection } from '@/components/sections/ArchivesSection';
-import { RosterSection } from '@/components/sections/RosterSection';
 import { CTASection } from '@/components/sections/CTASection';
 import { BrandsSection } from '@/components/sections/BrandsSection';
 import { getPublicHomeData, getAllModels } from '@/lib/edge-data';
@@ -34,20 +33,11 @@ async function getData() {
     getAllModels(),
   ]);
 
-  const womenModels = allModels.filter(
-    (m) => m.gender?.toLowerCase() === 'women'
-  );
-  const menModels = allModels.filter(
-    (m) => m.gender?.toLowerCase() === 'men'
-  );
-
   return {
     faceModels:  homeData?.faceModels  ?? [],
     heroSlides:  homeData?.heroSlides  ?? [],
     clients:     homeData?.clients     ?? [],
     allModels,
-    womenModels,
-    menModels,
   };
 }
 
@@ -82,8 +72,7 @@ function SectionSkeleton() {
 // ─── Page ────────────────────────────────────────────────────────────────────
 
 export default async function HomePage() {
-  const { faceModels, heroSlides, clients, allModels, womenModels, menModels } =
-    await getData();
+  const { faceModels, heroSlides, clients, allModels } = await getData();
 
   // Preload first 4 faces (LCP optimization)
   faceModels.slice(0, 4).forEach((model: any) => {
@@ -112,20 +101,10 @@ export default async function HomePage() {
         <ArchivesSection models={allModels} />
       </Suspense>
 
-      {/* ── SECTION 3: MEN ───────────────────────────────────── */}
-      <Suspense fallback={<SectionSkeleton />}>
-        <RosterSection gender="men" models={menModels} showSubtitle={false} />
-      </Suspense>
-
-      {/* ── SECTION 4: WOMEN ─────────────────────────────────── */}
-      <Suspense fallback={<SectionSkeleton />}>
-        <RosterSection gender="women" models={womenModels} showSubtitle={false} />
-      </Suspense>
-
-      {/* ── SECTION 5: CTA ───────────────────────────────────── */}
+      {/* ── SECTION 3: CTA ───────────────────────────────────── */}
       <CTASection />
 
-      {/* ── SECTION 6: BRANDS ────────────────────────────────── */}
+      {/* ── SECTION 4: BRANDS ────────────────────────────────── */}
       <BrandsSection clients={clients} />
 
       <script

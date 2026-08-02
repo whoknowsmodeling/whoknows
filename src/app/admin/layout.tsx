@@ -32,7 +32,7 @@ const sidebarLinks = [
   { name: "Contact Messages", href: "/admin/contacts", icon: FileText },
   { name: "Models (Men)", href: "/admin/models/men", icon: Users },
   { name: "Models (Women)", href: "/admin/models/women", icon: Users },
-  { name: "Campaigns (Jobs)", href: "/admin/campaigns", icon: ImageIcon },
+  { name: "Archive", href: "/admin/campaigns", icon: ImageIcon },
   { name: "Brand Partners", href: "/admin/clients", icon: ImageIcon },
   { name: "WK_Ai Assistant", href: "/admin/ai", icon: Bot },
   { name: "Blog Engine", href: "/admin/blog", icon: Sparkles },

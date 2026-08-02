@@ -48,10 +48,13 @@ async function main() {
         continue;
       }
 
-      // Shrink dimensions and heavily compress
+      // Resize + convert to WebP, matching the live upload pipeline
+      // (max 2000px, quality 80, strip EXIF) so backfilled and newly
+      // uploaded assets are consistent.
       const optimizedBuffer = await sharp(originalBuffer)
-        .resize({ width: 1200, withoutEnlargement: true }) // Never scale up
-        .webp({ quality: 65, force: true, effort: 6 }) // Very aggressive compression
+        .resize({ width: 2000, height: 2000, fit: 'inside', withoutEnlargement: true })
+        .withMetadata(false)
+        .webp({ quality: 80, effort: 6 })
         .toBuffer();
 
       const optimizedKb = optimizedBuffer.length / 1024;

@@ -1,35 +1,77 @@
 /**
- * 🏎️ Industrial Media Processor (Node.js Only)
+ * 🏎️ Industrial Media Processor
  * Optimized for WhoKnows high-fidelity performance.
- * 
- * NOTE: These utilities require a Node.js runtime and will not work 
- * in Cloudflare Edge environments due to binary dependencies (ffmpeg/sharp).
- * We use dynamic eval-require to prevent build-time static analysis failures.
+ *
+ * NOTE on runtime: this app deploys to Cloudflare Workers (via
+ * @opennextjs/cloudflare). Workers cannot execute native binaries — `sharp`
+ * (libvips) never runs there regardless of the Next.js route `runtime`
+ * export, since every route ultimately executes inside the same Workers
+ * isolate. The primary path below uses the Cloudflare Images binding
+ * (`env.IMAGES`, declared in wrangler.jsonc), which does real resize/WebP
+ * conversion natively on Cloudflare's infra. `sharp` is kept only as a
+ * fallback for non-Workers execution contexts (e.g. local one-off scripts).
  */
 
-export async function processImageToWebP(inputBuffer: Buffer): Promise<Buffer> {
+const TARGET_MAX_DIMENSION = 2000;
+const TARGET_WEBP_QUALITY = 80;
+
+async function processImageWithCloudflareImages(inputBuffer: Buffer): Promise<Buffer | null> {
+  try {
+    const { getCloudflareContext } = await import('@opennextjs/cloudflare');
+    const { env } = await getCloudflareContext({ async: true });
+    if (!env.IMAGES) return null;
+
+    const startTime = Date.now();
+    const stream = new Blob([new Uint8Array(inputBuffer)]).stream() as ReadableStream<Uint8Array>;
+
+    const result = await env.IMAGES.input(stream)
+      .transform({ width: TARGET_MAX_DIMENSION, height: TARGET_MAX_DIMENSION, fit: 'scale-down' })
+      .output({ format: 'image/webp', quality: TARGET_WEBP_QUALITY });
+
+    const outputBuffer = Buffer.from(await new Response(result.image()).arrayBuffer());
+
+    console.log(`✨ Cloudflare Images WebP Conversion: ${inputBuffer.length}b -> ${outputBuffer.length}b in ${Date.now() - startTime}ms`);
+    return outputBuffer;
+  } catch (error: any) {
+    console.warn(`⚠️ Cloudflare Images binding unavailable/failed (${error.message || error}).`);
+    return null;
+  }
+}
+
+async function processImageWithSharp(inputBuffer: Buffer): Promise<Buffer | null> {
   try {
     // Prevent static bundling errors in Cloudflare Edge
     const sharp = eval('require')('sharp');
     const startTime = Date.now();
-    
+
     const outputBuffer = await sharp(inputBuffer)
       .resize({
-        width: 2000,
-        height: 2000,
+        width: TARGET_MAX_DIMENSION,
+        height: TARGET_MAX_DIMENSION,
         fit: 'inside',
         withoutEnlargement: true
       })
       .withMetadata(false) // Strip EXIF data
-      .webp({ quality: 80, effort: 6 })
+      .webp({ quality: TARGET_WEBP_QUALITY, effort: 6 })
       .toBuffer();
 
     console.log(`✨ Sharp WebP Conversion: ${inputBuffer.length}b -> ${outputBuffer.length}b in ${Date.now() - startTime}ms`);
     return outputBuffer;
   } catch (error: any) {
-    console.warn(`⚠️ Sharp conversion skipped (${error.message || 'Node.js dependency issue'}). Using original buffer.`);
-    return inputBuffer;
+    console.warn(`⚠️ Sharp conversion skipped (${error.message || 'Node.js dependency issue'}).`);
+    return null;
   }
+}
+
+export async function processImageToWebP(inputBuffer: Buffer): Promise<Buffer> {
+  const viaCloudflare = await processImageWithCloudflareImages(inputBuffer);
+  if (viaCloudflare) return viaCloudflare;
+
+  const viaSharp = await processImageWithSharp(inputBuffer);
+  if (viaSharp) return viaSharp;
+
+  console.warn('⚠️ No image processor available. Using original buffer.');
+  return inputBuffer;
 }
 
 export async function processVideoToWebm(inputBuffer: Buffer): Promise<Buffer> {

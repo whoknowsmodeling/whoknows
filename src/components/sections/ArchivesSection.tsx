@@ -8,9 +8,13 @@ import type { Model } from '@/types';
 
 // ─── Per-model card carousel ──────────────────────────────────────────────────
 
+const DEFAULT_ASPECT = 3 / 4;
+
 function ModelArchiveCard({ model }: { model: Model }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, dragFree: false });
   const [current, setCurrent] = React.useState(0);
+  const [dims, setDims] = React.useState<Record<string, number>>({});
+  const [erroredIds, setErroredIds] = React.useState<Record<string, boolean>>({});
 
   React.useEffect(() => {
     if (!emblaApi) return;
@@ -29,29 +33,51 @@ function ModelArchiveCard({ model }: { model: Model }) {
     emblaApi?.scrollNext();
   }, [emblaApi]);
 
-  const images = model.images ?? [];
+  // Photos without a usable URL are dropped up front — this is what was
+  // rendering as the browser's broken-image icon.
+  const images = (model.images ?? []).filter((img) => !!img.imageUrl);
   if (images.length === 0) return null;
 
+  const currentImage = images[current] ?? images[0];
+  const currentAspect = dims[currentImage.id] ?? DEFAULT_ASPECT;
+
   return (
-    <div className="group">
+    <div className="break-inside-avoid mb-4 lg:mb-6 group">
       <Link href={`/model/${model.slug}`} className="block">
-        {/* Image carousel */}
-        <div className="relative overflow-hidden aspect-[3/4] bg-neutral-100">
+        {/* Image carousel — height follows the natural aspect ratio of
+            whichever photo is currently showing, so landscape and portrait
+            sets both display at their own proportions instead of a forced crop. */}
+        <div
+          className="relative overflow-hidden bg-neutral-50 transition-[aspect-ratio] duration-300 ease-out"
+          style={{ aspectRatio: currentAspect }}
+        >
           <div className="overflow-hidden h-full" ref={emblaRef}>
             <div className="flex h-full">
               {images.map((img) => (
                 <div key={img.id} className="flex-[0_0_100%] min-w-0 relative h-full">
-                  <Image
-                    src={img.imageUrl}
-                    alt={img.alt || model.name}
-                    fill
-                    quality={65}
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover object-top"
-                    loading="lazy"
-                    placeholder="blur"
-                    blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwADhQGAWjR9awAAAABJRU5ErkJggg=="
-                  />
+                  {erroredIds[img.id] ? (
+                    // Neutral, non-alarming placeholder instead of a broken-image icon
+                    <div className="w-full h-full bg-white" />
+                  ) : (
+                    <Image
+                      src={img.imageUrl}
+                      alt={img.alt || model.name}
+                      fill
+                      quality={65}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover object-top"
+                      loading="lazy"
+                      placeholder="blur"
+                      blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwADhQGAWjR9awAAAABJRU5ErkJggg=="
+                      onLoad={(e) => {
+                        const t = e.currentTarget;
+                        if (t.naturalWidth && t.naturalHeight) {
+                          setDims((prev) => ({ ...prev, [img.id]: t.naturalWidth / t.naturalHeight }));
+                        }
+                      }}
+                      onError={() => setErroredIds((prev) => ({ ...prev, [img.id]: true }))}
+                    />
+                  )}
                 </div>
               ))}
             </div>
@@ -110,10 +136,10 @@ function ModelArchiveCard({ model }: { model: Model }) {
 
 function SkeletonCard() {
   return (
-    <div className="px-4 lg:px-6 pt-4 pb-4">
+    <div className="break-inside-avoid mb-4 lg:mb-6">
       <div className="aspect-[3/4] bg-neutral-100 animate-pulse" />
-      <div className="mt-2 h-3 w-24 bg-neutral-100 animate-pulse rounded" />
-      <div className="mt-1 h-2 w-16 bg-neutral-50 animate-pulse rounded" />
+      <div className="mt-2 h-3 w-24 mx-auto bg-neutral-100 animate-pulse rounded" />
+      <div className="mt-1 h-2 w-16 mx-auto bg-neutral-50 animate-pulse rounded" />
     </div>
   );
 }
@@ -139,14 +165,11 @@ export function ArchivesSection({ models = [] }: ArchivesSectionProps) {
         />
       </div>
 
-      {/* 3-column grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 divide-x divide-y divide-neutral-100 border-t border-neutral-100">
+      {/* Auto-fit masonry — each card sized to its own photo's aspect ratio,
+          no forced crop. */}
+      <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 lg:gap-6 px-4 lg:px-6 border-t border-neutral-100 pt-4">
         {models.length > 0
-          ? models.map((model) => (
-              <div key={model.id} className="bg-white px-4 lg:px-6 pt-4">
-                <ModelArchiveCard model={model} />
-              </div>
-            ))
+          ? models.map((model) => <ModelArchiveCard key={model.id} model={model} />)
           : [...Array(6)].map((_, i) => <SkeletonCard key={i} />)}
       </div>
     </section>

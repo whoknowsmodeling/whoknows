@@ -59,7 +59,11 @@ export function ImageGallery({ images, columns = 3 }: ImageGalleryProps) {
               quality={60}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover object-center transition-transform duration-500 hover:scale-105"
-              loading="lazy"
+              priority={index < 4}
+              loading={index < 4 ? 'eager' : 'lazy'}
+              fetchPriority={index < 4 ? 'high' : 'auto'}
+              placeholder="blur"
+              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwADhQGAWjR9awAAAABJRU5ErkJggg=="
             />
           </motion.button>
         ))}
