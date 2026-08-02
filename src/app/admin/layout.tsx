@@ -22,7 +22,7 @@ import {
   BookOpen,
   Sliders,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -46,6 +46,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  // The admin dashboard is dark-themed, but the `.dark` CSS variable scope
+  // (globals.css) was never actually activated anywhere in the app — every
+  // shadcn/ui primitive that relies on those variables (Card, Button
+  // "outline" variant, Select, Popover, Dialog, DropdownMenu, Tooltip) was
+  // silently falling back to their light-theme defaults, producing white
+  // buttons/popups with white text and black text on dark cards throughout
+  // /admin. Toggling the class on <html> (rather than a scoped wrapper div)
+  // ensures Radix-portaled content (which portals to document.body) picks
+  // up the dark variables too, since body is a descendant of html.
+  useEffect(() => {
+    document.documentElement.classList.add("dark");
+    return () => {
+      document.documentElement.classList.remove("dark");
+    };
+  }, []);
 
   // Don't show sidebar on login page
   if (pathname === "/admin/login") return <>{children}</>;
