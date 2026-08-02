@@ -50,7 +50,7 @@ function ModelArchiveCard({ model }: { model: Model }) {
                     className="object-cover object-top"
                     loading="lazy"
                     placeholder="blur"
-                    blurDataURL="data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAAAwAQCdASoIAAUAAUAmJaQAA3AA/u66AAA="
+                    blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwADhQGAWjR9awAAAABJRU5ErkJggg=="
                   />
                 </div>
               ))}

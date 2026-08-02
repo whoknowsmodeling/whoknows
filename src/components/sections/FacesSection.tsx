@@ -100,7 +100,7 @@ export function FacesSection({ models = [] }: FacesSectionProps) {
                         loading={index < 4 ? 'eager' : 'lazy'}
                         fetchPriority={index < 4 ? 'high' : 'auto'}
                         placeholder="blur"
-                        blurDataURL="data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAAAwAQCdASoIAAUAAUAmJaQAA3AA/u66AAA="
+                        blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwADhQGAWjR9awAAAABJRU5ErkJggg=="
                       />
                     )}
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />

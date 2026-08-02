@@ -47,7 +47,7 @@ export function ModelCard({ model, index = 0, variant = 'default', forcePriority
               loading={forcePriority || index < 8 ? "eager" : "lazy"}
               fetchPriority={forcePriority || index < 4 ? "high" : "auto"}
               placeholder="blur"
-              blurDataURL="data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAAAwAQCdASoIAAUAAUAmJaQAA3AA/u66AAA="
+              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwADhQGAWjR9awAAAABJRU5ErkJggg=="
             />
           )}
           <div className="absolute inset-0 bg-black/0 transition-all duration-300 group-hover:bg-black/20" />

@@ -17,8 +17,9 @@ const navItems = [
   { label: 'Contact', href: '/contact' },
 ];
 
+const HIDDEN_NAV_ROUTES = ['/men', '/women', '/archives'];
+
 export function Navigation() {
-  const [isMounted, setIsMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -27,8 +28,8 @@ export function Navigation() {
   const [isSearching, setIsSearching] = useState(false);
   const pathname = usePathname();
 
+  // All hooks MUST be declared before any conditional return
   useEffect(() => {
-    setIsMounted(true);
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 5);
     };
@@ -64,6 +65,15 @@ export function Navigation() {
     };
   }, [isMobileMenuOpen]);
 
+  // Route-based hide guard (after all hooks)
+  if (
+    pathname.startsWith('/admin') ||
+    pathname === '/maintenance' ||
+    HIDDEN_NAV_ROUTES.includes(pathname)
+  ) {
+    return null;
+  }
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev);
   };
@@ -77,9 +87,6 @@ export function Navigation() {
     setSearchQuery('');
     setSearchResults([]);
   };
-
-  const SELF_NAV_ROUTES = ['/men', '/women', '/archives'];
-  if (!isMounted || pathname.startsWith('/admin') || pathname === '/maintenance' || SELF_NAV_ROUTES.includes(pathname)) return null;
 
   const isHome = pathname === '/';
   const showWhiteText = isHome && !isScrolled;

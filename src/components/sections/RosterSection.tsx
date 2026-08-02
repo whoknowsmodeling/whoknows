@@ -75,7 +75,7 @@ export function RosterSection({ gender, models = [], showSubtitle = true }: Rost
                       className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
                       loading="lazy"
                       placeholder="blur"
-                      blurDataURL="data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAAAwAQCdASoIAAUAAUAmJaQAA3AA/u66AAA="
+                      blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwADhQGAWjR9awAAAABJRU5ErkJggg=="
                     />
                   )}
                 </div>

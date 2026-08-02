@@ -1,14 +1,11 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Mail } from 'lucide-react';
-import { ImageGallery } from '@/components/models/ImageGallery';
-import { mockModels } from '@/lib/data';
+import { ArrowLeft } from 'lucide-react';
+import { ModelSlideshow } from '@/components/models/ModelSlideshow';
 import { getModelDetail, getSitemapSlugs } from '@/lib/edge-data';
 import { generateSEO, generateBreadcrumbSchema, generatePersonSchema } from '@/lib/seo';
-import { Button } from '@/components/ui/button';
 import { GenderToggle } from '@/components/layout/GenderToggle';
-import { BookingCTA } from '@/components/models/BookingCTA';
 
 export const revalidate = 60;
 
@@ -64,28 +61,17 @@ export default async function ModelProfilePage({ params }: ModelPageProps) {
     { label: 'Location', value: model.location },
   ].filter((m) => m.value);
 
-  const groupedImages = model.images.reduce((acc: any, img: any) => {
-    const concept = img.concept || 'Portfolio';
-    if (!acc[concept]) acc[concept] = [];
-    acc[concept].push(img);
-    return acc;
-  }, {});
-
-  const concepts = Object.keys(groupedImages).sort((a, b) => {
-    if (a === 'Portfolio') return -1;
-    if (b === 'Portfolio') return 1;
-    return a.localeCompare(b);
-  });
+  const sortedImages = [...model.images].sort((a: any, b: any) => a.order - b.order);
 
   return (
     <>
-      <article className="pt-24 lg:pt-32 pb-16 lg:pb-24">
+      <article className="pt-24 lg:pt-32 bg-white text-black min-h-screen">
         <div className="container mx-auto px-4 lg:px-8">
           {/* Navigation Controls */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 border-b border-neutral-200 pb-6 no-print">
             <Link
               href={`/${model.gender}`}
-              className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-black transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black group"
+              className="inline-flex items-center gap-2 text-sm text-neutral-400 hover:text-black transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black group"
               aria-label={`Back to ${model.gender === 'women' ? 'Women' : 'Men'} models`}
             >
               <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" aria-hidden="true" />
@@ -95,52 +81,17 @@ export default async function ModelProfilePage({ params }: ModelPageProps) {
             <GenderToggle currentGender="all" />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-            {/* Gallery Section */}
-            <div className="lg:col-span-8 space-y-16 order-last lg:order-first">
-              {concepts.map((concept) => (
-                <div key={concept} className="space-y-6">
-                  <div className="flex items-center gap-4">
-                    <h2 className="font-serif text-2xl lowercase tracking-tight opacity-50 italic">{concept}</h2>
-                    <div className="h-px flex-1 bg-neutral-100" />
-                  </div>
-                  <ImageGallery images={groupedImages[concept]} columns={2} />
-                </div>
-              ))}
-            </div>
-
-            {/* Model Info Sticky Sidebar */}
-            <div className="lg:col-span-4 order-first lg:order-last">
-              <div className="sticky top-32 space-y-12">
-                <div>
-                  <h1 className="font-serif text-4xl lg:text-5xl font-medium tracking-tighter mb-6 uppercase">
-                    {model.name}
-                  </h1>
-                  {model.bio && (
-                    <p className="text-neutral-500 leading-relaxed font-light">{model.bio}</p>
-                  )}
-                </div>
-
-                {/* Measurements */}
-                <div className="space-y-6">
-                  <h2 className="text-[10px] uppercase tracking-[0.2em] font-bold text-neutral-400">
-                    Attributes
-                  </h2>
-                  <dl className="grid grid-cols-2 gap-y-4 gap-x-8 border-t border-neutral-100 pt-6">
-                    {measurements.map(({ label, value }) => (
-                      <div key={label} className="space-y-1">
-                        <dt className="text-[10px] uppercase tracking-widest text-neutral-400">{label}</dt>
-                        <dd className="font-medium text-sm">{value}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                </div>
-
-                {/* Booking CTA (Modal Trigger) */}
-                <BookingCTA modelName={model.name} />
-              </div>
-            </div>
-          </div>
+          {/* Model Slideshow and Attributes Panel */}
+          {sortedImages.length > 0 ? (
+            <ModelSlideshow
+              images={sortedImages}
+              modelName={model.name}
+              measurements={measurements}
+              bio={model.bio}
+            />
+          ) : (
+            <div className="text-center py-20 text-neutral-500">No profile photos available.</div>
+          )}
         </div>
       </article>
 
