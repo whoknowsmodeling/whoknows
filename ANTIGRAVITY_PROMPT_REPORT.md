@@ -1,90 +1,101 @@
 ## Laporan Pengerjaan — ANTIGRAVITY_PROMPT.md
 
-> Dikerjakan di repo `ANTIGRAVITY/WhoKnows3` (branch `main`, belum di-commit). Semua 5 poin selesai dari sisi kode. `npm run build` PASS (44 halaman, tanpa error).
+> Dikerjakan di repo `ANTIGRAVITY/WhoKnows3` (branch `main`). **Semua 5 poin selesai, sudah di-commit dan di-deploy ke production** (whoknowsmodels.com), plus satu perbaikan tambahan (admin dark-theme) dan satu isu terbuka yang ditemukan setelah deploy (Cloudflare Images resize belum aktif — lihat bagian bawah).
+
+**Commit yang sudah di-push ke `origin/main`:**
+```
+ad2bec2  feat: Model page PDF layout, cursor nav arrows, slideshow component, and roster/archives UI improvements  (sudah ada sebelum sesi ini)
+60e22d1  feat: IMG Models-style archives masonry, Cloudflare Images upload pipeline, homepage/admin cleanup
+dbdf580  fix: activate .dark theme scope for admin dashboard
+```
 
 ---
 
 ### 1. Model Profile Page — layout ala IMG Models
 
-**Status: sudah selesai sebelumnya, cuma diverifikasi (tidak ditimpa ulang).**
+**Status: selesai (sudah ada sebelum sesi ini, diverifikasi + divisualkan).**
 
-`ModelSlideshow.tsx` (dipakai oleh `src/app/model/[slug]/page.tsx`) ternyata sudah mengimplementasikan seluruh spec:
-- Foto potrait otomatis dipasangkan 2-besar-bersisian per set; foto landscape tampil sendiri satu set — pakai rasio asli (`aspectRatio` dihitung dari `naturalWidth/naturalHeight`), tanpa crop paksa.
-- Counter halaman `1 / N` ada.
-- Navigasi kiri/kanan langsung di halaman via cursor kustom (bukan lightbox popup) + klik kiri/kanan + swipe touch + arrow key.
-- Nama model: serif italic besar, IG handle di bawahnya.
-- Measurements, bio, Booking CTA di sidebar tetap ada, tidak dihapus.
-- Tidak ada tombol booking baru ditambahkan di dalam galeri.
-- Header/nav WhoKnows tidak disentuh sama sekali.
+`ModelSlideshow.tsx` (dipakai oleh `src/app/model/[slug]/page.tsx`) mengimplementasikan seluruh spec: foto potrait dipasangkan 2-besar-bersisian per set, foto landscape tampil sendiri, rasio asli tanpa crop paksa, counter "1 / N", navigasi cursor kiri/kanan langsung di halaman, nama serif-italic + IG handle, measurements/bio/Booking CTA tetap ada, tidak ada tombol booking baru, header WhoKnows tidak disentuh. Diverifikasi visual di browser (screenshot `/model/athina`) — sesuai referensi.
 
-Perubahan yang saya lakukan di sini murni bagian dari **Task 5** (lihat di bawah): mengganti `<img>` mentah jadi `next/image` supaya foto di halaman ini ikut kena resize otomatis di serve-time.
+Perubahan yang dilakukan di sini murni bagian dari Task 5: `<img>` mentah diganti `next/image` supaya foto di halaman ini ikut kena resize otomatis di serve-time (lihat catatan Cloudflare Images di bawah — resize ini belum aktif di production sampai binding-nya beres).
 
 ---
 
-### 2. Home Page — Archives Section (auto-fit + fix broken-image icon)
+### 2. Home Page — Archives Section (auto-fit layout + fix broken-image icon)
 
-**File:** `src/components/sections/ArchivesSection.tsx` — ditulis ulang.
+**Status: selesai, sudah dideploy, diverifikasi visual di browser.**
 
-- Grid 3-kolom fixed + `aspect-[3/4] object-cover` (crop paksa) diganti jadi **CSS masonry** (`columns-1 sm:columns-2 lg:columns-3`). Tiap card tingginya mengikuti rasio asli foto yang lagi tampil (dihitung dari `naturalWidth/naturalHeight` saat `onLoad`, sama seperti pola yang dipakai di `ModelSlideshow`). Carousel per-model (swipe antar foto) tetap jalan.
-- Sumber ikon "tanda tanya biru" ditemukan: foto dengan `imageUrl` kosong/invalid tetap coba di-render oleh `next/image` → browser nampilin broken-image icon default. Fix:
-  - Foto tanpa `imageUrl` di-filter duluan sebelum render.
-  - Kalau foto gagal load (`onError`), diganti div putih polos (`bg-white`), bukan ikon error.
+- Grid 3-kolom fixed + crop paksa diganti CSS masonry (`columns-1 sm:columns-2 lg:columns-3`), tinggi tiap card mengikuti rasio asli foto yang lagi tampil.
+- Foto dengan `imageUrl` kosong/invalid di-filter sebelum render; foto gagal load diganti div putih polos, bukan ikon broken-image.
+- Sempat ada laporan "3 card jadi kotak merah" saat verifikasi awal — investigasi menunjukkan itu murni artefak screenshot full-page Playwright (compositor belum selesai render saat capture), bukan bug asli. Dikonfirmasi ulang lewat viewport screenshot + inspeksi DOM langsung: semua foto load normal.
 
 ---
 
 ### 3. Admin Dashboard — rename "Campaigns (Jobs)" → "Archive"
 
-**File:** `src/app/admin/layout.tsx`, `src/components/admin/CampaignManagement.tsx`
+**Status: selesai, sudah dideploy.**
 
-Murni ganti label/copy, tidak sentuh data/struktur DB:
-- Sidebar: "Campaigns (Jobs)" → "Archive"
-- Heading halaman → "Archive", subtitle → "Brand shoot portfolio — showcased to clients (Whispertone, Gucci, and more)."
-- Tombol "New Job" → "New Entry", submit "Create Job" → "Add to Archive"
-- Dialog title "Edit Job"/"Create New Job" → "Edit Archive Entry"/"Add Archive Entry"
-- Label "Job Title / Campaign Name" → "Shoot Title / Campaign Name"
-- Empty state "No commercial jobs found." → "No archive entries found."
+Sidebar, heading, subtitle, tombol, dialog title, label form, dan empty-state text di `CampaignManagement.tsx` + `admin/layout.tsx` diubah ke framing "Archive" (portofolio brand shoot untuk klien), murni copy — tidak ada perubahan data/struktur DB.
 
 ---
 
 ### 4. Home Page — hapus section Men & Women
 
-**File:** `src/app/page.tsx`
+**Status: selesai, sudah dideploy.**
 
-Section "MEN" dan "WOMEN" (`RosterSection`) dihapus dari homepage beserta fetching data yang cuma dipakai di situ (`menModels`/`womenModels`). `/men` dan `/women` **tidak disentuh** — masing-masing masih punya `RosterSection` independen sendiri.
+Section Men/Women (`RosterSection`) dan fetching data yang cuma dipakai di situ dihapus dari `src/app/page.tsx`. `/men` dan `/women` tidak disentuh.
 
 ---
 
 ### 5. PRIORITAS TERTINGGI — Kecepatan loading foto
 
-Ini yang paling banyak temuan barunya. Ringkasan:
+**Status: kode selesai & dideploy, TAPI ada satu blocker infrastruktur yang masih terbuka (lihat bagian "Isu terbuka" di bawah).**
 
-**a) Temuan arsitektur (mengubah pendekatan fix upload):**
-Brief menduga fix-nya adalah pindah proses upload ke `runtime = 'nodejs'` supaya `sharp` jalan. Setelah dicek (`COMPREHENSIVE_REPORT.md`, `wrangler.jsonc`, riwayat commit "enable edge runtime for all dynamic routes to support cloudflare pages build"), **production app ini deploy ke Cloudflare Workers/Pages**. Di Cloudflare Workers, `sharp` (native binary) **tidak bisa jalan sama sekali**, apapun label runtime-nya — beda dengan Vercel. Jadi fix versi "pindah ke nodejs runtime" tidak akan benar-benar berhasil di production (cuma kelihatan berhasil di `next dev` lokal).
+**a) Fix arsitektur upload pipeline:** brief awal menduga fix-nya "pindah proses upload ke `runtime = 'nodejs'`" supaya `sharp` jalan. Setelah dicek, production deploy ke **Cloudflare Pages** (project bernama `whoknows`, dibangun lewat `@opennextjs/cloudflare`) — di Cloudflare Workers, `sharp` (native binary) tidak bisa jalan sama sekali apapun label runtime-nya. Fix yang dipakai (dikonfirmasi ke user): `src/lib/media-processor.ts` sekarang coba proses lewat **Cloudflare Images binding** (`env.IMAGES`) dulu, fallback ke `sharp` (untuk konteks Node.js non-Workers), fallback terakhir buffer asli. `next.config.ts` ditambah `initOpenNextCloudflareForDev()` untuk akses binding ini di `next dev` lokal.
 
-→ **Fix yang dipakai (dikonfirmasi ke user):** pakai **Cloudflare Images binding** (`env.IMAGES`, sudah dideklarasikan di `wrangler.jsonc` tapi belum pernah dipakai di kode). `src/lib/media-processor.ts` sekarang coba proses lewat Cloudflare Images dulu (native, benar-benar jalan di Workers), fallback ke `sharp` (untuk konteks Node.js non-Workers, mis. script lokal), fallback terakhir buffer asli — sama seperti sebelumnya.
-`next.config.ts` ditambah `initOpenNextCloudflareForDev()` supaya binding ini juga bisa dites saat `next dev` lokal (lewat proxy Wrangler/Miniflare).
+**b) Reprocess foto lama:** `scripts/mass-compress.ts` disesuaikan ke target resmi (2000px/WebP q80/strip EXIF). Dijalankan terhadap Supabase Storage production: 0 dari 274 baris `ModelImage` diproses — bukan gagal, tapi karena foto model production ternyata sama sekali tidak ada di Supabase Storage.
 
-**b) Reprocess foto lama (`scripts/mass-compress.ts`):**
-Disesuaikan ke target resmi (max 2000px, WebP q80, strip EXIF — sebelumnya 1200px/q65 tanpa strip EXIF). Dijalankan terhadap production Supabase: **hasilnya 0 dari 274 foto diproses** — bukan gagal, tapi karena **foto model production ternyata sama sekali tidak ada di Supabase Storage**.
+**c) Temuan di luar dugaan brief:** 274 baris `ModelImage` semuanya menunjuk ke file statis di `public/all-models/` (278 file, 132MB, ada yang sampai 5.9MB per file, belum pernah dikompres) + `ModelSlideshow.tsx` sengaja pakai `<img>` mentah. Dikonfirmasi ke user, lalu:
+- Script baru `scripts/compress-static-assets.ts` — resize 278 file lokal ke 2000px/WebP q80/strip EXIF. **Hasil: 131.40MB → 28.44MB (hemat ~103MB).**
+- `ModelSlideshow.tsx`: `<img>` mentah → `next/image`.
 
-**c) Temuan baru (di luar dugaan brief) — sumber utama loading lambat:**
-274 baris `ModelImage` di DB semuanya menunjuk ke path statis (`/all-models/women/athina/...webp`), yaitu file yang di-bundle langsung di `public/all-models/` (278 file, **132MB total**, ada yang sampai 5.9MB per file) — sudah `.webp` tapi belum pernah di-resize/kompres. Ditambah `ModelSlideshow.tsx` (halaman utama showcase model) sengaja pakai `<img>` HTML mentah, bukan `next/image`, jadi tidak ada resize otomatis di serve-time juga.
+**d) Audit `next/image`:** `ArchivesSection.tsx`, `FacesSection.tsx`, `ModelCard.tsx` sudah konsisten. `ImageGallery.tsx` (dipakai `/jobs/[slug]`) ditambahkan `priority`/`fetchPriority`/`placeholder="blur"` untuk 4 foto pertama.
 
-Dikonfirmasi ke user, lalu dieksekusi:
-- Script baru `scripts/compress-static-assets.ts` — resize semua file lokal (2000px/WebP q80/strip EXIF) langsung di `public/all-models/`.
-- **Hasil: 131.40MB → 28.44MB (hemat ~103MB, 180 dari 278 file dikompres, 98 sudah optimal, 0 error).**
-- `ModelSlideshow.tsx`: `<img>` mentah → `next/image` (`fill`, `priority` utk slide pertama, `quality=80`).
-
-**d) Verifikasi Cloudflare Images binding di serve-time (poin 3 brief):**
-Dicek dari source `@opennextjs/cloudflare` — `/_next/image` (dipakai `next/image`) **otomatis** di-proxy lewat `env.IMAGES` kalau binding-nya ada, tanpa perlu kode tambahan. Binding sudah dideklarasikan di `wrangler.jsonc` dan `next.config.ts` sudah punya config `images` yang benar → secara kode ini sudah terhubung. Yang tidak bisa saya verifikasi dari sini: apakah produk **Cloudflare Images sungguh aktif di dashboard/akun Cloudflare** kalian — itu perlu dicek langsung di Cloudflare dashboard atau lewat deployment live.
-
-**e) Audit `next/image` (poin 4 brief):**
-`ArchivesSection.tsx`, `FacesSection.tsx`, `ModelCard.tsx` — sudah konsisten (`priority`/`loading`/`quality`/`placeholder="blur"` sesuai posisi above/below-the-fold).
-`ImageGallery.tsx` (dipakai di `/jobs/[slug]`) — grid thumbnail sebelumnya `loading="lazy"` untuk semua foto termasuk yang above-the-fold. Ditambahkan `priority`/`fetchPriority`/`placeholder="blur"` untuk 4 foto pertama, sama seperti pola di komponen lain.
+**e) Security/hardening review** atas seluruh perubahan Task 5 (dan task lain) sesi ini: **tidak ditemukan kerentanan** — upload pipeline hanya bisa diakses lewat server action admin-authenticated, tidak ada `dangerouslySetInnerHTML`, tidak ada trust-boundary baru yang dilanggar.
 
 ---
 
-## File yang berubah
+### Perbaikan tambahan (di luar 5 poin asli, ditemukan & diperbaiki dalam sesi ini)
+
+**Admin dashboard — teks tak terbaca (dark-theme tidak pernah aktif).** User melaporkan popup "Portfolio Images" putih dengan teks invisible, dan banyak teks hitam di Dashboard/Website Settings. Root cause: `globals.css` sudah punya `.dark` CSS variable set lengkap, tapi class `dark` **tidak pernah diaktifkan di manapun** — semua komponen shadcn/ui yang warnanya bergantung variable itu (Button outline variant, Card, dll) jatuh ke default tema terang. Fix: `src/app/admin/layout.tsx` sekarang toggle class `dark` di `<html>` selama di dalam `/admin` (lepas lagi saat keluar). Satu perbaikan ini menyelesaikan seluruh kelas masalah sekaligus, bukan tambal satu-satu. Sudah dideploy (`dbdf580`).
+
+---
+
+### ⚠️ Isu terbuka — Cloudflare Images resize belum benar-benar aktif
+
+Setelah deploy, PageSpeed Insights (mobile) melaporkan "Improve image delivery — Est savings of 3,680 KiB" — foto ter-serve jauh lebih besar dari ukuran tampilnya. Diverifikasi langsung ke production:
+
+```
+curl /_next/image?...&w=256   -> 144958 bytes
+curl /_next/image?...&w=3840  -> 144958 bytes   (identik!)
+raw original file             -> 144958 bytes
+```
+
+Semua ukuran `w=` mengembalikan byte yang persis sama dengan file asli — resize server-side **tidak jalan sama sekali**, persis skenario fallback `@opennextjs/cloudflare` saat `env.IMAGES` binding tidak terdefinisi.
+
+**Root cause terkonfirmasi:** binding `IMAGES` tidak pernah ditambahkan di Cloudflare Pages project (`whoknows` → Settings → Bindings kosong). User sudah coba tambahkan lewat dashboard, tapi tidak bisa persist — dicek lebih lanjut, ternyata **akun Cloudflare belum punya subscription Images yang aktif** (binding Images butuh subscription berbayar, bukan cuma "enable").
+
+**Status saat ini:** User memilih untuk subscribe (bukan alternatif gratis pre-generate multi-size variant), tapi belum bisa menghubungkan kartu pembayaran saat sesi ini berlangsung. **Dijeda, akan dilanjutkan nanti oleh user.** Tidak ada perubahan kode yang diperlukan untuk ini — kode sudah sepenuhnya siap (`media-processor.ts` + semua pemakaian `next/image`), tinggal menunggu binding-nya benar-benar ter-provision di Cloudflare.
+
+**Langkah lanjutan begitu subscription aktif** (sudah disimpan di memory Claude untuk sesi berikutnya):
+1. Konfirmasi Images sudah subscribed (bukan trial) di dashboard Cloudflare.
+2. Tambahkan lagi binding `IMAGES` di Workers & Pages → `whoknows` → Settings → Bindings (cek tab Production & Preview), Save.
+3. Trigger deploy baru (binding tidak retroaktif ke build lama).
+4. Verifikasi ulang dengan command curl di atas — kalau berhasil, ukuran byte akan bervariasi sesuai `w=`, bukan identik lagi.
+
+---
+
+## File yang berubah (commit `60e22d1` + `dbdf580`)
 
 ```
 next.config.ts                                  (+initOpenNextCloudflareForDev)
@@ -95,17 +106,13 @@ scripts/compress-static-assets.ts                (BARU — compress public/all-m
 src/components/models/ModelSlideshow.tsx         (<img> → next/image)
 src/components/sections/ArchivesSection.tsx      (masonry + broken-image fix)
 src/components/models/ImageGallery.tsx           (priority/loading audit)
-src/app/admin/layout.tsx                         (label sidebar)
+src/app/admin/layout.tsx                         (label sidebar "Archive" + fix .dark theme toggle)
 src/components/admin/CampaignManagement.tsx      (copy/framing "Archive")
 src/app/page.tsx                                 (hapus section Men/Women)
 public/all-models/**/*.webp                      (180 file dikompres, -103MB)
 ```
 
----
+## Yang masih perlu tindakan dari kalian
 
-## Yang belum / perlu tindakan dari kalian
-
-1. **Verifikasi visual di browser** belum selesai — terhalang Maintenance Mode (password gate) yang sedang aktif di local dev, dan saya tidak punya kredensial admin. Saya sengaja tidak coba bypass gate-nya sendiri.
-2. **Belum di-commit maupun di-deploy.** Perubahan `public/all-models/*.webp` (180 file, -103MB) baru berlaku di production setelah kalian commit + deploy.
-3. **Cloudflare Images product** perlu dipastikan aktif di dashboard Cloudflare-nya (di luar jangkauan saya dari sini) supaya fix upload-time (poin 5a) beneran jalan di production, bukan cuma fallback ke `sharp`/buffer asli.
-4. Belum menjalankan `scripts/mass-compress.ts` lagi setelah ini karena memang tidak relevan (Supabase Storage kosong dari foto model) — tapi tetap berguna untuk masa depan kalau suatu saat ada foto yang benar-benar masuk ke Supabase Storage.
+1. **Cloudflare Images subscription** — lihat bagian "Isu terbuka" di atas. Ini satu-satunya item yang benar-benar menunggu tindakan kalian (billing, di luar jangkauan saya).
+2. Setelah subscription aktif dan binding jalan, tidak ada langkah lain — semuanya sudah live di production sejak commit `dbdf580`.

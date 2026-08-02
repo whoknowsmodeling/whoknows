@@ -1,10 +1,10 @@
 # WhoKnows Models — FULL SYSTEM BUILD & AUDIT REPORT
 
-> **Version:** 37.0.0 (Admin Dashboard Comprehensive Guide)
+> **Version:** 38.0.0 (Archives Redesign, Admin Dark-Theme Fix, Image Delivery Overhaul)
 > **Intelligence:** Dual-Engine Sync (OpenAI GPT-4o Persona + Gemini 2.0 Flash Scale)
 > **Identity:** International Modelling Agency Digital Twin
 > **Developer:** Indo Design Website Scaffold indodesign.website | bali.technology
-> **Status:** ✅ LOCKED & HARDENED — v37.0.0 Production Build Pass
+> **Status:** ✅ LOCKED & HARDENED — v38.0.0 Production Build Pass (Cloudflare Images subscription pending — see §8)
 
 ---
 
@@ -31,14 +31,14 @@ WhoKnows Models is a premium, industrial-grade modelling agency platform designe
 
 ### 🌐 Public Frontend
 - **`/` (Landing Page)**: Hero navigation + FACES (Trackpad Optimized) + Archives.
-- **`/archives`**: Unified talent portal with strictly balanced **W-M-W** pattern.
+- **`/archives`**: Unified talent portal with strictly balanced **W-M-W** pattern, rendered as an auto-fit masonry grid (each card sized to its own photo's natural aspect ratio — no forced crop).
 - **`/women` / `/men`**: Dedicated gender-specific rosters.
 - **`/model/[slug]`**: Portfolio profiles with new **Booking Modal System**.
 - **`/apply` / `/contact`**: Real-time talent submission and contact portals.
 
 ### 🔒 Administrative Suite (`/admin`)
 - **Dashboard**: Industrial overview with API Heartbeat Monitor.
-- **Models Management**: CMS for all talent (Hardened with White Text for Dark Theme).
+- **Models Management**: CMS for all talent. The `.dark` theme scope is now actually activated for the whole `/admin` route (v38.0.0) — earlier "hardened white text" styling had silently fallen back to light-theme defaults on several components (e.g. the Portfolio Images role buttons rendered invisible white-on-white) because the `dark` class itself was never applied anywhere in the app.
 - **Applications**: Review and management portal for new submissions.
 - **Activity Logs**: Global audit trail of all administrative actions.
 
@@ -76,7 +76,7 @@ Engine-level horizontal scroll listener added to the Faces carousel, allowing Ma
 **Build Command:** `npx prisma generate && npm run build`
 **Database Sync:** `node scripts/restore-data.mjs`
 **Edge Mandate:** All dynamic routes MUST include `export const runtime = 'edge'`.
-**Build Verified:** 43 static pages (v36.0.0)
+**Build Verified:** 44 static pages (v38.0.0)
 
 ---
 
@@ -384,9 +384,10 @@ This table explains where each role makes the model's image appear on the public
 
 ---
 
-### 7.5 Campaigns (Jobs) Panel
+### 7.5 Archive Panel
 
 **Route:** `/admin/campaigns`
+**Sidebar label:** "Archive" (renamed from "Campaigns (Jobs)" in v38.0.0 — reframed as a brand-shoot portfolio for client viewing, e.g. Whispertone, Gucci, rather than an internal campaign-management tool. Framing/copy only — data model and `/admin/campaigns` route are unchanged.)
 
 Manages editorial, commercial, and fashion campaign showcases displayed on the `/jobs` page.
 
@@ -405,11 +406,11 @@ Displays all campaigns as 3-column cards with cover images/videos, client name, 
 
 #### 7.5.2 Create / Edit Campaign Dialog
 
-Click **"+ New Job"** to open the campaign creation form, or hover a card and click Edit.
+Click **"+ New Entry"** to open the campaign creation form, or hover a card and click Edit.
 
 | Field | Description |
 |-------|-------------|
-| **Job Title / Campaign Name** | Required. The display name of the campaign (e.g., "Summer 2026 Editorial"). |
+| **Shoot Title / Campaign Name** | Required. The display name of the campaign (e.g., "Summer 2026 Editorial"). |
 | **Client** | The brand or client name (e.g., "Dior", "Bali Vogue"). |
 | **Year** | Campaign year (e.g., "2026"). |
 | **Description** | Free-text description of the campaign. |
@@ -421,7 +422,7 @@ Click **"+ New Job"** to open the campaign creation form, or hover a card and cl
 
 **Buttons:**
 - **Cancel** → Close the dialog without saving.
-- **Create Job** / **Save Changes** → Submit the form.
+- **Add to Archive** / **Save Changes** → Submit the form.
 
 ---
 
@@ -692,7 +693,7 @@ The left sidebar contains all navigation links. Here is the complete reference:
 | **Contact Messages** | `/admin/contacts` | 📄 | Read and reply to website inquiries. |
 | **Models (Men)** | `/admin/models/men` | 👥 | Manage male model roster. |
 | **Models (Women)** | `/admin/models/women` | 👥 | Manage female model roster. |
-| **Campaigns (Jobs)** | `/admin/campaigns` | 🖼️ | Create and manage campaign showcases. |
+| **Archive** | `/admin/campaigns` | 🖼️ | Brand-shoot portfolio for client viewing (create/manage entries). |
 | **Brand Partners** | `/admin/clients` | 🖼️ | Manage brand logos in the "Trusted By" section. |
 | **WK_Ai Assistant** | `/admin/ai` | 🤖 | Chat with the AI COO and view audit logs. |
 | **Blog Engine** | `/admin/blog` | ✨ | Oracle-powered SEO blog pipeline. |
@@ -746,4 +747,16 @@ The left sidebar contains all navigation links. Here is the complete reference:
 
 ---
 
-*Verified Build — WhoKnows3 Super Report v37.0.0*
+## 8. v38.0.0 Update Log (2026-08-03)
+
+Full task-by-task detail lives in `ANTIGRAVITY_PROMPT_REPORT.md`; summary here for continuity with this manual:
+
+- Archives auto-fit masonry + broken-image fix, homepage Men/Women sections removed, "Campaigns (Jobs)" reframed as "Archive" (§7.5 above updated accordingly), Model Profile Page migrated to `next/image`.
+- Image upload pipeline re-architected around the Cloudflare Images binding (`env.IMAGES`) instead of `sharp` directly — Cloudflare Workers cannot execute native binaries regardless of the configured Next.js runtime, so `sharp` now only serves as a non-Workers fallback.
+- The 278 bundled static talent photos in `public/all-models/` were compressed in place (131MB → 28MB).
+- Admin `.dark` theme scope fixed — it was declared in `globals.css` but never actually activated anywhere, causing several components (e.g. the Portfolio Images role buttons) to silently render with light-theme colors.
+- **Open item:** production PageSpeed auditing showed `/_next/image` serve-time resizing is not actually active — the Cloudflare Images `IMAGES` binding cannot persist without an active paid Images subscription on the account, which was not yet completed as of this update. No further code changes are required for this; it is a Cloudflare account/dashboard step.
+
+---
+
+*Verified Build — WhoKnows3 Super Report v38.0.0*
